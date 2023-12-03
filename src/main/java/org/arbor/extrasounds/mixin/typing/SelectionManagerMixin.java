@@ -18,7 +18,7 @@ public abstract class SelectionManagerMixin {
      * Requires to store the current position to prevent excessive sounds in method <code>extrasounds$moveCursor</code>.<br>
      * Injected into <code>updateSelectionRange(Z)V</code>.
      *
-     * @see TextFieldHelper#resetSelectionIfNeeded
+     * @see TextFieldHelper
      */
     @Unique
     private int extra_sounds$cursorStart = 0;
@@ -44,7 +44,7 @@ public abstract class SelectionManagerMixin {
      */
     @Unique
     private boolean extrasounds$isPosUpdated() {
-        return this.extra_sounds$cursorStart != this.cursorPos || this.extra_sounds$cursorEnd != this.selectionPos;
+        return this.extra_sounds$cursorStart == this.cursorPos && this.extra_sounds$cursorEnd == this.selectionPos;
     }
 
     @Inject(method = METHOD_SIGN_DELETE, at = @At("HEAD"))
@@ -77,7 +77,7 @@ public abstract class SelectionManagerMixin {
 
     @Inject(method = "insertText(Ljava/lang/String;Ljava/lang/String;)V", at = @At("RETURN"))
     private void extrasounds$appendChar(String string, String insertion, CallbackInfo ci) {
-        if (!this.extrasounds$isPosUpdated()) {
+        if (this.extrasounds$isPosUpdated()) {
             return;
         }
         if (this.extra_sounds$bPasteAction) {
@@ -98,7 +98,7 @@ public abstract class SelectionManagerMixin {
 
     @Inject(method = "resetSelectionIfNeeded(Z)V", at = @At("RETURN"))
     private void extrasounds$moveCursor(boolean shiftDown, CallbackInfo ci) {
-        if (!this.extrasounds$isPosUpdated()) {
+        if (this.extrasounds$isPosUpdated()) {
             return;
         }
         SoundManager.keyboard(SoundManager.KeyType.CURSOR);

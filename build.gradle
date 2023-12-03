@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 group = mod_name
-version = mod_version
+version = mod_version + '-' + minecraft_version + "-forge"
 
 jarJar.enable()
 
@@ -39,6 +39,8 @@ minecraft {
         configureEach {
             workingDirectory project.file('run')
 
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            property 'mixin.env.remapRefMap', 'true'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
@@ -73,7 +75,6 @@ minecraft {
 
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
-
     config "${mod_id}.mixins.json"
 }
 
@@ -93,10 +94,12 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.projectlombok:lombok:1.18.28'
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // implementation "maven.modrinth:brrp:${brrp_version}"
     implementation(jarJar("org.arbor:extrasoundsmixin:1.0")) { jarJar.ranged(it, "[1.0,)") }
+
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
@@ -133,6 +136,11 @@ tasks.named('jar', Jar).configure {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+
+    // The settings below make sure that your build is reproducible
+    // More information at https://docs.gradle.org/current/userguide/working_with_files.html#sec:reproducible_archives
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
 
     // This is the preferred method to reobfuscate your jar file
     finalizedBy 'reobfJar'

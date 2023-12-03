@@ -1,6 +1,8 @@
 package org.arbor.extrasounds;
 
 import com.google.common.collect.Maps;
+import net.minecraft.world.item.BlockItem;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
 import org.arbor.extrasounds.sounds.SoundType;
@@ -16,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -39,19 +40,18 @@ public class SoundManager {
     /**
      * Predicate of Right Mouse Click.
      */
-    private static final BiPredicate<ClickType, Integer> RIGHT_CLICK_PREDICATE = (actionType, button) -> {
-        return (actionType != ClickType.THROW && actionType != ClickType.SWAP) && button == 1 ||
-                actionType == ClickType.QUICK_CRAFT && AbstractContainerMenu.getQuickcraftType(button) == 1;
-    };
+    private static final BiPredicate<ClickType, Integer> RIGHT_CLICK_PREDICATE = (actionType, button) -> (
+            actionType != ClickType.THROW && actionType != ClickType.SWAP) && button == 1 ||
+            actionType == ClickType.QUICK_CRAFT && AbstractContainerMenu.getQuickcraftType(button) == 1;
 
     /**
      * Map of the item which should not play sounds.<br>
      * BiPredicate in this value will be passed <code>SlotActionType</code> and <code>int</code> of button ID.<br>
      * Item -&gt; BiPredicate&lt;SlotActionType, Integer&gt;
      */
-    private static final Map<Item, BiPredicate<ClickType, Integer>> IGNORE_SOUND_PREDICATE_MAP = Util.make(Maps.newHashMap(), map -> {
-        map.put(Items.BUNDLE, RIGHT_CLICK_PREDICATE);
-    });
+    private static final Map<Item, BiPredicate<ClickType, Integer>> IGNORE_SOUND_PREDICATE_MAP = Util.make(
+            Maps.newHashMap(), map -> map.put(Items.BUNDLE, RIGHT_CLICK_PREDICATE)
+    );
 
     private static long lastPlayed = 0;
     private static Item quickMovingItem = Items.AIR;
@@ -190,14 +190,26 @@ public class SoundManager {
     }
 
     public static void playSound(ItemStack stack, SoundType type) {
-        var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        var itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
         ResourceLocation id = ExtraSounds.getClickId(itemId, type);
         SoundEvent event = SoundPackLoader.CUSTOM_SOUND_EVENT.getOrDefault(id, null);
         if (event == null) {
-            LOGGER.error("Sound cannot be found in packs: {}", id);
+            playDefaultSound(stack, type);
             return;
         }
         playSound(event, type);
+    }
+
+    public static void playDefaultSound(ItemStack stack, SoundType type) {
+        ResourceLocation defaultItem = ExtraSounds.getClickId(ForgeRegistries.ITEMS.getKey(Items.DIAMOND), type);
+        ResourceLocation defaultBlock = ExtraSounds.getClickId(ForgeRegistries.ITEMS.getKey(Items.STONE), type);
+        SoundEvent defaultSound;
+        if (stack.getItem() instanceof BlockItem){
+            defaultSound = SoundPackLoader.CUSTOM_SOUND_EVENT.get(defaultBlock);
+        }else{
+            defaultSound = SoundPackLoader.CUSTOM_SOUND_EVENT.get(defaultItem);
+        }
+        playSound(defaultSound, type);
     }
 
     public static void effectChanged(MobEffect effect, EffectType type) {
@@ -289,7 +301,7 @@ public class SoundManager {
         }
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
-                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
+                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize(itemStack));
         playSound(Sounds.ITEM_DROP, pitch, category, SoundSource.PLAYERS);
     }
 

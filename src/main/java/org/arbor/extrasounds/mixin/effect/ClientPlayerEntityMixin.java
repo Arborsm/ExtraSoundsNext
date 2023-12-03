@@ -8,6 +8,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +25,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
     }
 
     @Override
-    protected void onEffectAdded(MobEffectInstance effect, @Nullable Entity source) {
+    protected void onEffectAdded(@NotNull MobEffectInstance effect, @Nullable Entity source) {
         super.onEffectAdded(effect, source);
         SoundManager.effectChanged(effect.getEffect(), SoundManager.EffectType.ADD);
     }
