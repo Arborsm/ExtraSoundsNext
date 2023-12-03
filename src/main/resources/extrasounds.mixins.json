@@ -1,0 +1,34 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.arbor.extrasounds.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "extra-sounds.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "BucketFluidAccessor",
+    "action.ClientPlayerEntityMixin",
+    "action.ClientPlayerInteractionManagerMixin",
+    "action.LivingEntityMixin",
+    "chat.ChatHudMixin",
+    "effect.ClientPlayerEntityMixin",
+    "hotbar.ClientPlayerEntityMixin",
+    "hotbar.ClientPlayNetworkHandlerMixin",
+    "hotbar.MinecraftClientMixin",
+    "hotbar.MouseMixin",
+    "inventory.ClientPlayerInteractionManagerMixin",
+    "inventory.CreativeInventoryScreenMixin",
+    "inventory.CreativeScreenHandlerMixin",
+    "inventory.HandledScreenMixin",
+    "inventory.MinecraftClientMixin",
+    "typing.AbstractSignEditScreenMixin",
+    "typing.ChatScreenMixin",
+    "typing.SelectionManagerMixin",
+    "typing.SuggestionWindowMixin",
+    "typing.TextFieldWidgetMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
