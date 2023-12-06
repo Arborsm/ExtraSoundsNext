@@ -1,5 +1,8 @@
 package org.arbor.extrasounds;
 
+import com.mojang.logging.LogUtils;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
@@ -13,20 +16,20 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.slf4j.Logger;
 
 @Mod(ExtraSounds.MODID)
 public class ExtraSounds {
+
     public static final String MODID = "extrasounds";
-    static final RandomSource mcRandom = RandomSource.create();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
-    public ExtraSounds(){
-        //load classes so they register all resources before they're used
-        Object loader = Categories.HAY;
-        loader = Sounds.CHAT;
-        loader = Sounds.Actions.BOW_PULL;
+    public static final SoundEvent MISSING = new SoundEvent(new ResourceLocation(MODID, "missing"));
 
-        SoundPackLoader.init();
+    public ExtraSounds() {
         DebugUtils.init();
+        SoundPackLoader.init();
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public static void hotbar(int i)
@@ -36,6 +39,15 @@ public class ExtraSounds {
             SoundManager.playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         else
             SoundManager.playSound(stack, SoundType.HOTBAR);
+    }
+
+    public static SoundEvent createEvent(String path) {
+        try {
+            return new SoundEvent(new ResourceLocation(MODID, path));
+        } catch (Throwable ex) {
+            LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
+        }
+        return MISSING;
     }
 
     public static void inventoryClick(Slot slot, ItemStack cursor, ClickType actionType)

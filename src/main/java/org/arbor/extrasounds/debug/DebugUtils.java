@@ -50,28 +50,6 @@ public class DebugUtils
         }
     }
 
-    public static void exportGenerators()
-    {
-        if (!debug) return;
-        Path p = Path.of(debugPath).resolve("generators.txt");
-        createFile(p);
-        try
-        {
-            Files.write(p, SoundPackLoader.mappers.keySet().stream()
-                                                  .map(it -> {
-                                                      var clazz = SoundPackLoader.mappers.get(it).itemSoundGenerator()
-                                                                                         .getClass();
-                                                      return "namespace: " + it + "; class: " + (clazz == null ? "none" : clazz.getName());
-                                                  })
-                                                  .collect(
-                                                          Collectors.toList()));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public static void soundLog(SoundEvent snd)
     {
         if (!debug) return;

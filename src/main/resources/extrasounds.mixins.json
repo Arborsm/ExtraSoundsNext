@@ -8,23 +8,24 @@
   ],
   "client": [
     "BlockMaterialAccessor",
-    "HotbarScrollSound",
-    "ItemPickSound",
-    "action.BowPullSound",
-    "action.RepeaterSwitchSound",
-    "inventory.InventoryClickSounds",
-    "inventory.InventoryDropSound",
     "BucketFluidAccessor",
     "ChatSound",
     "EffectMixin",
+    "HotbarScrollSound",
     "HotbarSlotSound",
+    "ItemPickSound",
     "KeyboardTypingSound",
+    "action.BowPullSound",
+    "action.RepeaterSwitchSound",
     "inventory.CreativeInventoryClickSounds",
     "inventory.CreativeListScroll",
     "inventory.CreativeScreenHandlerSounds",
+    "inventory.InventoryClickSounds",
     "inventory.InventoryDragSound",
+    "inventory.InventoryDropSound",
     "inventory.InventoryKeyPressSound",
-    "inventory.InventoryScreenSounds"
+    "inventory.InventoryScreenSounds",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

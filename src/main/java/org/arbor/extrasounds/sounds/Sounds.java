@@ -6,32 +6,32 @@ import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.valueproviders.ConstantFloat;
+import org.arbor.extrasounds.ExtraSounds;
 
-public class Sounds extends SoundRegistry
-{
-    public static final SoundEvent CHAT = register("chat.message");
-    public static final SoundEvent CHAT_MENTION = register("chat.mention");
-    public static final SoundEvent HOTBAR_SCROLL = register("hotbar_scroll");
-    public static final SoundEvent INVENTORY_OPEN = register("inventory.open");
-    public static final SoundEvent INVENTORY_CLOSE = register("inventory.close");
-    public static final SoundEvent INVENTORY_SCROLL = register("inventory.scroll");
-    public static final SoundEvent ITEM_DROP = register("item.drop");
-    public static final SoundEvent ITEM_PICK = register("item.pickup");
-    public static final SoundEvent ITEM_PICK_ALL = register("item.pickup_all");
-    public static final SoundEvent ITEM_CLONE = register("item.clone");
-    public static final SoundEvent ITEM_DELETE = register("item.delete");
-    public static final SoundEvent ITEM_DRAG = register("item.drag");
-    public static final SoundEvent EFFECT_ADD_POSITIVE = register("effect.add.positive");
-    public static final SoundEvent EFFECT_ADD_NEGATIVE = register("effect.add.negative");
-    public static final SoundEvent EFFECT_REMOVE_POSITIVE = register("effect.remove.positive");
-    public static final SoundEvent EFFECT_REMOVE_NEGATIVE = register("effect.remove.negative");
-    public static final SoundEvent KEYBOARD_TYPE = register("keyboard.type");
+public class Sounds{
+    public static final SoundEvent CHAT = ExtraSounds.createEvent("chat.message");
+    public static final SoundEvent CHAT_MENTION = ExtraSounds.createEvent("chat.mention");
+    public static final SoundEvent HOTBAR_SCROLL = ExtraSounds.createEvent("hotbar_scroll");
+    public static final SoundEvent INVENTORY_OPEN = ExtraSounds.createEvent("inventory.open");
+    public static final SoundEvent INVENTORY_CLOSE = ExtraSounds.createEvent("inventory.close");
+    public static final SoundEvent INVENTORY_SCROLL = ExtraSounds.createEvent("inventory.scroll");
+    public static final SoundEvent ITEM_DROP = ExtraSounds.createEvent("item.drop");
+    public static final SoundEvent ITEM_PICK = ExtraSounds.createEvent("item.pickup");
+    public static final SoundEvent ITEM_PICK_ALL = ExtraSounds.createEvent("item.pickup_all");
+    public static final SoundEvent ITEM_CLONE = ExtraSounds.createEvent("item.clone");
+    public static final SoundEvent ITEM_DELETE = ExtraSounds.createEvent("item.delete");
+    public static final SoundEvent ITEM_DRAG = ExtraSounds.createEvent("item.drag");
+    public static final SoundEvent EFFECT_ADD_POSITIVE = ExtraSounds.createEvent("effect.add.positive");
+    public static final SoundEvent EFFECT_ADD_NEGATIVE = ExtraSounds.createEvent("effect.add.negative");
+    public static final SoundEvent EFFECT_REMOVE_POSITIVE = ExtraSounds.createEvent("effect.remove.positive");
+    public static final SoundEvent EFFECT_REMOVE_NEGATIVE = ExtraSounds.createEvent("effect.remove.negative");
+    public static final SoundEvent KEYBOARD_TYPE = ExtraSounds.createEvent("keyboard.type");
 
     public static class Actions
     {
-        public static final SoundEvent BOW_PULL = register("action.bow");
-        public static final SoundEvent REPEATER_ADD = register("action.repeater.add");
-        public static final SoundEvent REPEATER_RESET = register("action.repeater.reset");
+        public static final SoundEvent BOW_PULL = ExtraSounds.createEvent("action.bow");
+        public static final SoundEvent REPEATER_ADD = ExtraSounds.createEvent("action.repeater.add");
+        public static final SoundEvent REPEATER_RESET = ExtraSounds.createEvent("action.repeater.reset");
     }
 
     public static SoundEventRegistration aliased(SoundEvent e)
