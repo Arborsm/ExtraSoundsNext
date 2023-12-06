@@ -1,0 +1,39 @@
+package org.arbor.extrasounds.mixin.inventory;
+
+import net.minecraft.sounds.SoundSource;
+import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.sounds.Sounds;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.sounds.SoundEvent;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
+@Mixin(CreativeModeInventoryScreen.ItemPickerMenu.class)
+public class CreativeListScroll
+{
+    @Unique
+    private static int extra_sounds$lastPos = 0;
+    @Unique
+    private static long extra_sounds$lastTime = 0L;
+    @Unique
+    private static final SoundEvent extra_sounds$e = Sounds.INVENTORY_SCROLL;
+
+    @ModifyVariable(method = "scrollTo", at = @At("STORE"), ordinal = 1)
+    int scroll(int position)
+    {
+        long now = System.currentTimeMillis();
+        long timeDiff = now - extra_sounds$lastTime;
+        if (timeDiff > 20 && extra_sounds$lastPos != position && !(extra_sounds$lastPos != 1 && position == 0))
+        {
+            SoundManager.playSound(
+                    extra_sounds$e,
+                    (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff)),
+                    SoundSource.PLAYERS);
+            extra_sounds$lastTime = now;
+            extra_sounds$lastPos = position;
+        }
+        return position;
+    }
+}

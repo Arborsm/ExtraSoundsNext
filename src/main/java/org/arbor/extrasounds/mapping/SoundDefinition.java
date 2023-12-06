@@ -1,35 +1,32 @@
 package org.arbor.extrasounds.mapping;
 
+import javax.annotation.Nonnull;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class SoundDefinition
 {
-    public final SoundEventRegistration pickup;
-    @Nullable
-    public final SoundEventRegistration place;
-    @Nullable
-    public final SoundEventRegistration hotbar;
+    public SoundEventRegistration pickup;
+    public SoundEventRegistration place = null;
+    public SoundEventRegistration hotbar = null;
 
-    private SoundDefinition(SoundEventRegistration sound)
+    public SoundDefinition(SoundEventRegistration sound)
     {
         this(sound, null, null);
     }
 
-    private SoundDefinition(@NotNull SoundEventRegistration pickup, @Nullable SoundEventRegistration place, @Nullable SoundEventRegistration hotbar)
+    public SoundDefinition(@Nonnull SoundEventRegistration pickup, SoundEventRegistration place, SoundEventRegistration hotbar)
     {
         this.pickup = pickup;
         this.place = place;
         this.hotbar = hotbar;
     }
 
-    public static SoundDefinition of(@NotNull SoundEventRegistration pickup, SoundEventRegistration place, SoundEventRegistration hotbar)
+    public static SoundDefinition of(@Nonnull SoundEventRegistration pickup, SoundEventRegistration place, SoundEventRegistration hotbar)
     {
         return new SoundDefinition(pickup, place, hotbar);
     }
 
-    public static SoundDefinition of(@NotNull SoundEventRegistration sound)
+    public static SoundDefinition of(@Nonnull SoundEventRegistration sound)
     {
         return new SoundDefinition(sound);
     }
