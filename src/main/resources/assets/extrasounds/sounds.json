@@ -399,16 +399,6 @@
     ],
     "replace": true
   },
-  "item.category.brick": {
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.metal",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ],
-    "replace": true
-  },
   "action.bow": {
     "sounds": [
       {
@@ -471,7 +461,8 @@
     "sounds": [
       {
         "name": "minecraft:random/bow",
-        "volume": 0.4
+        "volume": 0.4,
+        "pitch": 1.5
       }
     ]
   },
@@ -532,50 +523,12 @@
       }
     ]
   },
-  "entity.poof": {
-    "sounds": [ "extrasounds:entity/poof" ]
-  },
   "keyboard.type": {
     "sounds": [
       {
         "name": "minecraft:block.bamboo.hit",
         "volume": 0.4,
         "pitch": 2,
-        "type": "event"
-      }
-    ]
-  },
-  "keyboard.move": {
-    "sounds": [
-      {
-        "name": "extrasounds:generic.scroll",
-        "pitch": 0.8,
-        "type": "event"
-      }
-    ]
-  },
-  "keyboard.erase": {
-    "sounds": [
-      {
-        "name": "extrasounds:generic.click",
-        "volume": 0.6,
-        "pitch": 2.4,
-        "type": "event"
-      }
-    ]
-  },
-  "keyboard.cut": {
-    "sounds": [
-      {
-        "name": "extrasounds:keyboard.erase",
-        "type": "event"
-      }
-    ]
-  },
-  "keyboard.paste": {
-    "sounds": [
-      {
-        "name": "extrasounds:keyboard.type",
         "type": "event"
       }
     ]
@@ -658,6 +611,15 @@
       }
     ]
   },
+  "item.pickup.minecraft.beetroot_soup": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.bowl",
+        "type": "event"
+      }
+    ]
+  },
   "item.pickup.minecraft.bell": {
     "replace": true,
     "sounds": [
@@ -726,6 +688,16 @@
         "pitch": 1.8,
         "type": "event",
         "volume": 0.5
+      }
+    ]
+  },
+  "item.pickup.minecraft.brick": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "extrasounds:item.category.metal",
+        "pitch": 0.8,
+        "type": "event"
       }
     ]
   },
@@ -1713,21 +1685,10 @@
     "replace": true,
     "sounds": [
       {
-        "name": "minecraft:block.chiseled_bookshelf.place",
+        "name": "minecraft:block.wood.place",
         "pitch": 2,
         "type": "event",
-        "volume": 0.4
-      }
-    ]
-  },
-  "item.pickup.minecraft.debug_stick": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "minecraft:block.chiseled_bookshelf.place",
-        "pitch": 2,
-        "type": "event",
-        "volume": 0.4
+        "volume": 0.2
       }
     ]
   },
@@ -1824,25 +1785,6 @@
         "name": "minecraft:block.deepslate_bricks.place",
         "pitch": 2,
         "volume": 0.3,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.bundle": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.generic",
-        "pitch": 1.5,
-        "type": "event"
-      }
-    ]
-  },
-  "item.pickup.minecraft.brush": {
-    "replace": true,
-    "sounds": [
-      {
-        "name": "extrasounds:item.category.gear.generic",
         "type": "event"
       }
     ]

@@ -29,6 +29,7 @@ import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemFrameItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.KnowledgeBookItem;
 import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.item.MapItem;
@@ -76,6 +77,9 @@ public final class VanillaGenerator {
         return item instanceof BannerPatternItem || item instanceof BookItem || item instanceof WritableBookItem ||
                 item instanceof WrittenBookItem || item instanceof EnchantedBookItem || item instanceof EmptyMapItem ||
                 item instanceof MapItem || item instanceof NameTagItem || item instanceof KnowledgeBookItem;
+    }
+    private static boolean isBrickItem(Item item) {
+        return item == Items.BRICK || item.getDescriptionId().endsWith("pottery_sherd");
     }
 
     public static SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, item -> {
@@ -135,6 +139,8 @@ public final class VanillaGenerator {
             return SoundDefinition.of(single(LOOSE_METAL.getLocation(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
         } else if (item instanceof DiscFragmentItem) {
             return SoundDefinition.of(single(METAL_BITS.getLocation(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
+        } else if (isBrickItem(item)) {
+            return SoundDefinition.of(aliased(BRICK));
         } else if (isGearGoldenItem(item)) {
             return SoundDefinition.of(aliased(Gear.GOLDEN));
         } else if (isGearLeatherItem(item)) {

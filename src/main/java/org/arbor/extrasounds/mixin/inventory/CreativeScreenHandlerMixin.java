@@ -1,18 +1,20 @@
 package org.arbor.extrasounds.mixin.inventory;
 
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import org.arbor.extrasounds.SoundManager;
 import org.arbor.extrasounds.sounds.Sounds;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.sounds.SoundEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+/**
+ * For Creative screen scroll sound.
+ */
 @Mixin(CreativeModeInventoryScreen.ItemPickerMenu.class)
-public class CreativeListScroll
-{
+public abstract class CreativeScreenHandlerMixin {
     @Unique
     private static int extra_sounds$lastPos = 0;
     @Unique
