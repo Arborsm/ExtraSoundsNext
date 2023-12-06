@@ -33,13 +33,6 @@ public abstract class InventoryClickSounds
     @Shadow
     public abstract ItemStack getCarried();
 
-    @Inject(at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;setCarried(Lnet/minecraft/world/item/ItemStack;)V"), method = "ifPresent")
-    void pickup(Slot slot, Player playerEntity, ItemStack stack, CallbackInfo ci)
-    {
-        if (!stack.isEmpty())
-            SoundManager.playSound(stack, SoundType.PICKUP);
-    }
-
     @Inject(at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;setCarried(Lnet/minecraft/world/item/ItemStack;)V"), method = "doClick")
     void click(int slotIndex, int button, ClickType actionType, Player player, CallbackInfo ci)
     {
