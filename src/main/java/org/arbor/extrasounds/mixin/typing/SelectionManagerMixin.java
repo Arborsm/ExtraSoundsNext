@@ -27,9 +27,6 @@ public abstract class SelectionManagerMixin {
     @Unique
     private boolean extra_sounds$bPasteAction = false;
 
-    @Unique
-    private static final String METHOD_SIGN_DELETE = "removeFromCursor(ILnet/minecraft/client/gui/font/TextFieldHelper$CursorStep;)V";
-
     @Shadow
     private int cursorPos;
     @Shadow
@@ -47,8 +44,8 @@ public abstract class SelectionManagerMixin {
         return this.extra_sounds$cursorStart == this.cursorPos && this.extra_sounds$cursorEnd == this.selectionPos;
     }
 
-    @Inject(method = METHOD_SIGN_DELETE, at = @At("HEAD"))
-    private void extrasounds$beforeDelete(int offset, TextFieldHelper.CursorStep selectionType, CallbackInfo ci) {
+    @Inject(method = "Lnet/minecraft/client/gui/font/TextFieldHelper;removeCharsFromCursor(I)V", at = @At("HEAD"))
+    private void extrasounds$beforeDelete(int offset, CallbackInfo ci) {
         final String text = this.getMessageFn.get();
         final boolean bHeadBackspace = offset < 0 && this.cursorPos <= 0;
         final boolean bTailDelete = offset > 0 && this.selectionPos >= text.length();
@@ -57,8 +54,8 @@ public abstract class SelectionManagerMixin {
         }
         SoundManager.keyboard(SoundManager.KeyType.ERASE);
     }
-    @Inject(method = METHOD_SIGN_DELETE, at = @At("RETURN"))
-    private void extrasounds$afterDelete(int offset, TextFieldHelper.CursorStep selectionType, CallbackInfo ci) {
+    @Inject(method = "Lnet/minecraft/client/gui/font/TextFieldHelper;removeCharsFromCursor(I)V", at = @At("RETURN"))
+    private void extrasounds$afterDelete(int offset, CallbackInfo ci) {
         this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.selectionPos;
     }
 

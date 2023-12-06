@@ -2,7 +2,6 @@ package org.arbor.extrasounds.mapping;
 
 import org.arbor.extrasounds.mixin.BucketFluidAccessor;
 import org.arbor.extrasounds.sounds.Categories.Gear;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
@@ -17,7 +16,6 @@ import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.DiscFragmentItem;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.EmptyMapItem;
@@ -26,7 +24,6 @@ import net.minecraft.world.item.ExperienceBottleItem;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.FoodOnAStickItem;
 import net.minecraft.world.item.HorseArmorItem;
-import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemFrameItem;
 import net.minecraft.world.item.Items;
@@ -54,7 +51,6 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SeaPickleBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.SugarCaneBlock;
 import net.minecraft.world.level.material.Fluid;
 
@@ -135,10 +131,6 @@ public final class VanillaGenerator {
             return SoundDefinition.of(aliased(WET_SLIPPERY));
         } else if (item instanceof BowlFoodItem || item instanceof SuspiciousStewItem) {
             return SoundDefinition.of(aliased(BOWL));
-        } else if (item instanceof InstrumentItem) {
-            return SoundDefinition.of(single(LOOSE_METAL.getLocation(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
-        } else if (item instanceof DiscFragmentItem) {
-            return SoundDefinition.of(single(METAL_BITS.getLocation(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
         } else if (isBrickItem(item)) {
             return SoundDefinition.of(aliased(BRICK));
         } else if (isGearGoldenItem(item)) {
@@ -166,7 +158,7 @@ public final class VanillaGenerator {
                 } else {
                     return SoundDefinition.of(event(soundId));
                 }
-            } else if (block instanceof RotatedPillarBlock pillarBlock && pillarBlock.getSoundType(pillarBlock.defaultBlockState()).equals(SoundType.FROGLIGHT)) {
+            } else if (block instanceof RotatedPillarBlock pillarBlock) {
                 return SoundDefinition.of(event(blockSound, 0.3f));
             }
 

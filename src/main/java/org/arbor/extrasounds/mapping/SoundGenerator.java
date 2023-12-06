@@ -27,15 +27,4 @@ public final class SoundGenerator {
     public static SoundGenerator of(@NotNull String namespace, @NotNull Function<Item, SoundDefinition> itemSoundGenerator) {
         return new SoundGenerator(namespace, itemSoundGenerator);
     }
-
-    /**
-     * Deprecated<br>
-     * Parameter <code>modId</code> is no longer required. Use {@link SoundGenerator#of(String, Function)} instead.
-     *
-     * @see SoundGenerator#of(String, Function)
-     */
-    @Deprecated
-    public static SoundGenerator of(@NotNull String namespace, @NotNull String modId, @NotNull Function<Item, SoundDefinition> itemSoundGenerator) {
-        return new SoundGenerator(namespace, itemSoundGenerator);
-    }
 }

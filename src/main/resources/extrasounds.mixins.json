@@ -5,10 +5,10 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "extrasounds.refmap.json",
   "mixins": [
-    "BucketFluidAccessor",
-    "action.LivingEntityMixin"
   ],
   "client": [
+    "BucketFluidAccessor",
+    "action.LivingEntityMixin",
     "action.ClientPlayerEntityMixin",
     "action.ClientPlayerInteractionManagerMixin",
     "chat.ChatHudMixin",

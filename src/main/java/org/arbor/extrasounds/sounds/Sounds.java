@@ -4,8 +4,6 @@ import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.valueproviders.ConstantFloat;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.arbor.extrasounds.ExtraSounds;
 
 import java.util.List;
@@ -61,12 +59,12 @@ public class Sounds {
 
     public static SoundEventRegistration single(ResourceLocation id, float volume, float pitch, Sound.Type type) {
         return new SoundEventRegistration(List.of(
-                new Sound(id.toString(), ConstantFloat.of(volume), ConstantFloat.of(pitch), 1,
+                new Sound(id.toString(), volume, pitch, 1,
                         type, false, false, 16)
         ), false, null);
     }
 
-    protected static SoundEvent register(String id) {
-        return ForgeRegistries.SOUND_EVENTS.getValue(ExtraSounds.id(id));
+    public static SoundEvent register(String id) {
+        return new SoundEvent(new ResourceLocation(ExtraSounds.MODID, id));
     }
 }

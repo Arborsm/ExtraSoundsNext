@@ -3,13 +3,10 @@ package org.arbor.extrasounds.mixin.chat;
 import org.arbor.extrasounds.SoundManager;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
-import net.minecraft.client.GuiMessageTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MessageSignature;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,14 +25,14 @@ public abstract class ChatHudMixin {
     @Unique
     private int extra_sounds$currentLines;
 
-    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V", at = @At("RETURN"))
-    private void extrasounds$receiveMessage(Component message, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag indicator, boolean refresh, CallbackInfo ci) {
+    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;IIZ)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component p_93791_, int p_93792_, int p_93793_, boolean p_93794_, CallbackInfo ci) {
         final LocalPlayer player = this.minecraft.player;
-        if (player == null || refresh) {
+        if (player == null || p_93794_) {
             return;
         }
 
-        String msg = message.getString();
+        String msg = p_93791_.getString();
         if (msg.contains("@" + player.getName().getString()) || msg.contains("@" + player.getDisplayName().getString())) {
             SoundManager.playSound(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
         } else {
