@@ -36,7 +36,7 @@ public abstract class SuggestionWindowMixin {
         SoundManager.keyboard(SoundManager.KeyType.INSERT);
     }
 
-    @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;hide()V"))
+    @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions$SuggestionsList;hide()V"))
     private void extrasounds$closeWindow(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         SoundManager.keyboard(SoundManager.KeyType.CURSOR);
     }
