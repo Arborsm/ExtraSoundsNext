@@ -2,7 +2,7 @@ package org.arbor.extrasounds.mixin.hotbar;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.phys.HitResult;
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;

@@ -1,7 +1,7 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
 import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.world.item.ItemStack;

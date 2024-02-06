@@ -2,7 +2,7 @@ package org.arbor.extrasounds.sounds;
 
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.common.ForgeConfigSpec;
-import org.arbor.extrasounds.ESConfig;
+import org.arbor.extrasounds.misc.ESConfig;
 
 public enum SoundType
 {

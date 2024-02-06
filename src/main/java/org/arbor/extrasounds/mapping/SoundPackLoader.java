@@ -28,10 +28,9 @@ import java.util.stream.Collectors;
 public class SoundPackLoader {
     public static JsonObject GENERATED_SOUNDS;
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String CACHE_FNAME = "sounds.json";
-    private static final String PACK_ID = "extra_sounds_pack";
+    private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
     private static final Path CACHE_PATH_FILE =
-            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", PACK_ID, "assets", ExtraSounds.MODID, CACHE_FNAME);
+            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", CACHE_FNAME);
 
     public static final Map<ResourceLocation, SoundEvent> CUSTOM_SOUND_EVENT = new HashMap<>();
 
@@ -39,6 +38,13 @@ public class SoundPackLoader {
             .registerTypeAdapter(SoundEventRegistration.class, new SoundEntrySerializer())
             .registerTypeAdapter(Sound.class, new SoundSerializer())
             .create();
+
+    public static String getGeneratedSounds(){
+        if (GENERATED_SOUNDS == null) {
+            init();
+        }
+        return GENERATED_SOUNDS.toString();
+    }
 
     /**
      * Initialization of customized sound event.<br>
@@ -48,23 +54,26 @@ public class SoundPackLoader {
     public static void init() {
         final long start = System.currentTimeMillis();
         final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
-
-        // Read from cache.
+        AutoGenerator autoGenerator = new AutoGenerator();
+        soundGenMappers.put(autoGenerator.generator.namespace, autoGenerator.generator);
+        for (SoundGenerator generator : autoGenerator.generators){
+            soundGenMappers.put(generator.namespace, generator);
+        }
+        // Deleted once.
         try {
             Files.createDirectories(CACHE_PATH_FILE.getParent());
-
+            Files.deleteIfExists(CACHE_PATH_FILE);
+        } catch (Throwable ex) {
+            DebugUtils.genericLog(ex.getMessage());
+        }
+        // Read from cache.
+        try {
             if (!Files.exists(CACHE_PATH_FILE)) {
                 throw new FileNotFoundException("Cache does not exist.");
             }
-
             if (DebugUtils.NO_CACHE) {
                 throw new RuntimeException("JVM arg '%s' is detected.".formatted(DebugUtils.NO_CACHE_VAR));
             }
-
-            final CacheData cacheData = CacheData.read();
-            final JsonObject jsonObject = cacheData.asJsonObject();
-            jsonObject.keySet().forEach(key -> putSoundEvent(new ResourceLocation(ExtraSounds.MODID, key)));
-            GENERATED_SOUNDS = jsonObject;
         } catch (Throwable ex) {
             // If there is an exception, regenerate and write the cache.
             DebugUtils.genericLog(ex.getMessage());
@@ -73,7 +82,15 @@ public class SoundPackLoader {
             processSounds(soundGenMappers, resourceMapper);
             CacheData.create(resourceMapper);
         }
-
+        // toJson
+        try {
+            final CacheData cacheData = CacheData.read();
+            final JsonObject jsonObject = cacheData.asJsonObject();
+            jsonObject.keySet().forEach(key -> putSoundEvent(new ResourceLocation(ExtraSounds.MODID, key)));
+            GENERATED_SOUNDS = jsonObject;
+        } catch (JsonParseException e) {
+            DebugUtils.genericLog(e.getMessage());
+        }
         if (DebugUtils.DEBUG) {
             DebugUtils.exportSoundsJson(CacheData.read().asJsonBytes());
             DebugUtils.exportGenerators(soundGenMappers);
@@ -112,6 +129,9 @@ public class SoundPackLoader {
         }
 
         for (Item item : ForgeRegistries.ITEMS) {
+            if (DebugUtils.DEBUG && !Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+                LogManager.getLogger().info("generating {}:{} sound", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace(), item.toString());
+            }
             final ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             final SoundDefinition definition;
             if (soundGenerator.containsKey(Objects.requireNonNull(itemId).getNamespace())) {
@@ -120,7 +140,7 @@ public class SoundPackLoader {
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
                     final Block block = blockItem.getBlock();
-                    final SoundEvent blockSound = block.getSoundType(block.defaultBlockState()).getPlaceSound();
+                    final SoundEvent blockSound = AutoGenerator.getSoundType(block).getPlaceSound();
                     blockSoundDef = SoundDefinition.of(Sounds.aliased(blockSound));
                 } catch (Throwable ignored) {
                 }

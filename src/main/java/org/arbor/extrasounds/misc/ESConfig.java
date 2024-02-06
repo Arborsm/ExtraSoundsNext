@@ -1,4 +1,4 @@
-package org.arbor.extrasounds;
+package org.arbor.extrasounds.misc;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;

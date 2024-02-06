@@ -31,7 +31,7 @@ public class SoundManagerMixin {
     )
     private void injected(ResourceManager p_120356_, ProfilerFiller p_120357_, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
         p_120357_.push(ExtraSounds.MODID);
-        Reader reader = new StringReader(SoundPackLoader.GENERATED_SOUNDS.toString());
+        Reader reader = new StringReader(SoundPackLoader.getGeneratedSounds());
         try {
             p_120357_.push("parse");
             Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(SoundManager.GSON, reader, SoundManager.SOUND_EVENT_REGISTRATION_TYPE);

@@ -1,8 +1,8 @@
 package org.arbor.extrasounds.mixin.inventory;
 
 import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.ESConfig;
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.ESConfig;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,8 +1,9 @@
-package org.arbor.extrasounds;
+package org.arbor.extrasounds.misc;
 
 import com.google.common.collect.Maps;
 import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
 import org.arbor.extrasounds.sounds.SoundType;
