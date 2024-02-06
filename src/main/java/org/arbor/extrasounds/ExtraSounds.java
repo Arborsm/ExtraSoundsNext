@@ -7,7 +7,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
@@ -27,6 +29,7 @@ public class ExtraSounds {
         DebugUtils.init();
         SoundPackLoader.init();
         MinecraftForge.EVENT_BUS.register(this);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ESConfig.configSpec);
     }
 
     @Nullable

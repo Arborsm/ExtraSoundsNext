@@ -1,6 +1,7 @@
 package org.arbor.extrasounds.mixin.inventory;
 
 import net.minecraft.sounds.SoundSource;
+import org.arbor.extrasounds.ESConfig;
 import org.arbor.extrasounds.SoundManager;
 import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -33,7 +34,7 @@ public abstract class CreativeScreenHandlerMixin {
             SoundManager.playSound(
                     Sounds.INVENTORY_SCROLL,
                     (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff)),
-                    SoundSource.PLAYERS);
+                    SoundSource.PLAYERS, ESConfig.CONFIG.INVENTORY.get().floatValue());
             extra_sounds$lastTime = now;
             extra_sounds$lastPos = row;
         }
