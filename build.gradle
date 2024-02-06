@@ -32,7 +32,7 @@ java {
 
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
-
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     copyIdeResources = true
 
     runs {
@@ -41,6 +41,7 @@ minecraft {
 
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'mixin.env.remapRefMap', 'true'
+
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
@@ -98,9 +99,11 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // implementation "maven.modrinth:brrp:${brrp_version}"
-    implementation(jarJar("org.arbor:extrasoundsmixin:1.0")) { jarJar.ranged(it, "[1.0,)") }
+    // implementation(jarJar("org.arbor:extrasoundsmixin:1.0")) { jarJar.ranged(it, "[1.0,)") }
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.1")) { jarJar.ranged(it, "[0.3.1,)") }
 }
 
 tasks.named('processResources', ProcessResources).configure {

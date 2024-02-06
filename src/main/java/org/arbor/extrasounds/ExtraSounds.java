@@ -49,6 +49,15 @@ public class ExtraSounds {
         return MISSING;
     }
 
+    public static SoundEvent createEvent(ResourceLocation path) {
+        try {
+            return SoundEvent.createVariableRangeEvent(path);
+        } catch (Throwable ex) {
+            LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
+        }
+        return MISSING;
+    }
+
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
 
