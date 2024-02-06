@@ -337,8 +337,4 @@ public class SoundManager {
             case PASTE -> playSound(Sounds.KEYBOARD_PASTE, SoundType.TYPING);
         }
     }
-
-    public static float getSoundVolume(SoundSource category) {
-        return Minecraft.getInstance().options.getSoundSourceVolume(category);
-    }
 }
