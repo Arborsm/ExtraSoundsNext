@@ -2,29 +2,38 @@ package org.arbor.extrasounds.mapping;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
+import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.client.resources.sounds.SoundEventRegistration;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.json.SoundEntrySerializer;
 import org.arbor.extrasounds.json.SoundSerializer;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
-import net.minecraft.client.resources.sounds.Sound;
-import net.minecraft.client.resources.sounds.SoundEventRegistration;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Mod.EventBusSubscriber(modid = ExtraSounds.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class SoundPackLoader {
     public static JsonObject GENERATED_SOUNDS;
     private static final Logger LOGGER = LogManager.getLogger();
@@ -39,11 +48,11 @@ public class SoundPackLoader {
             .registerTypeAdapter(Sound.class, new SoundSerializer())
             .create();
 
-    public static String getGeneratedSounds(){
-        if (GENERATED_SOUNDS == null) {
-            init();
-        }
-        return GENERATED_SOUNDS.toString();
+    @SubscribeEvent
+    static void onRegisterEvent(RegisterEvent event) {
+        if (!event.getRegistryKey().equals(Registries.LOOT_CONDITION_TYPE))
+            return;
+        init();
     }
 
     /**
@@ -54,9 +63,8 @@ public class SoundPackLoader {
     public static void init() {
         final long start = System.currentTimeMillis();
         final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
-        AutoGenerator autoGenerator = new AutoGenerator();
-        soundGenMappers.put(autoGenerator.generator.namespace, autoGenerator.generator);
-        for (SoundGenerator generator : autoGenerator.generators){
+        // soundGenMappers.put(autoGenerator.generator.namespace, autoGenerator.generator);
+        for (SoundGenerator generator : AutoGenerator.getSoundGenerators()) {
             soundGenMappers.put(generator.namespace, generator);
         }
         // Deleted once.
@@ -129,9 +137,6 @@ public class SoundPackLoader {
         }
 
         for (Item item : ForgeRegistries.ITEMS) {
-            if (DebugUtils.DEBUG && !Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
-                LogManager.getLogger().info("generating {}:{} sound", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace(), item.toString());
-            }
             final ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
             final SoundDefinition definition;
             if (soundGenerator.containsKey(Objects.requireNonNull(itemId).getNamespace())) {

@@ -10,6 +10,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
@@ -21,6 +22,30 @@ import java.util.Map;
 
 @Mixin(SoundManager.class)
 public class SoundManagerMixin {
+    @Unique
+    private static void extra_sounds$extracted(ProfilerFiller profilerFiller, SoundManager.Preparations preparations) {
+        profilerFiller.push(ExtraSounds.MODID);
+        Reader reader = new StringReader(SoundPackLoader.GENERATED_SOUNDS.toString());
+        try {
+            profilerFiller.push("parse");
+            Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(SoundManager.GSON, reader, SoundManager.SOUND_EVENT_REGISTRATION_TYPE);
+            profilerFiller.popPush("register");
+            for(Map.Entry<String, SoundEventRegistration> entry : ExtraSoundsMap.entrySet()) {
+                preparations.handleRegistration(new ResourceLocation(ExtraSounds.MODID, entry.getKey()), entry.getValue());
+            }
+            profilerFiller.pop();
+        } catch (Throwable throwable) {
+            try {
+                reader.close();
+            } catch (Throwable throwable1) {
+                throwable.addSuppressed(throwable1);
+            }
+            throw throwable;
+        }
+        profilerFiller.pop();
+        profilerFiller.pop();
+    }
+
     @Inject(
             method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V", shift = At.Shift.AFTER),
@@ -29,26 +54,9 @@ public class SoundManagerMixin {
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ResourceManager;getResourceStack(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/List;")
             )
     )
-    private void injected(ResourceManager p_120356_, ProfilerFiller p_120357_, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
-        p_120357_.push(ExtraSounds.MODID);
-        Reader reader = new StringReader(SoundPackLoader.getGeneratedSounds());
-        try {
-            p_120357_.push("parse");
-            Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(SoundManager.GSON, reader, SoundManager.SOUND_EVENT_REGISTRATION_TYPE);
-            p_120357_.popPush("register");
-            for(Map.Entry<String, SoundEventRegistration> entry : ExtraSoundsMap.entrySet()) {
-                preparations.handleRegistration(new ResourceLocation(ExtraSounds.MODID, entry.getKey()), entry.getValue());
-            }
-            p_120357_.pop();
-        }catch (Throwable var14){
-            try {
-                reader.close();
-            } catch (Throwable var13) {
-                var14.addSuppressed(var13);
-            }
-            throw var14;
+    private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
+        if (SoundPackLoader.GENERATED_SOUNDS != null) {
+            extra_sounds$extracted(profilerFiller, preparations);
         }
-        p_120357_.pop();
-        p_120357_.pop();
     }
 }

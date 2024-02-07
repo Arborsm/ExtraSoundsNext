@@ -1,10 +1,13 @@
 package org.arbor.extrasounds.debug;
 
-import org.arbor.extrasounds.ExtraSounds;
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.mapping.SoundGenerator;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.mapping.SoundGenerator;
+import org.arbor.extrasounds.misc.SoundManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,8 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.stream.Collectors;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.world.effect.MobEffect;
 
 public class DebugUtils {
     public static final String DEBUG_VAR = "extrasounds.debug";
@@ -21,7 +22,8 @@ public class DebugUtils {
     public static final String NO_CACHE_VAR = "extrasounds.nocache";
     private static final String JVM_ARG_SEARCH_UNDEF_SND = "extrasounds.searchundef";
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = !FMLLoader.isProduction() || System.getProperties().containsKey(DEBUG_VAR)
+            && System.getProperties().get(DEBUG_VAR).equals("true");
     public static final String DEBUG_PATH = System.getProperties().containsKey(DEBUG_PATH_VAR)
             ? System.getProperty(DEBUG_PATH_VAR) : "debug/";
     public static final boolean NO_CACHE = System.getProperties().containsKey(NO_CACHE_VAR)

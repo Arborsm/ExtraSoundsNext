@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mapping.SoundPackLoader;
 import org.arbor.extrasounds.misc.ESConfig;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +27,6 @@ public class ExtraSounds {
 
     public ExtraSounds() {
         DebugUtils.init();
-        SoundPackLoader.init();
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ESConfig.configSpec);
     }

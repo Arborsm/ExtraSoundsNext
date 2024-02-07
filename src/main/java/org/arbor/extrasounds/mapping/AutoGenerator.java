@@ -1,17 +1,14 @@
 package org.arbor.extrasounds.mapping;
 
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.language.IModInfo;
-import org.apache.logging.log4j.LogManager;
-import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mixin.BucketFluidAccessor;
-import org.arbor.extrasounds.sounds.Categories.Gear;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.forgespi.language.IModInfo;
+import org.arbor.extrasounds.mixin.BucketFluidAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +17,16 @@ import static org.arbor.extrasounds.sounds.Categories.*;
 import static org.arbor.extrasounds.sounds.Sounds.*;
 
 public final class AutoGenerator {
-    private static final List<String> namespaces = new ArrayList<>();
-
-    AutoGenerator(){
+    public static List<SoundGenerator> getSoundGenerators() {
+        List<String> namespaces = new ArrayList<>();
         for (IModInfo mod : ModList.get().getMods()) {
             namespaces.add(mod.getModId());
-            if (DebugUtils.DEBUG) {
-                LogManager.getLogger().info("Adding {} generator", mod.getModId());
-            }
         }
+        namespaces.remove("minecraft");
+        return SoundGenerator.auto(namespaces, AutoGenerator::autoGenerator);
     }
 
-    public List<SoundGenerator> generators = SoundGenerator.auto(namespaces, item -> {
-        return SoundDefinition.of(aliased(ITEM_PICK));
-    });
-
-    public SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, item -> {
+    public static SoundDefinition autoGenerator(Item item) {
         if (item instanceof RecordItem) {
             return SoundDefinition.of(aliased(MUSIC_DISC));
         } else if (item instanceof BoatItem) {
@@ -72,8 +63,10 @@ public final class AutoGenerator {
             return SoundDefinition.of(aliased(Gear.IRON));
         } else if (item instanceof BucketItem bucketItem) {
             final Fluid fluid = ((BucketFluidAccessor) bucketItem).getContent();
-            final SoundEventRegistration soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
-            return SoundDefinition.of(soundEntry);
+            if (fluid != null) {
+                final SoundEventRegistration soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
+                return SoundDefinition.of(soundEntry);
+            }
         } else if (item instanceof MinecartItem) {
             return SoundDefinition.of(aliased(MINECART));
         } else if (item instanceof ItemFrameItem) {
@@ -129,23 +122,28 @@ public final class AutoGenerator {
         }
 
         return SoundDefinition.of(aliased(ITEM_PICK));
-    });
+    }
+
     private static boolean isGearGoldenItem(Item item) {
         return item instanceof HorseArmorItem || item instanceof CompassItem ||
                 item instanceof SpyglassItem || item instanceof ShearsItem;
     }
+
     private static boolean isGearLeatherItem(Item item) {
         return item instanceof LeadItem || item instanceof ElytraItem || item instanceof SaddleItem;
     }
+
     private static boolean isGearGenericItem(Item item) {
         return item instanceof BowItem || item instanceof CrossbowItem || item instanceof FishingRodItem ||
                 item instanceof FoodOnAStickItem;
     }
+
     private static boolean isPaperItem(Item item) {
         return item instanceof BannerPatternItem || item instanceof BookItem || item instanceof WritableBookItem ||
                 item instanceof WrittenBookItem || item instanceof EnchantedBookItem || item instanceof EmptyMapItem ||
                 item instanceof MapItem || item instanceof NameTagItem || item instanceof KnowledgeBookItem;
     }
+
     private static boolean isBrickItem(Item item) {
         return item == Items.BRICK || item.getDescriptionId().endsWith("pottery_sherd");
     }
