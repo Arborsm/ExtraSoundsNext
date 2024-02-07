@@ -6,20 +6,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.misc.ESConfig;
 import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import org.arbor.extrasounds.sounds.SoundsForge;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -61,7 +57,7 @@ public class ExtraSounds {
 
     public static SoundEvent createEvent(ResourceLocation path) {
         try {
-            return SoundEvent.createVariableRangeEvent(path);
+            return new SoundEvent(path);
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
         }
