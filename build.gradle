@@ -86,58 +86,11 @@ repositories {
         dir 'libs'
     }
     mavenLocal()
-    maven {
-        name = 'jitpack'
-        url = "https://jitpack.io"
-    }
-    maven {
-        url = "https://api.modrinth.com/maven"
-    }
-    maven {
-        name "cf"
-        url "https://cursemaven.com/"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        url = "https://maven.tterrag.com/"
-        content {
-            includeGroup("com.tterrag.registrate")
-            includeGroup("com.simibubi.create")
-            includeGroup("com.jozufozu.flywheel")
-        }
-    }
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven {
-        name = "Resourceful Bees Maven"
-        url = "https://maven.resourcefulbees.com/repository/maven-public/"
-    }
-    maven { url = "https://maven.firstdarkdev.xyz/snapshots" } // LDLib
 }
 
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.28'
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-    // to Test
-    runtimeOnly fg.deobf("curse.maven:configuration-444699:4710266")
-    runtimeOnly fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtCeuVersion}") { transitive = false }
-    runtimeOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldLibVersion}") { transitive = false }
-    runtimeOnly fg.deobf("com.tterrag.registrate:Registrate:${registrateForgeVersion}")
-    runtimeOnly fg.deobf("curse.maven:jade-324717:4986594")
-    runtimeOnly fg.deobf("curse.maven:jei-238222:4712868")
-    runtimeOnly fg.deobf("dev.emi:emi-forge:${emiVersion}")
-    runtimeOnly fg.deobf("curse.maven:shimmer-627824:4923047")
-    runtimeOnly fg.deobf("com.simibubi.create:create-1.20.1:0.5.1.f-26:slim") { transitive = false }
-    runtimeOnly fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.10-7")
-    runtimeOnly fg.deobf("earth.terrarium.botarium:botarium-forge-${minecraft_version}:${botarium_version}")
-    runtimeOnly fg.deobf("earth.terrarium.adastra:ad_astra-forge-1.20.1:${ad_astra_version}")
-    runtimeOnly fg.deobf("com.teamresourceful.resourcefullib:resourcefullib-forge-${minecraft_version}:${resourcefullib_version}")
-    runtimeOnly fg.deobf("com.teamresourceful.resourcefulconfig:resourcefulconfig-forge-${minecraft_version}:${resourcefulconfig_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))

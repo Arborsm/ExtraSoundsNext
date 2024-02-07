@@ -1,8 +1,5 @@
 package org.arbor.extrasounds.mixin.action;
 
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
@@ -10,6 +7,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,7 +23,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "makePoofParticles", at = @At("HEAD"))
     private void extrasounds$poofSound(CallbackInfo ci) {
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             return;
         }
 
