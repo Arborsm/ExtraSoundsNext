@@ -1,8 +1,9 @@
-package org.arbor.extrasounds;
+package org.arbor.extrasounds.misc;
 
 import com.google.common.collect.Maps;
 import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
 import org.arbor.extrasounds.sounds.SoundType;
@@ -234,14 +235,14 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, SoundType type) {
-        playSound(snd, type.pitch, type.category);
+        playSound(snd, type.pitch, type.category, type.volume.get().floatValue());
     }
 
-    public static void playSound(SoundEvent snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
-        float volume = getSoundVolume(SoundSource.MASTER);
+    public static void playSound(SoundEvent snd, float pitch, SoundSource category, float... optionalVolumes) {
+        float volume = ESConfig.CONFIG.MASTER.get().floatValue();
         if (optionalVolumes != null) {
-            for (SoundSource cat : optionalVolumes) {
-                volume = Math.min(getSoundVolume(cat), volume);
+            for (float cat : optionalVolumes) {
+                volume = Math.min(cat, volume);
             }
         }
         playSound(new SimpleSoundInstance(snd.getLocation(), category, volume, pitch,

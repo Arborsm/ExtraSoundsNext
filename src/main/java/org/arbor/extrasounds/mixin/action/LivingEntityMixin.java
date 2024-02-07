@@ -1,6 +1,6 @@
 package org.arbor.extrasounds.mixin.action;
 
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;

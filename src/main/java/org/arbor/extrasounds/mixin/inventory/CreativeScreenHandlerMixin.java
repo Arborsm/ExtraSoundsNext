@@ -3,7 +3,8 @@ package org.arbor.extrasounds.mixin.inventory;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.ESConfig;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.arbor.extrasounds.sounds.Sounds;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,7 +33,7 @@ public abstract class CreativeScreenHandlerMixin {
             SoundManager.playSound(
                     extra_sounds$e,
                     (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff)),
-                    SoundSource.PLAYERS);
+                    SoundSource.PLAYERS, ESConfig.CONFIG.INVENTORY.get().floatValue());
             extra_sounds$lastTime = now;
             extra_sounds$lastPos = position;
         }

@@ -1,9 +1,13 @@
 package org.arbor.extrasounds.debug;
 
-import org.arbor.extrasounds.SoundManager;
-import org.arbor.extrasounds.mapping.SoundGenerator;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.mapping.SoundGenerator;
+import org.arbor.extrasounds.misc.SoundManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,8 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.stream.Collectors;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.world.effect.MobEffect;
 
 public class DebugUtils {
     public static final String DEBUG_VAR = "extrasounds.debug";
@@ -20,8 +22,8 @@ public class DebugUtils {
     public static final String NO_CACHE_VAR = "extrasounds.nocache";
     private static final String JVM_ARG_SEARCH_UNDEF_SND = "extrasounds.searchundef";
 
-    public static final boolean DEBUG = System.getProperties().containsKey(DEBUG_VAR)
-            && System.getProperty(DEBUG_VAR).equals("true");
+    public static final boolean DEBUG = !FMLLoader.isProduction() || System.getProperties().containsKey(DEBUG_VAR)
+            && System.getProperties().get(DEBUG_VAR).equals("true");
     public static final String DEBUG_PATH = System.getProperties().containsKey(DEBUG_PATH_VAR)
             ? System.getProperty(DEBUG_PATH_VAR) : "debug/";
     public static final boolean NO_CACHE = System.getProperties().containsKey(NO_CACHE_VAR)
@@ -46,12 +48,13 @@ public class DebugUtils {
 
     public static void exportSoundsJson(byte[] jsonData) {
         if (!DEBUG) return;
+        Path p = null;
         try {
-            Path p = Path.of(DEBUG_PATH).resolve("sounds.json");
+            p = Path.of(DEBUG_PATH).resolve("sounds.json");
             createFile(p);
             Files.write(p, jsonData, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            ExtraSounds.LOGGER.error("Failed to write to file: " + p.toAbsolutePath(), e);
         }
     }
 
@@ -63,11 +66,11 @@ public class DebugUtils {
             Files.write(p, generator.keySet().stream()
                     .map(it -> {
                         var clazz = generator.get(it).itemSoundGenerator.getClass();
-                        return "namespace: " + it + "; class: " + (clazz == null ? "none" : clazz.getName());
+                        return "namespace: " + it + "; class: " + clazz.getName();
                     })
                     .collect(Collectors.toList()));
         } catch (IOException e) {
-            e.printStackTrace();
+            ExtraSounds.LOGGER.error("Failed to write to file: " + p.toAbsolutePath(), e);
         }
     }
 
@@ -94,8 +97,7 @@ public class DebugUtils {
             if (!Files.exists(p))
                 Files.createFile(p);
         } catch (IOException e) {
-            LOGGER.error("Unable to create file: " + p);
-            e.printStackTrace();
+            ExtraSounds.LOGGER.error("Failed to create file: " + p.toAbsolutePath(), e);
         }
     }
 }

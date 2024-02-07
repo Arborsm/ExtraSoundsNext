@@ -1,7 +1,7 @@
 package org.arbor.extrasounds.mixin.effect;
 
 import com.mojang.authlib.GameProfile;
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
