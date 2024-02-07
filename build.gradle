@@ -138,6 +138,7 @@ dependencies {
     runtimeOnly fg.deobf("earth.terrarium.adastra:ad_astra-forge-1.20.1:${ad_astra_version}")
     runtimeOnly fg.deobf("com.teamresourceful.resourcefullib:resourcefullib-forge-${minecraft_version}:${resourcefullib_version}")
     runtimeOnly fg.deobf("com.teamresourceful.resourcefulconfig:resourcefulconfig-forge-${minecraft_version}:${resourcefulconfig_version}")
+    runtimeOnly fg.deobf("curse.maven:mekanism-268560:4866575")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))
