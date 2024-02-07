@@ -2,13 +2,6 @@ package org.arbor.extrasounds.mapping;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.arbor.extrasounds.ExtraSounds;
-import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.json.SoundEntrySerializer;
-import org.arbor.extrasounds.json.SoundSerializer;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
@@ -17,8 +10,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.debug.DebugUtils;
+import org.arbor.extrasounds.json.SoundEntrySerializer;
+import org.arbor.extrasounds.json.SoundSerializer;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -51,7 +51,9 @@ public class SoundPackLoader {
 
         final long start = System.currentTimeMillis();
         final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
-
+        for (SoundGenerator generator : AutoGenerator.getSoundGenerators()) {
+            soundGenMappers.put(generator.namespace, generator);
+        }
         final CacheInfo currentCacheInfo = CacheInfo.of(new String[]{"blah"});
 
         // Read from cache.

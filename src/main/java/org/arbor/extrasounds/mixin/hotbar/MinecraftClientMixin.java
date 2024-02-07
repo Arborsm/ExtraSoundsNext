@@ -1,10 +1,10 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import org.arbor.extrasounds.SoundManager;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;

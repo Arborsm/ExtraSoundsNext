@@ -1,19 +1,6 @@
 package org.arbor.extrasounds.misc;
 
 import com.google.common.collect.Maps;
-import net.minecraft.world.item.BlockItem;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.arbor.extrasounds.ExtraSounds;
-import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mapping.SoundPackLoader;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
-import java.util.function.BiPredicate;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -29,9 +16,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.debug.DebugUtils;
+import org.arbor.extrasounds.mapping.SoundPackLoader;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+import java.util.function.BiPredicate;
 
 public class SoundManager {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -301,7 +301,7 @@ public class SoundManager {
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
                 Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
-        playSound(Sounds.ITEM_DROP, pitch, category, SoundSource.PLAYERS);
+        if (ESConfig.CONFIG.ITEM_DROP.get()) playSound(Sounds.ITEM_DROP, pitch, category);
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {

@@ -6,10 +6,9 @@
   "refmap": "extrasounds.refmap.json",
   "client": [
     "BucketFluidAccessor",
-    "action.LivingEntityMixin",
-    "SoundManagerMixin",
     "action.ClientPlayerEntityMixin",
     "action.ClientPlayerInteractionManagerMixin",
+    "action.LivingEntityMixin",
     "chat.ChatHudMixin",
     "effect.ClientPlayerEntityMixin",
     "hotbar.ClientPlayerEntityMixin",

@@ -1,8 +1,5 @@
 package org.arbor.extrasounds.mapping;
 
-import org.arbor.extrasounds.mixin.BucketFluidAccessor;
-import org.arbor.extrasounds.sounds.Categories.Gear;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -24,7 +21,6 @@ public final class AutoGenerator {
         for (IModInfo mod : ModList.get().getMods()) {
             namespaces.add(mod.getModId());
         }
-        namespaces.remove("minecraft");
         return SoundGenerator.auto(namespaces, AutoGenerator::autoGenerator);
     }
 
@@ -110,7 +106,7 @@ public final class AutoGenerator {
                 } else {
                     return SoundDefinition.of(event(soundId));
                 }
-            } else if (block instanceof RotatedPillarBlock pillarBlock) {
+            } else if (block instanceof RotatedPillarBlock) {
                 return SoundDefinition.of(event(blockSound, 0.3f));
             }
 
