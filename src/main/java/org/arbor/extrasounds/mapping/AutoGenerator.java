@@ -143,7 +143,16 @@ public final class AutoGenerator {
     }
 
     private static boolean isBrickItem(Item item) {
-        return item == Items.BRICK || item.getDescriptionId().endsWith("pottery_sherd");
+        return item == Items.BRICK || getDescriptionId(item).endsWith("pottery_sherd");
+    }
+
+    private static String getDescriptionId(Item item) {
+        String id = "";
+        try {
+            id = item.getDescriptionId();
+        } catch (NullPointerException ignored) {
+        }
+        return id;
     }
     @SuppressWarnings("deprecation")
     public static SoundType getSoundType(Block block){
