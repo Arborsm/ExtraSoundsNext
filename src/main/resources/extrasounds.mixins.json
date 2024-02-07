@@ -4,11 +4,9 @@
   "package": "org.arbor.extrasounds.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "extrasounds.refmap.json",
-  "mixins": [
-    "BucketFluidAccessor",
-    "action.LivingEntityMixin"
-  ],
   "client": [
+    "BucketFluidAccessor",
+    "SoundManagerMixin",
     "action.ClientPlayerEntityMixin",
     "action.ClientPlayerInteractionManagerMixin",
     "chat.ChatHudMixin",

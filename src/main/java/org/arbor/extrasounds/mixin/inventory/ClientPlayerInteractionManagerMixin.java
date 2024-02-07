@@ -1,6 +1,6 @@
 package org.arbor.extrasounds.mixin.inventory;
 
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;

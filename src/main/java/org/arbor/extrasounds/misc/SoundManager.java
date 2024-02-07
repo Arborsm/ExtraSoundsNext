@@ -1,8 +1,9 @@
-package org.arbor.extrasounds;
+package org.arbor.extrasounds.misc;
 
 import com.google.common.collect.Maps;
 import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
 import org.arbor.extrasounds.sounds.SoundType;
@@ -236,14 +237,14 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, SoundType type) {
-        playSound(snd, type.pitch, type.category);
+        playSound(snd, type.pitch, type.category, type.volume.get().floatValue());
     }
 
-    public static void playSound(SoundEvent snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
-        float volume = getSoundVolume(SoundSource.MASTER);
+    public static void playSound(SoundEvent snd, float pitch, SoundSource category, float... optionalVolumes) {
+        float volume = ESConfig.CONFIG.MASTER.get().floatValue();
         if (optionalVolumes != null) {
-            for (SoundSource cat : optionalVolumes) {
-                volume = Math.min(getSoundVolume(cat), volume);
+            for (float cat : optionalVolumes) {
+                volume = Math.min(cat, volume);
             }
         }
         playSound(new SimpleSoundInstance(snd.getLocation(), category, volume, pitch, MC_RANDOM,
@@ -252,7 +253,7 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position) {
-        playSound(new SimpleSoundInstance(snd, type.category, getSoundVolume(SoundSource.MASTER) * volume, pitch,
+        playSound(new SimpleSoundInstance(snd, type.category, ESConfig.CONFIG.MASTER.get().floatValue() * volume, pitch,
                 MC_RANDOM, position));
     }
 
@@ -302,7 +303,7 @@ public class SoundManager {
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
                 Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize(itemStack));
-        playSound(Sounds.ITEM_DROP, pitch, category, SoundSource.PLAYERS);
+        if (ESConfig.CONFIG.ITEM_DROP.get()) playSound(Sounds.ITEM_DROP, pitch, category);
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {
@@ -336,9 +337,5 @@ public class SoundManager {
             case INSERT -> playSound(Sounds.KEYBOARD_TYPE, SoundType.TYPING);
             case PASTE -> playSound(Sounds.KEYBOARD_PASTE, SoundType.TYPING);
         }
-    }
-
-    public static float getSoundVolume(SoundSource category) {
-        return Minecraft.getInstance().options.getSoundSourceVolume(category);
     }
 }

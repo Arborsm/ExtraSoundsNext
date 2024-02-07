@@ -8,14 +8,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mapping.SoundPackLoader;
+import org.arbor.extrasounds.misc.ESConfig;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
 import org.arbor.extrasounds.sounds.SoundsForge;
@@ -35,9 +37,9 @@ public class ExtraSounds {
 
     public ExtraSounds() {
         DebugUtils.init();
-        SoundPackLoader.init();
         MinecraftForge.EVENT_BUS.register(this);
         SoundsForge.SOUNDEVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ESConfig.configSpec);
     }
 
     @Nullable
@@ -51,6 +53,15 @@ public class ExtraSounds {
     public static SoundEvent createSoundEvent(String path) {
         try {
             return new SoundEvent(new ResourceLocation(MODID, path));
+        } catch (Throwable ex) {
+            LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
+        }
+        return MISSING;
+    }
+
+    public static SoundEvent createEvent(ResourceLocation path) {
+        try {
+            return SoundEvent.createVariableRangeEvent(path);
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
         }

@@ -1,6 +1,6 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.player.LocalPlayer;

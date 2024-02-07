@@ -1,6 +1,6 @@
 package org.arbor.extrasounds.mixin.inventory;
 
-import org.arbor.extrasounds.SoundManager;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
