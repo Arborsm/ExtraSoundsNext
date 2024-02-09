@@ -57,6 +57,10 @@ public class ExtraSounds {
         return MISSING;
     }
 
+    public static ResourceLocation id(String id) {
+        return new ResourceLocation(ExtraSounds.MODID, id);
+    }
+
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
 

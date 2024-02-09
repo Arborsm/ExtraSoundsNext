@@ -1,19 +1,6 @@
 package org.arbor.extrasounds.misc;
 
 import com.google.common.collect.Maps;
-import net.minecraft.world.item.BlockItem;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.arbor.extrasounds.ExtraSounds;
-import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mapping.SoundPackLoader;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
-import java.util.function.BiPredicate;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -30,9 +17,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.debug.DebugUtils;
+import org.arbor.extrasounds.mapping.SoundPackLoader;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+import java.util.function.BiPredicate;
 
 public class SoundManager {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -247,7 +247,7 @@ public class SoundManager {
                 volume = Math.min(cat, volume);
             }
         }
-        playSound(new SimpleSoundInstance(snd.getLocation(), category, volume, pitch, MC_RANDOM,
+        playSound(new SimpleSoundInstance(snd == null ? ExtraSounds.id("missing") : snd.getLocation(), category, volume, pitch, MC_RANDOM,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
     }
