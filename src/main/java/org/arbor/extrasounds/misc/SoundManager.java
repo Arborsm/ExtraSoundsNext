@@ -245,7 +245,7 @@ public class SoundManager {
                 volume = Math.min(cat, volume);
             }
         }
-        playSound(new SimpleSoundInstance(snd.getLocation(), category, volume, pitch,
+        playSound(new SimpleSoundInstance(snd == null ? ExtraSounds.id("missing") : snd.getLocation(), category, volume, pitch,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
     }

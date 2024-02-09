@@ -37,6 +37,10 @@ public class ExtraSounds {
         return new ResourceLocation(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
     }
 
+    public static ResourceLocation id(String id) {
+        return new ResourceLocation(MODID, id);
+    }
+
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
 
