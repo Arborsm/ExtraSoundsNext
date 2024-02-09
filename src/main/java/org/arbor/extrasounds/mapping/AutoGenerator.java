@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModInfo;
+import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mixin.BucketFluidAccessor;
 
 import java.util.ArrayList;
@@ -150,6 +152,13 @@ public final class AutoGenerator {
     }
     @SuppressWarnings("deprecation")
     public static SoundType getSoundType(Block block){
-        return block.getSoundType(block.defaultBlockState());
+        try {
+            return block.getSoundType(block.defaultBlockState());
+        } catch (Throwable e) {
+            if (DebugUtils.DEBUG) {
+                ExtraSounds.LOGGER.error("Failed to get sound type for block " + block, e);
+            }
+            return SoundType.STONE;
+        }
     }
 }
