@@ -78,7 +78,7 @@ public class SoundManager {
         }
         ItemStack stack = player.getInventory().getItem(i);
         if (stack.getItem() == Items.AIR) {
-            playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
+            if (ESConfig.CONFIG.EMPTY_HOTBAR.get()) playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {
             playSound(stack, SoundType.HOTBAR);
         }
