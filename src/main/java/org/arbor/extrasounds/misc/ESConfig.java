@@ -13,6 +13,7 @@ public class ESConfig {
     public final ForgeConfigSpec.DoubleValue HOTBAR;
     public final ForgeConfigSpec.DoubleValue TYPING;
     public final ForgeConfigSpec.BooleanValue ITEM_DROP;
+    public final ForgeConfigSpec.BooleanValue EMPTY_HOTBAR;
     ESConfig(ForgeConfigSpec.Builder builder){
         builder.comment("Sound categories").push("Sounds");
         MASTER = builder.comment("Master Sounds").defineInRange("master", 0.5f, 0, 2);
@@ -24,6 +25,7 @@ public class ESConfig {
         HOTBAR = builder.comment("Hotbar Sounds").defineInRange("hotbar", 1f, 0, 2);
         TYPING = builder.comment("Typing Sounds").defineInRange("typing", 1f, 0, 2);
         ITEM_DROP = builder.comment("Item drop Sounds").define("item_drop", true);
+        EMPTY_HOTBAR = builder.comment("Empty hotbar Sounds").define("empty_hotbar", true);
         builder.pop();
     }
     public static final ForgeConfigSpec configSpec;
