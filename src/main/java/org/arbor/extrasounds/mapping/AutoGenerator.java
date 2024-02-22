@@ -64,11 +64,7 @@ public final class AutoGenerator {
         } else if (item instanceof ShieldItem) {
             return SoundDefinition.of(aliased(Gear.IRON));
         } else if (item instanceof BucketItem bucketItem) {
-            final Fluid fluid = ((BucketFluidAccessor) bucketItem).getContent();
-            if (fluid != null) {
-                final SoundEventRegistration soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
-                return SoundDefinition.of(soundEntry);
-            }
+            return getBucketItemSound(bucketItem);
         } else if (item instanceof MinecartItem) {
             return SoundDefinition.of(aliased(MINECART));
         } else if (item instanceof ItemFrameItem) {
@@ -155,6 +151,17 @@ public final class AutoGenerator {
         } catch (NullPointerException ignored) {
         }
         return id;
+    }
+
+    private static SoundDefinition getBucketItemSound(BucketItem bucketItem) {
+        SoundEventRegistration soundEntry;
+        try {
+            final Fluid fluid = ((BucketFluidAccessor) bucketItem).getContent();
+            soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
+        } catch (NullPointerException ignored) {
+            soundEntry = aliased(METAL);
+        }
+        return SoundDefinition.of(soundEntry);
     }
     @SuppressWarnings("deprecation")
     public static SoundType getSoundType(Block block){
