@@ -141,6 +141,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:mekanism-268560:4866575")
     runtimeOnly fg.deobf("curse.maven:randomium-ore-523013:5078254")
     runtimeOnly fg.deobf("curse.maven:selene-499980:5091454")
+    runtimeOnly fg.deobf("curse.maven:ultimate-car-mod-267458:5082451")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))
