@@ -307,7 +307,9 @@ public class SoundManager {
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {
-        Minecraft.getInstance().getSoundManager().stop(e.getLocation(), type.category);
+        if (e != null && type != null) {
+            Minecraft.getInstance().getSoundManager().stop(e.getLocation(), type.category);
+        }
     }
 
     /**
