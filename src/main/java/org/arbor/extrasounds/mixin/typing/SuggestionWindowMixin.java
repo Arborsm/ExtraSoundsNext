@@ -1,7 +1,7 @@
 package org.arbor.extrasounds.mixin.typing;
 
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.gui.components.CommandSuggestions;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,7 +15,7 @@ public abstract class SuggestionWindowMixin {
     @Shadow
     private int current;
     @Shadow
-    private boolean tabCycles;
+    boolean tabCycles;
 
     @Unique
     private int extra_sounds$currentPos;

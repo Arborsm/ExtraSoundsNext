@@ -1,12 +1,12 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.sounds.SoundType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.world.item.ItemStack;
+import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.SoundType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,10 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * For Swap with Off-hand action.
  */
-@Mixin(ClientPacketListener.class)
+@Mixin(ClientCommonPacketListenerImpl.class)
 public abstract class ClientPlayNetworkHandlerMixin {
     @Shadow
-    private @Final Minecraft minecraft;
+    @Final
+    protected Minecraft minecraft;
 
     @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"))
     private void extrasounds$hotbarSwapEvent(Packet<?> packet, CallbackInfo ci) {

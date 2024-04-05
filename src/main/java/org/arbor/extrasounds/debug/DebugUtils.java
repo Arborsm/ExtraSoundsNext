@@ -2,7 +2,7 @@ package org.arbor.extrasounds.debug;
 
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;

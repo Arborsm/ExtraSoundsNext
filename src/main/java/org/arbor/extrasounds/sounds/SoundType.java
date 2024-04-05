@@ -1,7 +1,7 @@
 package org.arbor.extrasounds.sounds;
 
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.arbor.extrasounds.misc.ESConfig;
 
 public enum SoundType
@@ -18,9 +18,9 @@ public enum SoundType
     public final float pitch;
     public final SoundSource category;
     public final String prefix;
-    public final ForgeConfigSpec.DoubleValue volume;
+    public final ModConfigSpec.DoubleValue volume;
 
-    SoundType(float pitch, SoundSource category, String prefix, ForgeConfigSpec.DoubleValue volume)
+    SoundType(float pitch, SoundSource category, String prefix, ModConfigSpec.DoubleValue volume)
     {
         this.pitch = pitch;
         this.category = category;

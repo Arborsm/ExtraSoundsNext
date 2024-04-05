@@ -3,22 +3,28 @@ loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
 
 [[mods]]
-modId = "${mod_id}"
+modId = "extrasounds"
 version = "${mod_version}"
 displayName = "${mod_name}"
 authors = "${mod_authors}"
 description = '''${mod_description}'''
 
-[[dependencies.${ mod_id }]]
-modId = "forge"
-mandatory = true
-versionRange = "${forge_version_range}"
+[[dependencies.extrasounds]]
+modId = "neoforge"
+type = "REQUIRED"
+versionRange = "${neo_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.${ mod_id }]]
+[[dependencies.extrasounds]]
 modId = "minecraft"
-mandatory = true
+type = "REQUIRED"
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+[[mixins]]
+config = "extrasounds.mixins.json"
