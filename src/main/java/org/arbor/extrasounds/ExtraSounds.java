@@ -12,12 +12,9 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.misc.ESConfig;
 import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.SoundsForge;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -26,16 +23,12 @@ public class ExtraSounds {
 
     public static final String MODID = "extrasounds";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final SoundEvent MISSING = new SoundEvent(new ResourceLocation(MODID, "missing"));
 
-    public static ResourceLocation id(String id){
-        return new ResourceLocation(MODID, id);
-    }
+    public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "missing"));
 
     public ExtraSounds() {
         DebugUtils.init();
         MinecraftForge.EVENT_BUS.register(this);
-        SoundsForge.SOUNDEVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ESConfig.configSpec);
         if (ModList.get().isLoaded("carryon")) {
             ESConfig.CONFIG.ENABLED_EFFECTS.set(false);
@@ -50,9 +43,9 @@ public class ExtraSounds {
         return new ResourceLocation(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
     }
 
-    public static SoundEvent createSoundEvent(String path) {
+    public static SoundEvent createEvent(String path) {
         try {
-            return new SoundEvent(new ResourceLocation(MODID, path));
+            return SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, path));
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
         }
@@ -61,15 +54,15 @@ public class ExtraSounds {
 
     public static SoundEvent createEvent(ResourceLocation path) {
         try {
-            return new SoundEvent(path);
+            return SoundEvent.createVariableRangeEvent(path);
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
         }
         return MISSING;
     }
 
-    public static RegistryObject<SoundEvent> createEvent(String path){
-        return SoundsForge.SOUNDEVENTS.register(path, () -> ExtraSounds.createSoundEvent(path));
+    public static ResourceLocation id(String id) {
+        return new ResourceLocation(ExtraSounds.MODID, id);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

@@ -1,13 +1,13 @@
 package org.arbor.extrasounds.mixin.effect;
 
 import com.mojang.authlib.GameProfile;
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LocalPlayer.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
     public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
-        super(world, profile, null);
+        super(world, profile);
     }
 
     @Override

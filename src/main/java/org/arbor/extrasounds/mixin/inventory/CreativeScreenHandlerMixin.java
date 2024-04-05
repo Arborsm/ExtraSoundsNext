@@ -1,15 +1,16 @@
 package org.arbor.extrasounds.mixin.inventory;
 
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import org.arbor.extrasounds.misc.ESConfig;
 import org.arbor.extrasounds.misc.SoundManager;
 import org.arbor.extrasounds.sounds.Sounds;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * For Creative screen scroll sound.
@@ -17,26 +18,25 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(CreativeModeInventoryScreen.ItemPickerMenu.class)
 public abstract class CreativeScreenHandlerMixin {
     @Unique
-    private static int extra_sounds$lastPos = 0;
+    private int extra_sounds$lastPos = 0;
     @Unique
-    private static long extra_sounds$lastTime = 0L;
-    @Unique
-    private static final SoundEvent extra_sounds$e = Sounds.INVENTORY_SCROLL;
+    private long extra_sounds$lastTime = 0L;
 
-    @ModifyVariable(method = "scrollTo", at = @At("STORE"), ordinal = 1)
-    int scroll(int position)
-    {
-        long now = System.currentTimeMillis();
-        long timeDiff = now - extra_sounds$lastTime;
-        if (timeDiff > 20 && extra_sounds$lastPos != position && !(extra_sounds$lastPos != 1 && position == 0))
-        {
+    @Shadow
+    protected abstract int getRowIndexForScroll(float scroll);
+
+    @Inject(method = "scrollTo", at = @At("HEAD"))
+    private void extrasounds$creativeScreenScroll(float position, CallbackInfo ci) {
+        final long now = System.currentTimeMillis();
+        final long timeDiff = now - extra_sounds$lastTime;
+        final int row = this.getRowIndexForScroll(position);
+        if (timeDiff > 20 && extra_sounds$lastPos != row && !(extra_sounds$lastPos != 1 && row == 0)) {
             SoundManager.playSound(
-                    extra_sounds$e,
+                    Sounds.INVENTORY_SCROLL,
                     (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff)),
                     SoundSource.PLAYERS, ESConfig.CONFIG.INVENTORY.get().floatValue());
             extra_sounds$lastTime = now;
-            extra_sounds$lastPos = position;
+            extra_sounds$lastPos = row;
         }
-        return position;
     }
 }
