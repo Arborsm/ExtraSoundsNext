@@ -3,3 +3,5 @@
 /.gradle
 /run
 /run-data
+/runs/
+/out/
