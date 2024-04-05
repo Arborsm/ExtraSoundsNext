@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
@@ -50,7 +50,7 @@ public class SoundPackLoader {
 
     @SubscribeEvent
     static void onRegisterEvent(RegisterEvent event) {
-        if (!event.getRegistryKey().equals(Registries.LOOT_CONDITION_TYPE))
+        if (!event.getRegistryKey().equals(Registry.LOOT_ITEM_REGISTRY))
             return;
         init();
     }
@@ -192,7 +192,7 @@ public class SoundPackLoader {
      * @param clickId Target id.
      */
     private static void putSoundEvent(ResourceLocation clickId) {
-        CUSTOM_SOUND_EVENT.put(clickId, ExtraSounds.createEvent(clickId));
+        CUSTOM_SOUND_EVENT.put(clickId, new SoundEvent(clickId));
     }
 
     /**

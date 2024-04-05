@@ -81,8 +81,6 @@ public final class AutoGenerator {
             return SoundDefinition.of(aliased(BOWL));
         } else if (item instanceof InstrumentItem) {
             return SoundDefinition.of(single(LOOSE_METAL.getLocation(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
-        } else if (item instanceof SmithingTemplateItem) {
-            return SoundDefinition.of(aliased(LOOSE_METAL));
         } else if (item instanceof DiscFragmentItem) {
             return SoundDefinition.of(single(METAL_BITS.getLocation(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
         } else if (isBrickItem(item)) {

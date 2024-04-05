@@ -1,0 +1,70 @@
+package org.arbor.extrasounds.sounds;
+
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import org.arbor.extrasounds.ExtraSounds;
+
+@SuppressWarnings("unused")
+public class SoundsForge {
+    public static final DeferredRegister<SoundEvent> SOUNDEVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ExtraSounds.MODID);
+    public static final RegistryObject<SoundEvent> ARROW = ExtraSounds.createEvent("item.category.arrow");
+    public static final RegistryObject<SoundEvent> BANNER = ExtraSounds.createEvent("item.category.banner");
+    public static final RegistryObject<SoundEvent> BOAT = ExtraSounds.createEvent("item.category.boat");
+    public static final RegistryObject<SoundEvent> CHAT_MENTION = ExtraSounds.createEvent("chat.mention");
+    public static final RegistryObject<SoundEvent> HOTBAR_SCROLL = ExtraSounds.createEvent("hotbar_scroll");
+    public static final RegistryObject<SoundEvent> INVENTORY_OPEN = ExtraSounds.createEvent("inventory.open");
+    public static final RegistryObject<SoundEvent> INVENTORY_CLOSE = ExtraSounds.createEvent("inventory.close");
+    public static final RegistryObject<SoundEvent> INVENTORY_SCROLL = ExtraSounds.createEvent("inventory.scroll");
+    public static final RegistryObject<SoundEvent> ITEM_DROP = ExtraSounds.createEvent("item.drop");
+    public static final RegistryObject<SoundEvent> ITEM_PICK = ExtraSounds.createEvent("item.pickup");
+    public static final RegistryObject<SoundEvent> ITEM_PICK_ALL = ExtraSounds.createEvent("item.pickup_all");
+    public static final RegistryObject<SoundEvent> ITEM_CLONE = ExtraSounds.createEvent("item.clone");
+    public static final RegistryObject<SoundEvent> ITEM_DELETE = ExtraSounds.createEvent("item.delete");
+    public static final RegistryObject<SoundEvent> ITEM_DRAG = ExtraSounds.createEvent("item.drag");
+    public static final RegistryObject<SoundEvent> EFFECT_ADD_POSITIVE = ExtraSounds.createEvent("effect.add.positive");
+    public static final RegistryObject<SoundEvent> EFFECT_ADD_NEGATIVE = ExtraSounds.createEvent("effect.add.negative");
+    public static final RegistryObject<SoundEvent> EFFECT_REMOVE_POSITIVE = ExtraSounds.createEvent("effect.remove.positive");
+    public static final RegistryObject<SoundEvent> EFFECT_REMOVE_NEGATIVE = ExtraSounds.createEvent("effect.remove.negative");
+    public static final RegistryObject<SoundEvent> KEYBOARD_TYPE = ExtraSounds.createEvent("keyboard.type");
+    public static final RegistryObject<SoundEvent> KEYBOARD_MOVE = ExtraSounds.createEvent("keyboard.move");
+    public static final RegistryObject<SoundEvent> KEYBOARD_ERASE = ExtraSounds.createEvent("keyboard.erase");
+    public static final RegistryObject<SoundEvent> KEYBOARD_CUT = ExtraSounds.createEvent("keyboard.cut");
+    public static final RegistryObject<SoundEvent> KEYBOARD_PASTE = ExtraSounds.createEvent("keyboard.paste");
+    public static final RegistryObject<SoundEvent> BOW_PULL = ExtraSounds.createEvent("action.bow");
+    public static final RegistryObject<SoundEvent> REPEATER_ADD = ExtraSounds.createEvent("action.repeater.add");
+    public static final RegistryObject<SoundEvent> REPEATER_RESET = ExtraSounds.createEvent("action.repeater.reset");
+
+    public static final RegistryObject<SoundEvent> POOF = ExtraSounds.createEvent("entity.poof");
+    public static final RegistryObject<SoundEvent> BOWL = ExtraSounds.createEvent("item.category.bowl");
+    public static final RegistryObject<SoundEvent> CRUNCHY_DRY = ExtraSounds.createEvent("item.category.crunchy_dry");
+    public static final RegistryObject<SoundEvent> DUST = ExtraSounds.createEvent("item.category.dust");
+    public static final RegistryObject<SoundEvent> FOOD_DRY = ExtraSounds.createEvent("item.category.food_dry");
+    public static final RegistryObject<SoundEvent> FRAME = ExtraSounds.createEvent("item.category.frame");
+    public static final RegistryObject<SoundEvent> HAY = ExtraSounds.createEvent("item.category.hay");
+    public static final RegistryObject<SoundEvent> LEAVES = ExtraSounds.createEvent("item.category.leaves");
+    public static final RegistryObject<SoundEvent> LOOSE_METAL = ExtraSounds.createEvent("item.category.loose_metal");
+    public static final RegistryObject<SoundEvent> MEAT = ExtraSounds.createEvent("item.category.meat");
+    public static final RegistryObject<SoundEvent> METAL = ExtraSounds.createEvent("item.category.metal");
+    public static final RegistryObject<SoundEvent> METAL_BITS = ExtraSounds.createEvent("item.category.metal_bits");
+    public static final RegistryObject<SoundEvent> METAL_SHEETS = ExtraSounds.createEvent("item.category.metal_sheets");
+    public static final RegistryObject<SoundEvent> MINECART = ExtraSounds.createEvent("item.category.minecart");
+    public static final RegistryObject<SoundEvent> MUSIC_DISC = ExtraSounds.createEvent("item.category.music_disc");
+    public static final RegistryObject<SoundEvent> PAPER = ExtraSounds.createEvent("item.category.paper");
+    public static final RegistryObject<SoundEvent> POTION = ExtraSounds.createEvent("item.category.potion");
+    public static final RegistryObject<SoundEvent> RAIL = ExtraSounds.createEvent("item.category.rail");
+    public static final RegistryObject<SoundEvent> WET = ExtraSounds.createEvent("item.category.wet");
+    public static final RegistryObject<SoundEvent> WET_SLIPPERY = ExtraSounds.createEvent("item.category.wet_slippery");
+    public static final RegistryObject<SoundEvent> BRICK = ExtraSounds.createEvent("item.category.brick");
+    public static final RegistryObject<SoundEvent> CHAIN = ExtraSounds.createEvent("item.category.gear.chain");
+    public static final RegistryObject<SoundEvent> DIAMOND = ExtraSounds.createEvent("item.category.gear.diamond");
+    public static final RegistryObject<SoundEvent> GENERIC = ExtraSounds.createEvent("item.category.gear.generic");
+    public static final RegistryObject<SoundEvent> GOLDEN = ExtraSounds.createEvent("item.category.gear.golden");
+    public static final RegistryObject<SoundEvent> IRON = ExtraSounds.createEvent("item.category.gear.iron");
+    public static final RegistryObject<SoundEvent> LEATHER = ExtraSounds.createEvent("item.category.gear.leather");
+    public static final RegistryObject<SoundEvent> NETHERITE = ExtraSounds.createEvent("item.category.gear.netherite");
+    public static final RegistryObject<SoundEvent> STONE = ExtraSounds.createEvent("item.category.gear.stone");
+    public static final RegistryObject<SoundEvent> TURTLE = ExtraSounds.createEvent("item.category.gear.turtle");
+    public static final RegistryObject<SoundEvent> WOOD = ExtraSounds.createEvent("item.category.gear.wood");
+}
