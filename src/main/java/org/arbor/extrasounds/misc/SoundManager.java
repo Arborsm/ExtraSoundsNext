@@ -214,6 +214,7 @@ public class SoundManager {
     }
 
     public static void effectChanged(MobEffect effect, EffectType type) {
+        if (!ESConfig.CONFIG.ENABLED_EFFECTS.get()) return;
         if (DebugUtils.DEBUG) {
             DebugUtils.effectLog(effect, type);
         }

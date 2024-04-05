@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -36,6 +37,9 @@ public class ExtraSounds {
         MinecraftForge.EVENT_BUS.register(this);
         SoundsForge.SOUNDEVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ESConfig.configSpec);
+        if (ModList.get().isLoaded("carryon")) {
+            ESConfig.CONFIG.ENABLED_EFFECTS.set(false);
+        }
     }
 
     @Nullable
