@@ -212,6 +212,7 @@ public class SoundManager {
     }
 
     public static void effectChanged(MobEffect effect, EffectType type) {
+        if (!ESConfig.CONFIG.ENABLED_EFFECTS.get()) return;
         if (DebugUtils.DEBUG) {
             DebugUtils.effectLog(effect, type);
         }
@@ -305,7 +306,9 @@ public class SoundManager {
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {
-        Minecraft.getInstance().getSoundManager().stop(e.getLocation(), type.category);
+        if (e != null && type != null) {
+            Minecraft.getInstance().getSoundManager().stop(e.getLocation(), type.category);
+        }
     }
 
     /**
