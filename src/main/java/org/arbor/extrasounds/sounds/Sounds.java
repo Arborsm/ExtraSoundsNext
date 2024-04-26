@@ -67,6 +67,8 @@ public class Sounds {
     }
 
     protected static SoundEvent register(String id) {
-        return ForgeRegistries.SOUND_EVENTS.getValue(ExtraSounds.id(id));
+        var e = ForgeRegistries.SOUND_EVENTS.getValue(ExtraSounds.id(id));
+        if (e == null) throw new RuntimeException("Sound event " + id + " not found");
+        return e;
     }
 }

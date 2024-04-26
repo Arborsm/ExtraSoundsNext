@@ -1,7 +1,7 @@
 package org.arbor.extrasounds.mixin.typing;
 
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.gui.font.TextFieldHelper;
+import org.arbor.extrasounds.sounds.SoundManager;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

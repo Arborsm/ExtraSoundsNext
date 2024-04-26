@@ -1,8 +1,5 @@
 package org.arbor.extrasounds.mixin.action;
 
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
@@ -10,6 +7,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.arbor.extrasounds.sounds.Mixers;
+import org.arbor.extrasounds.sounds.SoundManager;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,6 +34,6 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         final float pitch = (float) Mth.clampedLerp(2f, 0.25f,  Math.sqrt(this.getBbHeight() * this.getBbWidth()) / 2.5f);
-        SoundManager.playSound(Sounds.Entities.POOF, SoundType.ACTION, .7f, pitch, this.blockPosition());
+        SoundManager.playSound(Sounds.Entities.POOF, SoundType.ACTION, .7f, pitch, this.blockPosition(), Mixers.ENABLED_POOF);
     }
 }

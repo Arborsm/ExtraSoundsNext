@@ -9,6 +9,7 @@ import org.arbor.extrasounds.ExtraSounds;
 @SuppressWarnings("unused")
 public class SoundsForge {
     public static final DeferredRegister<SoundEvent> SOUNDEVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ExtraSounds.MODID);
+    public static final RegistryObject<SoundEvent> CHAT = ExtraSounds.createEvent("chat.message");
     public static final RegistryObject<SoundEvent> ARROW = ExtraSounds.createEvent("item.category.arrow");
     public static final RegistryObject<SoundEvent> BANNER = ExtraSounds.createEvent("item.category.banner");
     public static final RegistryObject<SoundEvent> BOAT = ExtraSounds.createEvent("item.category.boat");

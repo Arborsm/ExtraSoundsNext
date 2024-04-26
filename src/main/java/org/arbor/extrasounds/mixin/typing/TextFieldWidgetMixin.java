@@ -1,8 +1,8 @@
 package org.arbor.extrasounds.mixin.typing;
 
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import org.arbor.extrasounds.sounds.SoundManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;

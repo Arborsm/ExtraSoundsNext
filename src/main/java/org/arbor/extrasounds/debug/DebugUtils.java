@@ -2,12 +2,11 @@ package org.arbor.extrasounds.debug;
 
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.mapping.SoundGenerator;
-import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.SoundManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +21,7 @@ public class DebugUtils {
     public static final String NO_CACHE_VAR = "extrasounds.nocache";
     private static final String JVM_ARG_SEARCH_UNDEF_SND = "extrasounds.searchundef";
 
-    public static final boolean DEBUG = !FMLLoader.isProduction() || System.getProperties().containsKey(DEBUG_VAR)
+    public static final boolean DEBUG = System.getProperties().containsKey(DEBUG_VAR)
             && System.getProperties().get(DEBUG_VAR).equals("true");
     public static final String DEBUG_PATH = System.getProperties().containsKey(DEBUG_PATH_VAR)
             ? System.getProperty(DEBUG_PATH_VAR) : "debug/";
@@ -42,8 +41,14 @@ public class DebugUtils {
 
     public static void init() {
         if (!DEBUG) return;
-        LOGGER.info("ExtraSoundsFabric: DEBUG mode enabled.");
+        LOGGER.info("ExtraSounds: DEBUG mode enabled.");
         LOGGER.info("Debug path: " + Path.of(DEBUG_PATH).toAbsolutePath());
+        if (NO_CACHE) {
+            LOGGER.info("ExtraSounds: No cache mode enabled.");
+        }
+        if (SEARCH_UNDEF_SOUND) {
+            LOGGER.info("ExtraSounds: Searching for undefined sounds.");
+        }
     }
 
     public static void exportSoundsJson(byte[] jsonData) {
