@@ -10,7 +10,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mixin.BucketFluidAccessor;
+import org.arbor.extrasounds.mixin.misc.BucketFluidAccessor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public final class AutoGenerator {
         return SoundGenerator.auto(namespaces, AutoGenerator::autoGenerator);
     }
 
+    @SuppressWarnings("")
     public static SoundDefinition autoGenerator(Item item) {
         if (item instanceof RecordItem) {
             return SoundDefinition.of(aliased(MUSIC_DISC));
@@ -35,30 +37,12 @@ public final class AutoGenerator {
             return SoundDefinition.of(aliased(BOAT));
         } else if (item instanceof TieredItem toolItem) {
             if (toolItem.getTier() instanceof Tiers mat) {
-                return switch (mat) {
-                    case WOOD -> SoundDefinition.of(aliased(Gear.WOOD));
-                    case STONE -> SoundDefinition.of(aliased(Gear.STONE));
-                    case IRON -> SoundDefinition.of(aliased(Gear.IRON));
-                    case GOLD -> SoundDefinition.of(aliased(Gear.GOLDEN));
-                    case DIAMOND -> SoundDefinition.of(aliased(Gear.DIAMOND));
-                    case NETHERITE -> SoundDefinition.of(aliased(Gear.NETHERITE));
-                    default -> SoundDefinition.of(aliased(Gear.GENERIC));
-                    //⬆ even though not required, this is in case any mods add to the enum of materials
-                };
+                return getTierItemSound(mat);
             }
             return SoundDefinition.of(aliased(Gear.GENERIC));
         } else if (item instanceof ArmorItem armorItem) {
             if (armorItem.getMaterial() instanceof ArmorMaterials mat) {
-                return switch (mat) {
-                    case IRON -> SoundDefinition.of(aliased(Gear.IRON));
-                    case GOLD -> SoundDefinition.of(aliased(Gear.GOLDEN));
-                    case DIAMOND -> SoundDefinition.of(aliased(Gear.DIAMOND));
-                    case NETHERITE -> SoundDefinition.of(aliased(Gear.NETHERITE));
-                    case CHAIN -> SoundDefinition.of(aliased(Gear.CHAIN));
-                    case TURTLE -> SoundDefinition.of(aliased(Gear.TURTLE));
-                    case LEATHER -> SoundDefinition.of(aliased(Gear.LEATHER));
-                    default -> SoundDefinition.of(aliased(Gear.GENERIC));
-                };
+                return getArmorMaterialSound(mat);
             }
             return SoundDefinition.of(aliased(Gear.GENERIC));
         } else if (item instanceof ShieldItem) {
@@ -120,6 +104,35 @@ public final class AutoGenerator {
         }
 
         return SoundDefinition.of(aliased(ITEM_PICK));
+    }
+
+    @SuppressWarnings("all")
+    @NotNull
+    private static SoundDefinition getArmorMaterialSound(ArmorMaterials mat) {
+        return switch (mat) {
+            case IRON -> SoundDefinition.of(aliased(Gear.IRON));
+            case GOLD -> SoundDefinition.of(aliased(Gear.GOLDEN));
+            case DIAMOND -> SoundDefinition.of(aliased(Gear.DIAMOND));
+            case NETHERITE -> SoundDefinition.of(aliased(Gear.NETHERITE));
+            case CHAIN -> SoundDefinition.of(aliased(Gear.CHAIN));
+            case TURTLE -> SoundDefinition.of(aliased(Gear.TURTLE));
+            case LEATHER -> SoundDefinition.of(aliased(Gear.LEATHER));
+            default -> SoundDefinition.of(aliased(Gear.GENERIC));
+        };
+    }
+
+    @SuppressWarnings("all")
+    @NotNull
+    private static SoundDefinition getTierItemSound(Tiers mat) {
+        return switch (mat) {
+            case WOOD -> SoundDefinition.of(aliased(Gear.WOOD));
+            case STONE -> SoundDefinition.of(aliased(Gear.STONE));
+            case IRON -> SoundDefinition.of(aliased(Gear.IRON));
+            case GOLD -> SoundDefinition.of(aliased(Gear.GOLDEN));
+            case DIAMOND -> SoundDefinition.of(aliased(Gear.DIAMOND));
+            case NETHERITE -> SoundDefinition.of(aliased(Gear.NETHERITE));
+            default -> SoundDefinition.of(aliased(Gear.GENERIC));
+        };
     }
 
     private static boolean isGearGoldenItem(Item item) {

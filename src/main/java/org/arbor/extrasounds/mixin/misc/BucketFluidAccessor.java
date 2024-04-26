@@ -1,4 +1,4 @@
-package org.arbor.extrasounds.mixin;
+package org.arbor.extrasounds.mixin.misc;
 
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.material.Fluid;
