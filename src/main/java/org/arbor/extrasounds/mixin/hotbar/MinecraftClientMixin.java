@@ -1,14 +1,14 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.phys.HitResult;
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.HitResult;
+import org.arbor.extrasounds.sounds.SoundManager;
+import org.arbor.extrasounds.sounds.SoundType;
+import org.arbor.extrasounds.sounds.Sounds;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,7 +48,8 @@ public abstract class MinecraftClientMixin {
             },
             locals = LocalCapture.CAPTURE_FAILSOFT
     )
-    private void extrasounds$itemPickSound(CallbackInfo ci, boolean flag, BlockEntity blockentity, HitResult.Type hitresult$type, ItemStack itemstack, Inventory inventory, int i) {
+    private void extrasounds$itemPickSound(CallbackInfo ci, boolean flag, BlockEntity blockentity,
+                                           HitResult.Type hitresult$type, ItemStack itemstack, Inventory inventory, int i) {
         if (player != null && !player.getMainHandItem().getItem().equals(itemstack.getItem())) {
             SoundManager.playSound(itemstack, SoundType.PICKUP);
         }

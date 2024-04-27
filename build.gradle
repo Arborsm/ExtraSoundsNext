@@ -20,7 +20,7 @@ apply plugin: 'org.spongepowered.mixin'
 group = mod_name
 version = mod_version + '-' + minecraft_version + "-forge"
 
-jarJar.enable()
+//jarJar.enable()
 
 base {
     archivesName = mod_id
@@ -117,20 +117,32 @@ repositories {
         url = "https://maven.resourcefulbees.com/repository/maven-public/"
     }
     maven { url = "https://maven.firstdarkdev.xyz/snapshots" } // LDLib
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    repositories {
+        maven { url "https://maven.shedaniel.me" }
+    }
 }
 
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.28'
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jeiVersion}")
+    compileOnly fg.deobf("dev.emi:emi-forge:${emiVersion}")
+    implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${reiVersion}")
+
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+    implementation fg.deobf("curse.maven:cloth-config-348521:4973441")
     // to Test
     runtimeOnly fg.deobf("curse.maven:configuration-444699:4710266")
     runtimeOnly fg.deobf("com.gregtechceu.gtceu:gtceu-${minecraft_version}:${gtCeuVersion}") { transitive = false }
     runtimeOnly fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldLibVersion}") { transitive = false }
     runtimeOnly fg.deobf("com.tterrag.registrate:Registrate:${registrateForgeVersion}")
     runtimeOnly fg.deobf("curse.maven:jade-324717:4986594")
-    runtimeOnly fg.deobf("curse.maven:jei-238222:4712868")
-    runtimeOnly fg.deobf("dev.emi:emi-forge:${emiVersion}")
     runtimeOnly fg.deobf("curse.maven:shimmer-627824:4923047")
     runtimeOnly fg.deobf("com.simibubi.create:create-1.20.1:0.5.1.f-26:slim") { transitive = false }
     runtimeOnly fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.10-7")
@@ -144,8 +156,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:ultimate-car-mod-267458:5082451")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.1")) { jarJar.ranged(it, "[0.3.1,)") }
+    //implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.1"))
+    //implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.1")) { jarJar.ranged(it, "[0.3.1,)") }
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -164,9 +176,9 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
-tasks.named('jarJar') {
+//tasks.named('jarJar') {
     // ...
-}
+//}
 
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {

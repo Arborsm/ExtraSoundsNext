@@ -1,7 +1,6 @@
 package org.arbor.extrasounds;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,7 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.misc.ESConfig;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -26,7 +24,6 @@ public class ExtraSounds {
     public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "missing"));
 
     public ExtraSounds() {
-        DebugUtils.init();
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ESConfig.configSpec);
     }
@@ -66,9 +63,7 @@ public class ExtraSounds {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            DebugUtils.init();
         }
     }
 }

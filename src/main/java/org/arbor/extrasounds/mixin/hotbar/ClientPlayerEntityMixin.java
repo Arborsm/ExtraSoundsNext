@@ -1,10 +1,10 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import org.arbor.extrasounds.sounds.SoundManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

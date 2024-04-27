@@ -1,4 +1,4 @@
-package org.arbor.extrasounds.misc;
+package org.arbor.extrasounds.sounds;
 
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
@@ -24,11 +24,10 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.arbor.extrasounds.ESConfig;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
-import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.Sounds;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -153,7 +152,7 @@ public class SoundManager {
                 // Pressed hotbar key
                 cursorItem = player.getInventory().getItem(button).copy();
             } else {
-                // Pressed offhand key
+                // Pressed an offhand key
                 cursorItem = player.getOffhandItem().copy();
             }
         } else {
