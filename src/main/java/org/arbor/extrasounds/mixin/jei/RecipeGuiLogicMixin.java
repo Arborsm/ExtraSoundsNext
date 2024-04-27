@@ -16,12 +16,12 @@ public class RecipeGuiLogicMixin {
     @Unique
     private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
 
-    @Inject(method = "nextPage", at = @At("HEAD"))
+    @Inject(method = "nextPage", at = @At("HEAD"), remap = false)
     private void nextPage(CallbackInfo ci) {
         extra_sounds$scrollSound.play();
     }
 
-    @Inject(method = "previousPage", at = @At("HEAD"))
+    @Inject(method = "previousPage", at = @At("HEAD"), remap = false)
     private void previousPage(CallbackInfo ci) {
         extra_sounds$scrollSound.play();
     }

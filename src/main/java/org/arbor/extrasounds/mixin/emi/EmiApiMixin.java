@@ -25,7 +25,7 @@ public class EmiApiMixin {
     @Unique
     private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
 
-    @Inject(method = "setPages", at = @At("HEAD"))
+    @Inject(method = "setPages", at = @At("HEAD"), remap = false)
     private static void setPages(Map<EmiRecipeCategory, List<EmiRecipe>> recipes, EmiIngredient stack, CallbackInfo ci) {
         ItemStack itemStack = stack.getEmiStacks().get(0).getItemStack();
         SoundManager.playSound(itemStack, SoundType.PICKUP);

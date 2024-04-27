@@ -18,7 +18,7 @@ public abstract class IngredientGridWithNavigationMixin {
     @Unique
     private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
 
-    @Inject(method = "handleMouseScrolled", at = @At("HEAD"))
+    @Inject(method = "handleMouseScrolled", at = @At("HEAD"), remap = false)
     private void handleMouseScrolled(double mouseX, double mouseY, double scrollDelta, CallbackInfoReturnable<Optional<IUserInputHandler>> cir) {
         extra_sounds$scrollSound.play();
     }

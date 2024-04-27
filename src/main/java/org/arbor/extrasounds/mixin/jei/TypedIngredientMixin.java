@@ -18,7 +18,7 @@ import java.util.Optional;
 @Mixin(TypedIngredient.class)
 @OnlyIn(Dist.CLIENT)
 public class TypedIngredientMixin {
-    @Inject(method = "deepCopy", at = @At("TAIL"))
+    @Inject(method = "deepCopy", at = @At("TAIL"), remap = false)
     private static <T> void deepCopy(IIngredientManager ingredientManager, ITypedIngredient<T> value, CallbackInfoReturnable<Optional<ITypedIngredient<T>>> cir) {
         SoundManager.playSound(value.getItemStack().orElse(ItemStack.EMPTY), SoundType.PICKUP);
     }

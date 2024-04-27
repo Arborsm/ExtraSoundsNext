@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EmiScreenManagerMixin {
     @Unique
     private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
-    @Shadow
+    @Shadow(remap = false)
     public EmiScreenManager.ScreenSpace space;
 
-    @Inject(method = "scroll", at = @At("HEAD"))
+    @Inject(method = "scroll", at = @At("HEAD"), remap = false)
     private void extrasounds$scroll(int delta, CallbackInfo ci) {
         int totalPages = (space.getStacks().size() - 1) / space.pageSize + 1;
         if (totalPages > 1) {

@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @OnlyIn(Dist.CLIENT)
 @Mixin(EntryWidget.class)
 public abstract class EntryWidgetMixin {
-    @Shadow
+    @Shadow(remap = false)
     public abstract EntryStack<?> getCurrentEntry();
 
-    @Inject(method = "doAction", at = @At("HEAD"))
+    @Inject(method = "doAction", at = @At("HEAD"), remap = false)
     private void mouseScrolled(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         if (getCurrentEntry() != null && getCurrentEntry().getValue() instanceof ItemStack itemStack) {
             SoundManager.playSound(itemStack, SoundType.PICKUP);
