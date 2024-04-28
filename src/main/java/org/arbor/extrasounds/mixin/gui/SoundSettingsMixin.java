@@ -20,6 +20,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import org.arbor.extrasounds.gui.CustomSoundOptionsScreen;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,8 +33,9 @@ public class SoundSettingsMixin {
     @Shadow
     private @Final Options options;
 
-    @Inject(method = "lambda$init$1", at = @At("RETURN"), cancellable = true)
-    private void soundcategories$redirectToCustomScreen(CallbackInfoReturnable<Screen> cir) {
+    @Dynamic
+    @Inject(method = {"method_19829", "Lnet/minecraft/client/gui/screens/OptionsScreen;m_260745_()Lnet/minecraft/client/gui/screens/Screen;"}, at = @At("RETURN"), cancellable = true, remap = false)
+    private void redirectToCustomScreen(CallbackInfoReturnable<Screen> cir) {
         cir.setReturnValue(new CustomSoundOptionsScreen(OptionsScreen.class.cast(this), options));
     }
 }

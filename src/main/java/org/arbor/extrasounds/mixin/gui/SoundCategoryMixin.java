@@ -16,12 +16,8 @@
 
 package org.arbor.extrasounds.mixin.gui;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.sounds.CategoryLoader;
 import org.objectweb.asm.Opcodes;
@@ -34,16 +30,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.lang.reflect.Field;
 import java.util.*;
 
-@OnlyIn(Dist.CLIENT)
 @Mixin(SoundSource.class)
 public class SoundCategoryMixin {
-    @Unique
-    private static final String INVALID_VAR_NAME_REGEX = "[^a-zA-Z0-9_$]";
-    @SuppressWarnings("ShadowTarget")
-    @Shadow
+    // And you
+    @Shadow(aliases = "$VALUES", remap = false)
     @Final
     @Mutable
-    private static SoundSource[] $VALUES;
+    private static SoundSource[] field_15255;
+    @Unique
+    private static final String INVALID_VAR_NAME_REGEX = "[^a-zA-Z0-9_$]";
     @Unique
     private static List<String> SUPPRESSED_NAMES;
     @Unique
@@ -100,9 +95,9 @@ public class SoundCategoryMixin {
             target = "Lnet/minecraft/sounds/SoundSource;$VALUES:[Lnet/minecraft/sounds/SoundSource;",
             shift = At.Shift.AFTER))
     private static void extra_sounds$addCustomVariants(CallbackInfo ci) {
-        REGISTERED_VARIANTS = Maps.newHashMap();
-        SUPPRESSED_NAMES = Lists.newArrayList();
-        EDITING_CATS = new ArrayList<>(Arrays.asList($VALUES));
+        REGISTERED_VARIANTS = new HashMap<>();
+        SUPPRESSED_NAMES = new ArrayList<>();
+        EDITING_CATS = new ArrayList<>(Arrays.asList(field_15255));
         for (SoundSource category : EDITING_CATS) {
             REGISTERED_VARIANTS.put(category.getName(), category);
         }
@@ -126,7 +121,7 @@ public class SoundCategoryMixin {
         });
 
         // Set the new enums.
-        $VALUES = EDITING_CATS.toArray(SoundSource[]::new);
+        field_15255 = EDITING_CATS.toArray(SoundSource[]::new);
 
         // Cleanup.
         EDITING_CATS.clear();
