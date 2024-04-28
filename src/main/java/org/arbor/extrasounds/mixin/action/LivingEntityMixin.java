@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import org.arbor.extrasounds.ESConfig;
+import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundManager;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
@@ -24,7 +24,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "makePoofParticles", at = @At("HEAD"))
     private void extrasounds$poofSound(CallbackInfo ci) {
-        if (!ESConfig.CONFIG.ENABLED_POOF.get() || !this.level().isClientSide) {
+        if (!this.level().isClientSide) {
             return;
         }
 
@@ -34,6 +34,6 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         final float pitch = (float) Mth.clampedLerp(2f, 0.25f,  Math.sqrt(this.getBbHeight() * this.getBbWidth()) / 2.5f);
-        SoundManager.playSound(Sounds.Entities.POOF, SoundType.ACTION, .7f, pitch, this.blockPosition());
+        SoundManager.playSound(Sounds.Entities.POOF, SoundType.ACTION, .7f, pitch, this.blockPosition(), Mixers.ENABLED_POOF);
     }
 }

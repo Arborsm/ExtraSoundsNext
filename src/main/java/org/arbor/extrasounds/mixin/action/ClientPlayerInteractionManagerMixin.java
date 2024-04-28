@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.arbor.extrasounds.ESConfig;
+import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundManager;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
@@ -32,7 +32,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
     @Inject(method = "performUseItemOn", at = @At(value = "RETURN", ordinal = 2))
     private void extrasounds$repeaterSwitchSound(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!ESConfig.CONFIG.ENABLED_FOOTSTEP.get() || this.minecraft.level == null) {
+        if (this.minecraft.level == null) {
             return;
         }
 
@@ -44,7 +44,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         if (cir.getReturnValue().consumesAction()) {
             final SoundEvent sound = blockState.getValue(RepeaterBlock.DELAY) == 1 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
-            SoundManager.playSound(sound, SoundType.ACTION, blockPos);
+            SoundManager.playSound(sound, SoundType.ACTION, Mixers.ENABLED_FOOTSTEP, blockPos);
         }
     }
 }
