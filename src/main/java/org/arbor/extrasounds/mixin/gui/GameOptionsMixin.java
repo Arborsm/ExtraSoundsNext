@@ -59,6 +59,9 @@ public abstract class GameOptionsMixin {
 
     @Redirect(method = "createSoundSliderOptionInstance", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;noTooltip()Lnet/minecraft/client/OptionInstance$TooltipSupplier;"), require = 0)
     private OptionInstance.TooltipSupplier<?> extra_sounds$modifyTooltip(String key, SoundSource category) {
+        if (ExtraSounds.TOOLTIPS.isEmpty()) {
+            ExtraSounds.initCategoryLoader();
+        }
         if (ExtraSounds.TOOLTIPS.containsKey(category)) {
             return value -> Tooltip.create(ExtraSounds.TOOLTIPS.get(category));
         }
