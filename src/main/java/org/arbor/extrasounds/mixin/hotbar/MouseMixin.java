@@ -1,9 +1,9 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.player.LocalPlayer;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

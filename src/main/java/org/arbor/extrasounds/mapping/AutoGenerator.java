@@ -1,6 +1,5 @@
 package org.arbor.extrasounds.mapping;
 
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -24,7 +23,6 @@ public final class AutoGenerator {
         for (IModInfo mod : ModList.get().getMods()) {
             namespaces.add(mod.getModId());
         }
-        namespaces.remove("minecraft");
         return SoundGenerator.auto(namespaces, AutoGenerator::autoGenerator);
     }
 
@@ -79,10 +77,6 @@ public final class AutoGenerator {
             return SoundDefinition.of(aliased(WET_SLIPPERY));
         } else if (item instanceof BowlFoodItem || item instanceof SuspiciousStewItem) {
             return SoundDefinition.of(aliased(BOWL));
-        } else if (item instanceof InstrumentItem) {
-            return SoundDefinition.of(single(LOOSE_METAL.getLocation(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
-        } else if (item instanceof DiscFragmentItem) {
-            return SoundDefinition.of(single(METAL_BITS.getLocation(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
         } else if (isBrickItem(item)) {
             return SoundDefinition.of(aliased(BRICK));
         } else if (isGearGoldenItem(item)) {
@@ -110,7 +104,7 @@ public final class AutoGenerator {
                 } else {
                     return SoundDefinition.of(event(soundId));
                 }
-            } else if (block instanceof RotatedPillarBlock pillarBlock && getSoundType(pillarBlock).equals(SoundType.FROGLIGHT)) {
+            } else if (block instanceof RotatedPillarBlock) {
                 return SoundDefinition.of(event(blockSound, 0.3f));
             }
 

@@ -1,7 +1,7 @@
 package org.arbor.extrasounds.mixin.typing;
 
-import org.arbor.extrasounds.misc.SoundManager;
 import net.minecraft.client.gui.components.CommandSuggestions;
+import org.arbor.extrasounds.misc.SoundManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,7 +36,7 @@ public abstract class SuggestionWindowMixin {
         SoundManager.keyboard(SoundManager.KeyType.INSERT);
     }
 
-    @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;hide()V"))
+    @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions$SuggestionsList;hide()V"))
     private void extrasounds$closeWindow(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         SoundManager.keyboard(SoundManager.KeyType.CURSOR);
     }

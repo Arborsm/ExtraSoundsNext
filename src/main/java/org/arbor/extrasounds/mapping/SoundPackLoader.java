@@ -4,17 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
@@ -27,19 +23,15 @@ import org.arbor.extrasounds.sounds.Sounds;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(modid = ExtraSounds.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class SoundPackLoader {
-    public static JsonObject GENERATED_SOUNDS;
+    private static final int CACHE_VERSION = 1;
+    private static final ResourceLocation SOUNDS_JSON_ID = new ResourceLocation(ExtraSounds.MODID, "sounds.json");
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String CACHE_FNAME = ExtraSounds.MODID + ".cache";
-    private static final Path CACHE_PATH_FILE =
-            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", CACHE_FNAME);
+    private static final Path CACHE_PATH = Path.of(System.getProperty("java.io.tmpdir"), ".minecraft_fabric", CACHE_FNAME);
 
     public static final Map<ResourceLocation, SoundEvent> CUSTOM_SOUND_EVENT = new HashMap<>();
 
@@ -48,62 +40,56 @@ public class SoundPackLoader {
             .registerTypeAdapter(Sound.class, new SoundSerializer())
             .create();
 
-    @SubscribeEvent
-    static void onRegisterEvent(RegisterEvent event) {
-        if (!event.getRegistryKey().equals(Registry.LOOT_ITEM_REGISTRY))
-            return;
-        init();
-    }
-
     /**
      * Initialization of customized sound event.<br>
+     * The cache file stored at {@link SoundPackLoader#CACHE_PATH} will be used.
      * If it is absent or invalid, the file will be regenerated.<br>
      * If the regeneration time over 1000 milliseconds, it may be needed to refactor.
      */
     public static void init() {
+        LOGGER.info(CACHE_PATH.toString());
+
         final long start = System.currentTimeMillis();
         final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
-        // soundGenMappers.put(autoGenerator.generator.namespace, autoGenerator.generator);
         for (SoundGenerator generator : AutoGenerator.getSoundGenerators()) {
             soundGenMappers.put(generator.namespace, generator);
         }
-        // Deleted once.
-        try {
-            Files.createDirectories(CACHE_PATH_FILE.getParent());
-            Files.deleteIfExists(CACHE_PATH_FILE);
-        } catch (Throwable ex) {
-            DebugUtils.genericLog(ex.getMessage());
-        }
+        final CacheInfo currentCacheInfo = CacheInfo.of(new String[]{"blah"});
+
         // Read from cache.
         try {
-            if (!Files.exists(CACHE_PATH_FILE)) {
+            Files.createDirectories(CACHE_PATH.getParent());
+
+            if (!Files.exists(CACHE_PATH)) {
                 throw new FileNotFoundException("Cache does not exist.");
             }
+
             if (DebugUtils.NO_CACHE) {
                 throw new RuntimeException("JVM arg '%s' is detected.".formatted(DebugUtils.NO_CACHE_VAR));
             }
+
+            final CacheData cacheData = CacheData.read();
+            if (!cacheData.info.equals(currentCacheInfo)) {
+                throw new InvalidObjectException("Incorrect cache info.");
+            }
+
+            final JsonObject jsonObject = cacheData.asJsonObject();
+            jsonObject.keySet().forEach(key -> putSoundEvent(new ResourceLocation(ExtraSounds.MODID, key)));
         } catch (Throwable ex) {
             // If there is an exception, regenerate and write the cache.
             DebugUtils.genericLog(ex.getMessage());
             LOGGER.info("[{}] Regenerating cache...", ExtraSounds.class.getSimpleName());
             final Map<String, SoundEventRegistration> resourceMapper = new HashMap<>();
             processSounds(soundGenMappers, resourceMapper);
-            CacheData.create(resourceMapper);
+            CacheData.create(currentCacheInfo, resourceMapper);
         }
-        // toJson
-        try {
-            final CacheData cacheData = CacheData.read();
-            final JsonObject jsonObject = cacheData.asJsonObject();
-            jsonObject.keySet().forEach(key -> putSoundEvent(new ResourceLocation(ExtraSounds.MODID, key)));
-            GENERATED_SOUNDS = jsonObject;
-        } catch (JsonParseException e) {
-            DebugUtils.genericLog(e.getMessage());
-        }
+
         if (DebugUtils.DEBUG) {
             DebugUtils.exportSoundsJson(CacheData.read().asJsonBytes());
             DebugUtils.exportGenerators(soundGenMappers);
         }
 
+        ExtraSounds.pack.addAsyncResource(PackType.CLIENT_RESOURCES, SOUNDS_JSON_ID, identifier -> CacheData.read().asJsonBytes());
         final long tookMillis = System.currentTimeMillis() - start;
         if (tookMillis >= 1000) {
             LOGGER.warn("[{}] init took too long; {}ms.", ExtraSounds.class.getSimpleName(), tookMillis);
@@ -145,7 +131,7 @@ public class SoundPackLoader {
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
                     final Block block = blockItem.getBlock();
-                    final SoundEvent blockSound = AutoGenerator.getSoundType(block).getPlaceSound();
+                    final SoundEvent blockSound = block.getSoundType(block.defaultBlockState()).getPlaceSound();
                     blockSoundDef = SoundDefinition.of(Sounds.aliased(blockSound));
                 } catch (Throwable ignored) {
                 }
@@ -155,7 +141,7 @@ public class SoundPackLoader {
             }
 
             final ResourceLocation pickupSoundId = ExtraSounds.getClickId(itemId, SoundType.PICKUP);
-            final SoundEventRegistration pickupSoundEntry = Sounds.aliased(ExtraSounds.createEvent(pickupSoundId));
+            final SoundEventRegistration pickupSoundEntry = Sounds.aliased(new SoundEvent(pickupSoundId));
             generateSoundEntry(itemId, SoundType.PICKUP, definition.pickup, pickupSoundEntry, resource);
             generateSoundEntry(itemId, SoundType.PLACE, definition.place, pickupSoundEntry, resource);
             generateSoundEntry(itemId, SoundType.HOTBAR, definition.hotbar, pickupSoundEntry, resource);
@@ -196,16 +182,75 @@ public class SoundPackLoader {
     }
 
     /**
-     * Shows the cache data that include Json String.
+     * Shows the information of the cache.<br>
+     * This is used at the first line in the file defined by {@link SoundPackLoader#CACHE_FNAME}.
+     *
+     * @param version   The cache version.
+     * @param itemCount The number of the Item Registry.
+     * @param info      The String array of mod ids.
+     */
+    record CacheInfo(int version, int itemCount, String[] info) {
+        private static final String DELIMITER_MOD_INFO = ",";
+        private static final String DELIMITER_HEAD = ";";
+
+        /**
+         * Creates new cache info from generator version info.
+         *
+         * @param info The array of String that include mod ids.
+         * @return A new instance of {@link CacheInfo}.
+         */
+        public static CacheInfo of(String[] info) {
+            return new CacheInfo(CACHE_VERSION, ForgeRegistries.ITEMS.getEntries().size(), info);
+        }
+
+        /**
+         * Parses to the {@link CacheInfo} from String.
+         *
+         * @param string The String.
+         * @return A new instance of {@link CacheInfo}.
+         */
+        public static CacheInfo fromString(String string) {
+            try {
+                var arr = string.split(DELIMITER_HEAD);
+                return new CacheInfo(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), arr[2].split(DELIMITER_MOD_INFO));
+            } catch (Throwable ignored) {
+                return new CacheInfo(0, 0, new String[0]);
+            }
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof CacheInfo comp)
+                return this.version == comp.version
+                        && this.itemCount == comp.itemCount
+                        && Arrays.equals(this.info, comp.info);
+            return false;
+        }
+
+        public String toString() {
+            final CharSequence[] data = new CharSequence[]{
+                    String.valueOf(version), String.valueOf(itemCount), String.join(DELIMITER_MOD_INFO, info)
+            };
+            return String.join(DELIMITER_HEAD, data);
+        }
+
+    }
+
+    /**
+     * Shows the cache data that include {@link CacheInfo} and Json String.
      */
     protected static class CacheData {
-
+        /**
+         * The cache info.
+         */
+        private final CacheInfo info;
         /**
          * The cache data.
          */
         private final CharSequence json;
 
-        private CacheData(CharSequence json) {
+        private CacheData(CacheInfo info, CharSequence json) {
+            this.info = info;
             this.json = json;
         }
 
@@ -215,29 +260,33 @@ public class SoundPackLoader {
          * @return The instance of {@link CacheData}.
          */
         static CacheData read() {
-            try (BufferedReader reader = Files.newBufferedReader(CACHE_PATH_FILE)) {
+            try (BufferedReader reader = Files.newBufferedReader(CACHE_PATH)) {
+                final CacheInfo cacheInfo = CacheInfo.fromString(reader.readLine().trim());
                 final StringBuilder builder = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     builder.append(line);
                 }
-                return new CacheData(builder);
+                return new CacheData(cacheInfo, builder);
             } catch (Throwable ex) {
                 LOGGER.error("[%s] Failed to load ExtraSounds cache.".formatted(ExtraSounds.class.getSimpleName()), ex);
             }
-            return new CacheData("{}");
+            return new CacheData(CacheInfo.of(new String[0]), "{}");
         }
 
         /**
          * Writes to the file.
          *
-         * @param map The cache data that will be converted to json.
+         * @param info The current cache info.
+         * @param map  The cache data that will be converted to json.
          */
-        static void create(Map<String, SoundEventRegistration> map) {
-            try (BufferedWriter writer = Files.newBufferedWriter(CACHE_PATH_FILE)) {
+        static void create(CacheInfo info, Map<String, SoundEventRegistration> map) {
+            try (BufferedWriter writer = Files.newBufferedWriter(CACHE_PATH)) {
+                writer.write(info.toString().trim());
+                writer.newLine();
                 GSON.toJson(map, writer);
                 writer.flush();
-                DebugUtils.genericLog("Cache saved at %s".formatted(CACHE_PATH_FILE.toAbsolutePath()));
+                DebugUtils.genericLog("Cache saved at %s".formatted(CACHE_PATH.toAbsolutePath()));
             } catch (Throwable ex) {
                 LOGGER.error("[%s] Failed to save the cache.".formatted(ExtraSounds.class.getSimpleName()), ex);
             }

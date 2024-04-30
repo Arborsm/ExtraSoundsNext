@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +35,6 @@ import java.util.function.BiPredicate;
 
 public class SoundManager {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final RandomSource MC_RANDOM = RandomSource.create();
 
     /**
      * Predicate of Right Mouse Click.
@@ -78,7 +76,7 @@ public class SoundManager {
         }
         ItemStack stack = player.getInventory().getItem(i);
         if (stack.getItem() == Items.AIR) {
-            if (ESConfig.CONFIG.EMPTY_HOTBAR.get()) playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
+            playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
         } else {
             playSound(stack, SoundType.HOTBAR);
         }
@@ -248,14 +246,14 @@ public class SoundManager {
                 volume = Math.min(cat, volume);
             }
         }
-        playSound(new SimpleSoundInstance(snd == null ? ExtraSounds.id("missing") : snd.getLocation(), category, volume, pitch, MC_RANDOM,
+        playSound(new SimpleSoundInstance(snd == null ? ExtraSounds.id("missing") : snd.getLocation(), category, volume, pitch,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
     }
 
     public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position) {
-        playSound(new SimpleSoundInstance(snd, type.category, ESConfig.CONFIG.MASTER.get().floatValue() * volume, pitch,
-                MC_RANDOM, position));
+        playSound(new SimpleSoundInstance(snd, type.category, getSoundVolume(SoundSource.MASTER) * volume, pitch,
+                position));
     }
 
     public static void playSound(SoundEvent snd, SoundType type, BlockPos position) {
@@ -303,7 +301,7 @@ public class SoundManager {
         }
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
-                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize(itemStack));
+                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
         if (ESConfig.CONFIG.ITEM_DROP.get()) playSound(Sounds.ITEM_DROP, pitch, category);
     }
 
@@ -340,5 +338,9 @@ public class SoundManager {
             case INSERT -> playSound(Sounds.KEYBOARD_TYPE, SoundType.TYPING);
             case PASTE -> playSound(Sounds.KEYBOARD_PASTE, SoundType.TYPING);
         }
+    }
+
+    public static float getSoundVolume(SoundSource category) {
+        return Minecraft.getInstance().options.getSoundSourceVolume(category);
     }
 }

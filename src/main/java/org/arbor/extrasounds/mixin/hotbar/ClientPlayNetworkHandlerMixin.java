@@ -1,12 +1,12 @@
 package org.arbor.extrasounds.mixin.hotbar;
 
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.sounds.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.world.item.ItemStack;
+import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.SoundType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

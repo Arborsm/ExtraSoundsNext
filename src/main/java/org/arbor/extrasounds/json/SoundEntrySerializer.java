@@ -1,10 +1,11 @@
 package org.arbor.extrasounds.json;
 
 import com.google.gson.*;
-import java.lang.reflect.Type;
-import java.util.Objects;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
+
+import java.lang.reflect.Type;
+import java.util.Objects;
 
 public class SoundEntrySerializer implements JsonSerializer<SoundEventRegistration>
 {

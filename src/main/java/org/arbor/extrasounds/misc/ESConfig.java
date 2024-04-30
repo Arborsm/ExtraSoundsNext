@@ -22,12 +22,12 @@ public class ESConfig {
         ACTION = builder.comment("Action Sounds").defineInRange("action", 1f, 0, 2);
         CHAT = builder.comment("Chat Sounds").defineInRange("chat", 1f, 0, 2);
         CHAT_MENTION = builder.comment("Chat mention Sounds").defineInRange("chat_mention", 1f, 0, 2);
-        ENABLED_EFFECTS = builder.comment("Enable Effects Sounds").define("effects_enable", true);
         EFFECTS = builder.comment("Effects Sounds").defineInRange("effects", 1f, 0, 2);
         HOTBAR = builder.comment("Hotbar Sounds").defineInRange("hotbar", 1f, 0, 2);
         TYPING = builder.comment("Typing Sounds").defineInRange("typing", 1f, 0, 2);
         ITEM_DROP = builder.comment("Item drop Sounds").define("item_drop", true);
         EMPTY_HOTBAR = builder.comment("Empty hotbar Sounds").define("empty_hotbar", true);
+        ENABLED_EFFECTS = builder.comment("Enable Effects Sounds").define("effects_enable", false);
         builder.pop();
     }
     public static final ForgeConfigSpec configSpec;

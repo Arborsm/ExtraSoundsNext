@@ -1,13 +1,13 @@
 package org.arbor.extrasounds.mixin.inventory;
 
-import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.misc.ESConfig;
-import org.arbor.extrasounds.misc.SoundManager;
-import org.arbor.extrasounds.sounds.Sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.sounds.SoundSource;
+import org.arbor.extrasounds.misc.ESConfig;
+import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.Sounds;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
