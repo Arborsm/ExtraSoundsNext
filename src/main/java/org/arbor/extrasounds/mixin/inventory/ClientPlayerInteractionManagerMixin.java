@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(MultiPlayerGameMode.class)
 public abstract class ClientPlayerInteractionManagerMixin {
+    @SuppressWarnings("ConstantConditions")
     @Inject(method = "handleInventoryMouseClick", at = @At("HEAD"))
     private void extrasounds$inventoryClickEvent(int syncId, int slotIndex, int button, ClickType actionType, Player player, CallbackInfo ci) {
         if (player == null) {

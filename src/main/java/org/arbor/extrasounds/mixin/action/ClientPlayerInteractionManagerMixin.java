@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.arbor.extrasounds.misc.SoundManager;
+import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
 import org.spongepowered.asm.mixin.Final;
@@ -44,7 +45,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
 
         if (cir.getReturnValue().consumesAction()) {
             final SoundEvent sound = blockState.getValue(RepeaterBlock.DELAY) == 1 ? Sounds.Actions.REPEATER_RESET : Sounds.Actions.REPEATER_ADD;
-            SoundManager.playSound(sound, SoundType.ACTION, blockPos);
+            SoundManager.playSound(sound, SoundType.ACTION, Mixers.ENABLED_FOOTSTEP, blockPos);
         }
     }
 }

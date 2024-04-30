@@ -53,18 +53,18 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
         final boolean bOnHotbar = slot != null && !this.isCreativeSlot(slot);
 
         if (actionType == ClickType.THROW && slot != null && slotId >= 0) {
-            // CreativeInventory can drop items while holding anything on cursor
+            // CreativeInventory can drop items while holding anything on the cursor
             final ItemStack slotStack = slot.getItem().copy();
             if (button == 1 && selectedTab != GROUP_INVENTORY) {
                 if (bOnHotbar) {
-                    // Pressed Ctrl + Q on Hotbar to delete the stack only when not in Inventory tab
+                    // Pressed Ctrl + Q on Hotbar to delete the stack only when not in the Inventory tab
                     SoundManager.playSound(Sounds.ITEM_DELETE, SoundType.PICKUP);
                     return;
                 }
                 // If not, it pressed on the slot in CreativeInventory tab
                 slotStack.setCount(slotStack.getMaxStackSize());
             } else if (button == 0) {
-                // Pressed Q key only
+                // Pressed a Q key only
                 slotStack.setCount(1);
             }
             SoundManager.playThrow(slotStack);

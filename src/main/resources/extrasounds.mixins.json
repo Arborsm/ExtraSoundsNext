@@ -4,13 +4,16 @@
   "package": "org.arbor.extrasounds.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "extrasounds.refmap.json",
+  "plugin": "org.arbor.extrasounds.mixin.ESMixinPlugin",
   "client": [
     "BucketFluidAccessor",
     "action.ClientPlayerEntityMixin",
     "action.ClientPlayerInteractionManagerMixin",
-    "action.LivingEntityMixin",
     "chat.ChatHudMixin",
     "effect.ClientPlayerEntityMixin",
+    "gui.GameOptionsMixin",
+    "gui.SoundCategoryMixin",
+    "gui.SoundSettingsMixin",
     "hotbar.ClientPlayerEntityMixin",
     "hotbar.ClientPlayNetworkHandlerMixin",
     "hotbar.MinecraftClientMixin",
@@ -32,5 +35,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "action.LivingEntityMixin"
+  ]
 }

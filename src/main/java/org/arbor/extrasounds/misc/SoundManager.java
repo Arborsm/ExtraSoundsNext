@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mapping.SoundPackLoader;
+import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundType;
 import org.arbor.extrasounds.sounds.Sounds;
 import org.jetbrains.annotations.Nullable;
@@ -76,7 +77,7 @@ public class SoundManager {
         }
         ItemStack stack = player.getInventory().getItem(i);
         if (stack.getItem() == Items.AIR) {
-            playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
+            playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR, Mixers.EMPTY_HOTBAR);
         } else {
             playSound(stack, SoundType.HOTBAR);
         }
@@ -151,7 +152,7 @@ public class SoundManager {
                 // Pressed hotbar key
                 cursorItem = player.getInventory().getItem(button).copy();
             } else {
-                // Pressed offhand key
+                // Pressed an offhand key
                 cursorItem = player.getOffhandItem().copy();
             }
         } else {
@@ -212,7 +213,6 @@ public class SoundManager {
     }
 
     public static void effectChanged(MobEffect effect, EffectType type) {
-        if (!ESConfig.CONFIG.ENABLED_EFFECTS.get()) return;
         if (DebugUtils.DEBUG) {
             DebugUtils.effectLog(effect, type);
         }
@@ -232,18 +232,22 @@ public class SoundManager {
             LOGGER.error("[{}] Unknown type of '{}' is approaching: '{}'", ExtraSounds.class.getSimpleName(), EffectType.class.getSimpleName(), type);
             return;
         }
-        playSound(event, SoundType.EFFECT);
+        playSound(event, SoundType.EFFECT, Mixers.ENABLED_EFFECTS);
     }
 
     public static void playSound(SoundEvent snd, SoundType type) {
-        playSound(snd, type.pitch, type.category, type.volume.get().floatValue());
+        playSound(snd, type.pitch, type.category);
     }
 
-    public static void playSound(SoundEvent snd, float pitch, SoundSource category, float... optionalVolumes) {
-        float volume = ESConfig.CONFIG.MASTER.get().floatValue();
+    public static void playSound(SoundEvent snd, SoundType type, SoundSource... optionalVolumes) {
+        playSound(snd, type.pitch, type.category, optionalVolumes);
+    }
+
+    public static void playSound(SoundEvent snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
+        float volume = getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
-            for (float cat : optionalVolumes) {
-                volume = Math.min(cat, volume);
+            for (SoundSource cat : optionalVolumes) {
+                volume = Math.min(getSoundVolume(cat), volume);
             }
         }
         playSound(new SimpleSoundInstance(snd == null ? ExtraSounds.id("missing") : snd.getLocation(), category, volume, pitch,
@@ -251,13 +255,21 @@ public class SoundManager {
                 true));
     }
 
-    public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position) {
-        playSound(new SimpleSoundInstance(snd, type.category, getSoundVolume(SoundSource.MASTER) * volume, pitch,
-                position));
+    public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position, SoundSource... optionalVolumes) {
+        playSound(snd, type, volume, pitch, position, false, optionalVolumes);
     }
 
-    public static void playSound(SoundEvent snd, SoundType type, BlockPos position) {
-        playSound(snd, type, 1f, type.pitch, position);
+    public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position, boolean anti, SoundSource... optionalVolumes) {
+        if (optionalVolumes != null) {
+            for (SoundSource cat : optionalVolumes) {
+                volume = Math.min(getSoundVolume(cat, anti), volume * getSoundVolume(Mixers.MASTER));
+            }
+        }
+        playSound(new SimpleSoundInstance(snd, type.category, volume, pitch, position));
+    }
+
+    public static void playSound(SoundEvent snd, SoundType type, SoundSource enabledFootstep, BlockPos position) {
+        playSound(snd, type, 1f, type.pitch, position, enabledFootstep);
     }
 
     public static void playSound(SoundInstance instance) {
@@ -281,7 +293,7 @@ public class SoundManager {
     }
 
     public static void playThrow(ItemStack itemStack) {
-        playThrow(itemStack, SoundSource.PLAYERS);
+        playThrow(itemStack, Mixers.INVENTORY);
     }
 
     /**
@@ -302,7 +314,7 @@ public class SoundManager {
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
                 Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
-        if (ESConfig.CONFIG.ITEM_DROP.get()) playSound(Sounds.ITEM_DROP, pitch, category);
+        playSound(Sounds.ITEM_DROP, pitch, category, Mixers.ITEM_DROP);
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {
@@ -340,7 +352,11 @@ public class SoundManager {
         }
     }
 
-    public static float getSoundVolume(SoundSource category) {
-        return Minecraft.getInstance().options.getSoundSourceVolume(category);
+    public static float getSoundVolume(SoundSource source, boolean... anti) {
+        final float volume = Minecraft.getInstance().options.getSoundSourceVolume(source);
+        if (anti != null && anti.length > 0 && anti[0] && volume == 1f) {
+            return 0f;
+        }
+        return volume;
     }
 }
