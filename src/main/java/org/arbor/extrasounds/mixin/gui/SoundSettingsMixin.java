@@ -21,6 +21,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
 import org.arbor.extrasounds.gui.CustomSoundOptionsScreen;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,12 +33,13 @@ public class SoundSettingsMixin {
     @Shadow
     private @Final Options options;
 
+    @Dynamic
     @Redirect(
-            method = {"method_19829"},
+            method = {"method_19829", "m_96273_ (Lnet/minecraft/client/gui/components/Button;)V"},
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"),
-            remap = false
+            require = 0
     )
     private void redirectToCustomScreen(Minecraft instance, Screen screen) {
-        instance.setScreen(new CustomSoundOptionsScreen((OptionsScreen) (Object) this, options));
+        instance.setScreen(new CustomSoundOptionsScreen(OptionsScreen.class.cast(this), options));
     }
 }

@@ -53,12 +53,18 @@ public abstract class GameOptionsMixin {
             locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void computeFloat(Options.FieldAccess visitor, CallbackInfo ci, SoundSource[] var2, int var3, int var4, SoundSource soundCategory) {
+        if (ExtraSounds.DEFAULT_LEVELS.isEmpty()) {
+            ExtraSounds.initCategoryLoader();
+        }
         sourceVolumes.computeFloat(soundCategory, (category, currentLevel) -> visitor.process("soundCategory_" + category.getName(),
                 currentLevel != null ? currentLevel : ExtraSounds.DEFAULT_LEVELS.getOrDefault(category, 1.0f)));
     }
 
     @Inject(method = "load(Z)V", at = @At(value = "HEAD"), remap = false)
     private void preLoad(CallbackInfo ci) {
+        if (ExtraSounds.DEFAULT_LEVELS.isEmpty()) {
+            ExtraSounds.initCategoryLoader();
+        }
         sourceVolumes.putAll(ExtraSounds.DEFAULT_LEVELS);
     }
 }

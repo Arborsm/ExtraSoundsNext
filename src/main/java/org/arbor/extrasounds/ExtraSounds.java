@@ -71,7 +71,6 @@ public class ExtraSounds {
     public ExtraSounds() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         SoundsForge.SOUNDEVENTS.register(eventBus);
-        initCategoryLoader();
     }
 
     public static Pair<CategoryLoader, List<Field>> getCategories() {

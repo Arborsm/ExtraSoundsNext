@@ -40,7 +40,9 @@ public class CustomSoundOptionsScreen extends AbstractSoundListedScreen {
         var count = cats.length;
         for (int i = 0; i < count; i += 2) {
             list.addDoubleCategory(cats[i], i + 1 < count ? cats[i + 1] : null);
+            ExtraSounds.LOGGER.info("Added category " + cats[i].getName() + " and " + (i + 1 < count ? cats[i + 1].getName() : "null"));
         }
+        ExtraSounds.LOGGER.info(ExtraSounds.PARENTS.toString());
         this.list.addSingleOptionEntry(options.soundDevice());
         this.list.addAll(new OptionInstance[]{options.showSubtitles(), options.directionalAudio()});
 
