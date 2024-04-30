@@ -1,8 +1,8 @@
 package org.arbor.extrasounds.mixin.jei;
 
-import mezz.jei.api.ingredients.ITypedIngredient;
+import mezz.jei.api.recipe.IFocus;
+import mezz.jei.common.focus.Focus;
 import mezz.jei.common.ingredients.RegisteredIngredients;
-import mezz.jei.common.ingredients.TypedIngredient;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,11 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
-@Mixin(TypedIngredient.class)
+@Mixin(Focus.class)
 @OnlyIn(Dist.CLIENT)
 public class TypedIngredientMixin {
-    @Inject(method = "deepCopy", at = @At("TAIL"), remap = false)
-    private static <T> void deepCopy(RegisteredIngredients registeredIngredients, ITypedIngredient<T> value, CallbackInfoReturnable<Optional<ITypedIngredient<T>>> cir) {
-        SoundManager.playSound(value.getItemStack().orElse(ItemStack.EMPTY), SoundType.PICKUP);
+    @Inject(method = "checkOne", at = @At("HEAD"), remap = false)
+    private static <V> void checkOne(IFocus<V> focus, RegisteredIngredients registeredIngredients, CallbackInfoReturnable<Focus<V>> cir) {
+        if (focus instanceof Focus<V> && focus.getTypedValue().getIngredient() instanceof ItemStack itemStack) {
+            SoundManager.playSound(Optional.of(itemStack).orElse(ItemStack.EMPTY), SoundType.PICKUP);
+        }
     }
 }
