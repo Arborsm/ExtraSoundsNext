@@ -18,6 +18,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.annotation.AddonFinder;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.json.SoundEntrySerializer;
 import org.arbor.extrasounds.json.SoundSerializer;
@@ -58,13 +59,13 @@ public class SoundPackLoader {
     /**
      * Initialization of customized sound event.<br>
      * If it is absent or invalid, the file will be regenerated.<br>
-     * If the regeneration time over 1000 milliseconds, it may be needed to refactor.
+     * If the regeneration time is over 1000 milliseconds, it may be needed to refactor.
      */
     public static void init() {
         final long start = System.currentTimeMillis();
         final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
         // soundGenMappers.put(autoGenerator.generator.namespace, autoGenerator.generator);
-        for (SoundGenerator generator : AutoGenerator.getSoundGenerators()) {
+        for (SoundGenerator generator : AddonFinder.getSoundGenerators()) {
             soundGenMappers.put(generator.namespace, generator);
         }
         // Deleted once.
@@ -145,7 +146,7 @@ public class SoundPackLoader {
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
                     final Block block = blockItem.getBlock();
-                    final SoundEvent blockSound = AutoGenerator.getSoundType(block).getPlaceSound();
+                    final SoundEvent blockSound = DefaultAutoGenerator.getSoundType(block).getPlaceSound();
                     blockSoundDef = SoundDefinition.of(Sounds.aliased(blockSound));
                 } catch (Throwable ignored) {
                 }

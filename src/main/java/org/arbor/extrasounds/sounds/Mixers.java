@@ -1,6 +1,7 @@
 package org.arbor.extrasounds.sounds;
 
 import net.minecraft.sounds.SoundSource;
+import org.arbor.extrasounds.annotation.CategoryLoader;
 
 public class Mixers implements CategoryLoader {
     @Register(master = true, defaultLevel = 0.5f)

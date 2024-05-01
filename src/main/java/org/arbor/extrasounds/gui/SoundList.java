@@ -29,6 +29,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.sounds.SoundSouceInit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,10 +86,10 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
 
     private OptionInstance<?> createCustomizedOption(SoundSource category) {
         final OptionInstance<Double> simpleOption = this.minecraft.options.getSoundSourceOptionInstance(category);
-        if (ExtraSounds.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getFirst()) {
+        if (SoundSouceInit.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getFirst()) {
             return OptionInstance.createBoolean(simpleOption.toString(), value ->
-                            Tooltip.create(ExtraSounds.TOOLTIPS.getOrDefault(category, CommonComponents.EMPTY)),
-                    ExtraSounds.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getSecond(), value -> simpleOption.set(value ? 1.0 : 0.0));
+                            Tooltip.create(SoundSouceInit.TOOLTIPS.getOrDefault(category, CommonComponents.EMPTY)),
+                    SoundSouceInit.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getSecond(), value -> simpleOption.set(value ? 1.0 : 0.0));
         }
         return simpleOption;
     }

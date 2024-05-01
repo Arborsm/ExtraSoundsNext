@@ -77,4 +77,6 @@ dependencies {
     //forgeRuntimeLibrary("cc.tweaked:cobalt:0.9.1")
     modImplementation("curse.maven:selene-499980:5146536")
     // modImplementation("com.cobblemon:forge:1.4.0+")
+    modImplementation("curse.maven:sophisticated-backpacks-422301:5296475")
+    modImplementation("curse.maven:sophisticated-core-618298:5296318")
 }

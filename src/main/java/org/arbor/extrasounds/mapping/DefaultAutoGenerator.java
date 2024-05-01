@@ -6,30 +6,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.language.IModInfo;
 import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.annotation.SoundsGenerator;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.mixin.misc.BucketFluidAccessor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.arbor.extrasounds.sounds.Categories.*;
 import static org.arbor.extrasounds.sounds.Sounds.*;
 
-public final class AutoGenerator {
-    public static List<SoundGenerator> getSoundGenerators() {
-        List<String> namespaces = new ArrayList<>();
-        for (IModInfo mod : ModList.get().getMods()) {
-            namespaces.add(mod.getModId());
-        }
-        namespaces.remove("minecraft");
-        return SoundGenerator.auto(namespaces, AutoGenerator::autoGenerator);
-    }
+public final class DefaultAutoGenerator {
+    @SoundsGenerator
+    public static SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, DefaultAutoGenerator::autoGenerator);
 
-    @SuppressWarnings("")
     public static SoundDefinition autoGenerator(Item item) {
         if (item instanceof RecordItem) {
             return SoundDefinition.of(aliased(MUSIC_DISC));
@@ -184,7 +173,7 @@ public final class AutoGenerator {
             return block.getSoundType(block.defaultBlockState());
         } catch (Throwable e) {
             if (DebugUtils.DEBUG) {
-                ExtraSounds.LOGGER.error("Failed to get sound type for block " + block, e);
+                ExtraSounds.LOGGER.error("Failed to get sound type for block {}", block, e);
             }
             return SoundType.STONE;
         }

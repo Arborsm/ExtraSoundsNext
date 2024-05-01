@@ -21,7 +21,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.sounds.SoundSouceInit;
 
 import java.util.Arrays;
 
@@ -34,8 +34,8 @@ public class CustomSoundOptionsScreen extends AbstractSoundListedScreen {
         assert this.minecraft != null;
         this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32, 25);
         this.list.addCategory(SoundSource.MASTER);
-        SoundSource[] cats = Arrays.stream(SoundSource.values()).filter(it -> !ExtraSounds.PARENTS.containsKey(it) &&
-                !ExtraSounds.PARENTS.containsValue(it) &&
+        SoundSource[] cats = Arrays.stream(SoundSource.values()).filter(it -> !SoundSouceInit.PARENTS.containsKey(it) &&
+                !SoundSouceInit.PARENTS.containsValue(it) &&
                 it != SoundSource.MASTER).toArray(SoundSource[]::new);
         var count = cats.length;
         for (int i = 0; i < count; i += 2) {
@@ -44,8 +44,8 @@ public class CustomSoundOptionsScreen extends AbstractSoundListedScreen {
         this.list.addSingleOptionEntry(options.soundDevice());
         this.list.addAll(new OptionInstance[]{options.showSubtitles(), options.directionalAudio()});
 
-        for (String key : ExtraSounds.MASTER_CLASSES) {
-            final SoundSource category = ExtraSounds.MASTERS.get(key);
+        for (String key : SoundSouceInit.MASTER_CLASSES) {
+            final SoundSource category = SoundSouceInit.MASTERS.get(key);
             this.list.addGroup(category, button ->
                     this.minecraft.setScreen(new SoundGroupOptionsScreen(this, options, category)));
         }

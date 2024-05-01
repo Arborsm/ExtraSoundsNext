@@ -20,7 +20,7 @@ import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.sounds.SoundSouceInit;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
@@ -40,7 +40,7 @@ public abstract class GameOptionsMixin {
     }
 
     /**
-     * Modifies a Constant of the default sound volume that exists in {@link ExtraSounds#DEFAULT_LEVELS} and matches {@link GameOptionsMixin#extra_sounds$currentCategory}.<br>
+     * Modifies a Constant of the default sound volume that exists in {@link SoundSouceInit#DEFAULT_LEVELS} and matches {@link GameOptionsMixin#extra_sounds$currentCategory}.<br>
      * default value is 1.0.
      *
      * @see Options#createSoundSliderOptionInstance
@@ -51,19 +51,19 @@ public abstract class GameOptionsMixin {
         if (this.extra_sounds$currentCategory == null) {
             return value;
         }
-        if (ExtraSounds.DEFAULT_LEVELS.isEmpty()) {
-            ExtraSounds.initCategoryLoader();
+        if (SoundSouceInit.DEFAULT_LEVELS.isEmpty()) {
+            SoundSouceInit.initCategoryLoader();
         }
-        return ExtraSounds.DEFAULT_LEVELS.getOrDefault(this.extra_sounds$currentCategory, (float) value);
+        return SoundSouceInit.DEFAULT_LEVELS.getOrDefault(this.extra_sounds$currentCategory, (float) value);
     }
 
     @Redirect(method = "createSoundSliderOptionInstance", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;noTooltip()Lnet/minecraft/client/OptionInstance$TooltipSupplier;"), require = 0)
     private OptionInstance.TooltipSupplier<?> extra_sounds$modifyTooltip(String key, SoundSource category) {
-        if (ExtraSounds.TOOLTIPS.isEmpty()) {
-            ExtraSounds.initCategoryLoader();
+        if (SoundSouceInit.TOOLTIPS.isEmpty()) {
+            SoundSouceInit.initCategoryLoader();
         }
-        if (ExtraSounds.TOOLTIPS.containsKey(category)) {
-            return value -> Tooltip.create(ExtraSounds.TOOLTIPS.get(category));
+        if (SoundSouceInit.TOOLTIPS.containsKey(category)) {
+            return value -> Tooltip.create(SoundSouceInit.TOOLTIPS.get(category));
         }
         return OptionInstance.noTooltip();
     }

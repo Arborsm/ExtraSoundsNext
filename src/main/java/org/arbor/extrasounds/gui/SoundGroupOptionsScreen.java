@@ -20,7 +20,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
-import org.arbor.extrasounds.ExtraSounds;
+import org.arbor.extrasounds.sounds.SoundSouceInit;
 
 import java.util.Arrays;
 
@@ -38,7 +38,7 @@ public class SoundGroupOptionsScreen extends AbstractSoundListedScreen {
         this.list.addCategory(parentCategory);
 
         final SoundSource[] categories = Arrays.stream(SoundSource.values()).filter(it ->
-                ExtraSounds.PARENTS.containsKey(it) && ExtraSounds.PARENTS.get(it) == parentCategory && it != parentCategory).toArray(SoundSource[]::new);
+                SoundSouceInit.PARENTS.containsKey(it) && SoundSouceInit.PARENTS.get(it) == parentCategory && it != parentCategory).toArray(SoundSource[]::new);
         this.list.addAllCategory(categories);
 
         this.addWidget(this.list);

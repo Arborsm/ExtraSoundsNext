@@ -1,12 +1,13 @@
 package org.arbor.extrasounds.sounds;
 
-import org.arbor.extrasounds.ExtraSounds;
-import java.util.List;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.valueproviders.ConstantFloat;
+import org.arbor.extrasounds.ExtraSounds;
+
+import java.util.List;
 
 public class Sounds {
     public static final SoundEvent CHAT = ExtraSounds.createEvent("chat.message");

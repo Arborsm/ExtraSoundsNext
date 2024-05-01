@@ -19,7 +19,8 @@ package org.arbor.extrasounds.mixin.gui;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.sounds.SoundSource;
 import org.arbor.extrasounds.ExtraSounds;
-import org.arbor.extrasounds.sounds.CategoryLoader;
+import org.arbor.extrasounds.annotation.CategoryLoader;
+import org.arbor.extrasounds.sounds.SoundSouceInit;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -102,7 +103,7 @@ public class SoundCategoryMixin {
             REGISTERED_VARIANTS.put(category.getName(), category);
         }
 
-        final Pair<CategoryLoader, List<Field>> categories = ExtraSounds.getCategories();
+        final Pair<CategoryLoader, List<Field>> categories = SoundSouceInit.getCategories();
         final CategoryLoader categoryLoader = categories.getFirst();
         categories.getSecond().forEach(field -> {
             if (!field.getType().equals(SoundSource.class)) {
