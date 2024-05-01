@@ -17,7 +17,7 @@ import static org.arbor.extrasounds.sounds.Sounds.*;
 
 public final class DefaultAutoGenerator {
     @SoundsGenerator
-    public static SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, DefaultAutoGenerator::autoGenerator);
+    public final static SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, DefaultAutoGenerator::autoGenerator);
 
     public static SoundDefinition autoGenerator(Item item) {
         if (item instanceof RecordItem) {

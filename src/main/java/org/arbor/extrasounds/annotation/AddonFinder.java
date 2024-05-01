@@ -18,6 +18,7 @@ import static org.arbor.extrasounds.ExtraSounds.LOGGER;
 
 public class AddonFinder {
     protected static List<Field> cache = null;
+    private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
 
     public static List<Field> getSoundsGenerators() {
         if (cache == null) {
@@ -30,14 +31,18 @@ public class AddonFinder {
         Type annotationType = Type.getType(SoundsGenerator.class);
         List<ModFileScanData> allScanData = ModList.get().getAllScanData();
         Set<Field> annotatedFields = new LinkedHashSet<>();
+
         for (ModFileScanData scanData : allScanData) {
             Iterable<ModFileScanData.AnnotationData> annotations = scanData.getAnnotations();
             for (ModFileScanData.AnnotationData a : annotations) {
-                if (Objects.equals(a.annotationType(), annotationType)) {
+                if (annotationType != null && Objects.equals(a.annotationType(), annotationType)) {
                     try {
-                        Class<?> asmClass = Class.forName(a.clazz().getClassName());
+                        Class<?> asmClass = loadClass(a.clazz().getClassName());
                         for (Field field : asmClass.getDeclaredFields()) {
                             if (field.isAnnotationPresent(SoundsGenerator.class)) {
+                                if (!field.canAccess(null)) {
+                                    field.setAccessible(true);
+                                }
                                 annotatedFields.add(field);
                             }
                         }
@@ -49,6 +54,15 @@ public class AddonFinder {
             }
         }
         return new ArrayList<>(annotatedFields);
+    }
+
+    private static Class<?> loadClass(String className) throws ClassNotFoundException {
+        Class<?> clazz = CLASS_CACHE.get(className);
+        if (clazz == null) {
+            clazz = Class.forName(className);
+            CLASS_CACHE.put(className, clazz);
+        }
+        return clazz;
     }
 
 
