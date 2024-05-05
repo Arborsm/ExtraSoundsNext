@@ -23,17 +23,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.sounds.CategoryLoader;
 import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundType;
-import org.arbor.extrasounds.sounds.SoundsForge;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -69,8 +65,6 @@ public class ExtraSounds {
     }
 
     public ExtraSounds() {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        SoundsForge.SOUNDEVENTS.register(eventBus);
     }
 
     public static Pair<CategoryLoader, List<Field>> getCategories() {
@@ -106,10 +100,6 @@ public class ExtraSounds {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
         }
         return MISSING;
-    }
-
-    public static RegistryObject<SoundEvent> createEvent(String path){
-        return SoundsForge.SOUNDEVENTS.register(path, () -> ExtraSounds.createSoundEvent(path));
     }
 
     private static String generateFieldClassName(Class<?> clazz, Field field) {

@@ -5,10 +5,10 @@ import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.valueproviders.ConstantFloat;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.arbor.extrasounds.ExtraSounds;
 
 import java.util.List;
+
+import static org.arbor.extrasounds.ExtraSounds.createSoundEvent;
 
 public class Sounds {
     public static final SoundEvent CHAT = register("chat.message");
@@ -67,8 +67,6 @@ public class Sounds {
     }
 
     protected static SoundEvent register(String id) {
-        var e = ForgeRegistries.SOUND_EVENTS.getValue(ExtraSounds.id(id));
-        if (e == null) throw new RuntimeException("Sound event " + id + " not found");
-        return e;
+        return createSoundEvent(id);
     }
 }
