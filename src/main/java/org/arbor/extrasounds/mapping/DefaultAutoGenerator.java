@@ -1,15 +1,10 @@
 package org.arbor.extrasounds.mapping;
 
 import net.minecraft.client.resources.sounds.Sound;
-import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.material.Fluid;
-import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.annotation.SoundsGenerator;
-import org.arbor.extrasounds.debug.DebugUtils;
-import org.arbor.extrasounds.mixin.misc.BucketFluidAccessor;
 import org.jetbrains.annotations.NotNull;
 
 import static org.arbor.extrasounds.sounds.Categories.*;
@@ -37,7 +32,7 @@ public final class DefaultAutoGenerator {
         } else if (item instanceof ShieldItem) {
             return SoundDefinition.of(aliased(Gear.IRON));
         } else if (item instanceof BucketItem bucketItem) {
-            return getBucketItemSound(bucketItem);
+            return SoundGenerator.getBucketItemSound(bucketItem);
         } else if (item instanceof MinecartItem) {
             return SoundDefinition.of(aliased(MINECART));
         } else if (item instanceof ItemFrameItem) {
@@ -70,7 +65,7 @@ public final class DefaultAutoGenerator {
             return SoundDefinition.of(aliased(PAPER));
         } else if (item instanceof BlockItem blockItem) {
             Block block = blockItem.getBlock();
-            ResourceLocation blockSound = getSoundType(block).getPlaceSound().getLocation();
+            ResourceLocation blockSound = SoundGenerator.getSoundType(block).getPlaceSound().getLocation();
 
             if (block instanceof BaseRailBlock) {
                 return SoundDefinition.of(aliased(RAIL));
@@ -79,13 +74,13 @@ public final class DefaultAutoGenerator {
             } else if (block instanceof SeaPickleBlock) {
                 return SoundDefinition.of(event(blockSound, 0.4f));
             } else if (block instanceof LeavesBlock || block instanceof BushBlock || block instanceof SugarCaneBlock) {
-                ResourceLocation soundId = getSoundType(block).getPlaceSound().getLocation();
+                ResourceLocation soundId = SoundGenerator.getSoundType(block).getPlaceSound().getLocation();
                 if (soundId.getPath().equals("block.grass.place")) {
                     return SoundDefinition.of(aliased(LEAVES));
                 } else {
                     return SoundDefinition.of(event(soundId));
                 }
-            } else if (block instanceof RotatedPillarBlock pillarBlock && getSoundType(pillarBlock).equals(SoundType.FROGLIGHT)) {
+            } else if (block instanceof RotatedPillarBlock pillarBlock && SoundGenerator.getSoundType(pillarBlock).equals(SoundType.FROGLIGHT)) {
                 return SoundDefinition.of(event(blockSound, 0.3f));
             }
 
@@ -145,37 +140,6 @@ public final class DefaultAutoGenerator {
     }
 
     private static boolean isBrickItem(Item item) {
-        return item == Items.BRICK || getDescriptionId(item).endsWith("pottery_sherd");
-    }
-
-    private static String getDescriptionId(Item item) {
-        String id = "";
-        try {
-            id = item.getDescriptionId();
-        } catch (NullPointerException ignored) {
-        }
-        return id;
-    }
-
-    private static SoundDefinition getBucketItemSound(BucketItem bucketItem) {
-        SoundEventRegistration soundEntry;
-        try {
-            final Fluid fluid = ((BucketFluidAccessor) bucketItem).getContent();
-            soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
-        } catch (NullPointerException ignored) {
-            soundEntry = aliased(METAL);
-        }
-        return SoundDefinition.of(soundEntry);
-    }
-    @SuppressWarnings("deprecation")
-    public static SoundType getSoundType(Block block){
-        try {
-            return block.getSoundType(block.defaultBlockState());
-        } catch (Throwable e) {
-            if (DebugUtils.DEBUG) {
-                ExtraSounds.LOGGER.error("Failed to get sound type for block {}", block, e);
-            }
-            return SoundType.STONE;
-        }
+        return item == Items.BRICK || SoundGenerator.getDescriptionId(item).endsWith("pottery_sherd");
     }
 }

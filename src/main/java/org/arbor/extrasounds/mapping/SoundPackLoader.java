@@ -146,7 +146,7 @@ public class SoundPackLoader {
                 SoundDefinition blockSoundDef = SoundDefinition.of(fallbackSoundEntry);
                 try {
                     final Block block = blockItem.getBlock();
-                    final SoundEvent blockSound = DefaultAutoGenerator.getSoundType(block).getPlaceSound();
+                    final SoundEvent blockSound = SoundGenerator.getSoundType(block).getPlaceSound();
                     blockSoundDef = SoundDefinition.of(Sounds.aliased(blockSound));
                 } catch (Throwable ignored) {
                 }
