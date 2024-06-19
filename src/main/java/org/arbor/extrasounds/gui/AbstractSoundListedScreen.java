@@ -19,8 +19,8 @@ package org.arbor.extrasounds.gui;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -69,12 +69,12 @@ public abstract class AbstractSoundListedScreen extends OptionsSubScreen {
         }
     }
 
-    public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+    public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(context, mouseX, mouseY, partialTick);
         if (this.list != null) {
-            this.list.render(context, mouseX, mouseY, delta);
+            this.list.render(context, mouseX, mouseY, partialTick);
         }
         context.drawCenteredString(this.font, this.title, this.width / 2, 5, 0xffffff);
-        super.render(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, partialTick);
     }
 }

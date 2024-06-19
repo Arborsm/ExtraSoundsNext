@@ -1,9 +1,8 @@
-apply plugin: "dev.architectury.loom"
 
 java {
     withSourcesJar()
 }
-
+/*
 shadowJar {
     exclude "fabric.mod.json"
     exclude "architectury.common.json"
@@ -17,7 +16,7 @@ remapJar {
     dependsOn shadowJar
     archiveClassifier = null
 }
-
+*/
 jar {
     archiveClassifier = "dev"
 }
@@ -27,6 +26,6 @@ jar {
 //    archiveClassifier = "slim"
 //}
 
-tasks.remapJar.dependsOn('remapSlimJar')
+//tasks.remapJar.dependsOn('remapSlimJar')
 
 archivesBaseName = "${project.name}-${libs.versions.minecraft.get()}-forge"

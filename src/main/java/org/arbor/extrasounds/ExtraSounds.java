@@ -19,10 +19,11 @@ package org.arbor.extrasounds;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundType;
@@ -34,14 +35,14 @@ public class ExtraSounds {
     public static final String MODID = "extrasounds";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final Mixers MIXERS = new Mixers();
-    public static final ResourceLocation SETTINGS_ICON = new ResourceLocation(MODID, "textures/gui/settings.png");
-    public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "missing"));
+    public static final ResourceLocation SETTINGS_ICON = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/settings.png");
+    public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, "missing"));
 
     public ExtraSounds() {
 
     }
 
-    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
@@ -54,12 +55,12 @@ public class ExtraSounds {
         if (id == null || type == null) {
             return null;
         }
-        return new ResourceLocation(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
+        return ResourceLocation.fromNamespaceAndPath(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
     }
 
     public static SoundEvent createEvent(String path) {
         try {
-            return SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, path));
+            return SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, path));
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSounds.class.getSimpleName()), ex);
         }
@@ -76,7 +77,7 @@ public class ExtraSounds {
     }
 
     public static ResourceLocation id(String id) {
-        return new ResourceLocation(ExtraSounds.MODID, id);
+        return ResourceLocation.fromNamespaceAndPath(ExtraSounds.MODID, id);
     }
 
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +22,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
@@ -189,7 +190,7 @@ public class SoundManager {
     }
 
     public static void playSound(ItemStack stack, SoundType type) {
-        var itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         ResourceLocation id = ExtraSounds.getClickId(itemId, type);
         SoundEvent event = SoundPackLoader.CUSTOM_SOUND_EVENT.getOrDefault(id, null);
         if (event == null) {
@@ -200,8 +201,8 @@ public class SoundManager {
     }
 
     public static void playDefaultSound(ItemStack stack, SoundType type) {
-        ResourceLocation defaultItem = ExtraSounds.getClickId(ForgeRegistries.ITEMS.getKey(Items.DIAMOND), type);
-        ResourceLocation defaultBlock = ExtraSounds.getClickId(ForgeRegistries.ITEMS.getKey(Items.STONE), type);
+        ResourceLocation defaultItem = ExtraSounds.getClickId(BuiltInRegistries.ITEM.getKey(Items.DIAMOND), type);
+        ResourceLocation defaultBlock = ExtraSounds.getClickId(BuiltInRegistries.ITEM.getKey(Items.STONE), type);
         SoundEvent defaultSound;
         if (stack.getItem() instanceof BlockItem){
             defaultSound = SoundPackLoader.CUSTOM_SOUND_EVENT.get(defaultBlock);

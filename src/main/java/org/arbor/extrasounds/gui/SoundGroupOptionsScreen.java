@@ -32,8 +32,9 @@ public class SoundGroupOptionsScreen extends AbstractSoundListedScreen {
         parentCategory = category;
     }
 
-    protected void init() {
-        this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32, 25);
+    @Override
+    protected void addOptions() {
+        this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32);
 
         this.list.addCategory(parentCategory);
 

@@ -15,7 +15,7 @@
     "emi.EmiScreenManagerMixin",
     "emi.RecipeScreenMixin",
     "gui.GameOptionsMixin",
-    "gui.SoundCategoryMixin",
+    "gui.SoundSourceMixin",
     "gui.SoundSettingsMixin",
     "hotbar.ClientPlayerEntityMixin",
     "hotbar.ClientPlayNetworkHandlerMixin",

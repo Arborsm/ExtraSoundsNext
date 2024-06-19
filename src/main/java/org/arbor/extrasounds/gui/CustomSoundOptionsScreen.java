@@ -30,9 +30,10 @@ public class CustomSoundOptionsScreen extends AbstractSoundListedScreen {
         super(parent, options, Component.translatable("options.sounds.title"));
     }
 
-    protected void init() {
+    @Override
+    protected void addOptions() {
         assert this.minecraft != null;
-        this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32, 25);
+        this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32);
         this.list.addCategory(SoundSource.MASTER);
         SoundSource[] cats = Arrays.stream(SoundSource.values()).filter(it -> !SoundSouceInit.PARENTS.containsKey(it) &&
                 !SoundSouceInit.PARENTS.containsValue(it) &&
