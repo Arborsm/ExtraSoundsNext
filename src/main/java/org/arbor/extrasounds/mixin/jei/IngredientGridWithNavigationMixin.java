@@ -1,8 +1,8 @@
 package org.arbor.extrasounds.mixin.jei;
 
 import mezz.jei.gui.input.IUserInputHandler;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.arbor.extrasounds.sounds.ScrollSound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,7 +19,7 @@ public abstract class IngredientGridWithNavigationMixin {
     private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
 
     @Inject(method = "handleMouseScrolled", at = @At("HEAD"), remap = false)
-    private void handleMouseScrolled(double mouseX, double mouseY, double scrollDelta, CallbackInfoReturnable<Optional<IUserInputHandler>> cir) {
+    private void handleMouseScrolled(double mouseX, double mouseY, double scrollDeltaX, double scrollDeltaY, CallbackInfoReturnable<Optional<IUserInputHandler>> cir) {
         extra_sounds$scrollSound.play();
     }
 }

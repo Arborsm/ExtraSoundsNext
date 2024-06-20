@@ -4,17 +4,17 @@ import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arbor.extrasounds.ExtraSounds;
@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(modid = ExtraSounds.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = ExtraSounds.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class SoundPackLoader {
     public static JsonObject GENERATED_SOUNDS;
     private static final Logger LOGGER = LogManager.getLogger();
@@ -95,7 +95,7 @@ public class SoundPackLoader {
         try {
             final CacheData cacheData = CacheData.read();
             final JsonObject jsonObject = cacheData.asJsonObject();
-            jsonObject.keySet().forEach(key -> putSoundEvent(new ResourceLocation(ExtraSounds.MODID, key)));
+            jsonObject.keySet().forEach(key -> putSoundEvent(ResourceLocation.fromNamespaceAndPath(ExtraSounds.MODID, key)));
             GENERATED_SOUNDS = jsonObject;
         } catch (JsonParseException e) {
             DebugUtils.genericLog(e.getMessage());
@@ -137,8 +137,8 @@ public class SoundPackLoader {
             }
         }
 
-        for (Item item : ForgeRegistries.ITEMS) {
-            final ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
+        for (Item item : BuiltInRegistries.ITEM) {
+            final ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
             final SoundDefinition definition;
             if (soundGenerator.containsKey(Objects.requireNonNull(itemId).getNamespace())) {
                 definition = soundGenerator.get(itemId.getNamespace()).itemSoundGenerator.apply(item);

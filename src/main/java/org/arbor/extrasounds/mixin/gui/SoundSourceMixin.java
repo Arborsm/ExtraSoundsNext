@@ -32,12 +32,12 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 @Mixin(SoundSource.class)
-public class SoundCategoryMixin {
+public class SoundSourceMixin {
     // And you
     @Shadow(aliases = "$VALUES", remap = false)
     @Final
     @Mutable
-    private static SoundSource[] field_15255;
+    private static SoundSource[] $VALUES;
     @Unique
     private static final String INVALID_VAR_NAME_REGEX = "[^a-zA-Z0-9_$]";
     @Unique
@@ -78,7 +78,7 @@ public class SoundCategoryMixin {
             }
             newCategory = REGISTERED_VARIANTS.get(displayName);
         } else {
-            newCategory = extra_sounds$newSoundCategory(varName, EDITING_CATS.get(EDITING_CATS.size() - 1).ordinal() + 1, displayName);
+            newCategory = extra_sounds$newSoundCategory(varName, EDITING_CATS.getLast().ordinal() + 1, displayName);
         }
 
         field.set(instance, newCategory);
@@ -98,7 +98,7 @@ public class SoundCategoryMixin {
     private static void extra_sounds$addCustomVariants(CallbackInfo ci) {
         REGISTERED_VARIANTS = new HashMap<>();
         SUPPRESSED_NAMES = new ArrayList<>();
-        EDITING_CATS = new ArrayList<>(Arrays.asList(field_15255));
+        EDITING_CATS = new ArrayList<>(Arrays.asList($VALUES));
         for (SoundSource category : EDITING_CATS) {
             REGISTERED_VARIANTS.put(category.getName(), category);
         }
@@ -122,7 +122,7 @@ public class SoundCategoryMixin {
         });
 
         // Set the new enums.
-        field_15255 = EDITING_CATS.toArray(SoundSource[]::new);
+        $VALUES = EDITING_CATS.toArray(SoundSource[]::new);
 
         // Cleanup.
         EDITING_CATS.clear();

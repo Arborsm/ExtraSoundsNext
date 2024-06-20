@@ -31,7 +31,7 @@ public class SoundManagerMixin {
             Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(SoundManager.GSON, reader, SoundManager.SOUND_EVENT_REGISTRATION_TYPE);
             profilerFiller.popPush("register");
             for(Map.Entry<String, SoundEventRegistration> entry : ExtraSoundsMap.entrySet()) {
-                preparations.handleRegistration(new ResourceLocation(ExtraSounds.MODID, entry.getKey()), entry.getValue());
+                preparations.handleRegistration(ResourceLocation.fromNamespaceAndPath(ExtraSounds.MODID, entry.getKey()), entry.getValue());
             }
             profilerFiller.pop();
         } catch (Throwable throwable) {

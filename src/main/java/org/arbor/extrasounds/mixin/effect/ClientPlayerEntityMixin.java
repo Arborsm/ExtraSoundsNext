@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -27,13 +28,13 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
     @Override
     protected void onEffectAdded(@NotNull MobEffectInstance effect, @Nullable Entity source) {
         super.onEffectAdded(effect, source);
-        SoundManager.effectChanged(effect.getEffect(), SoundManager.EffectType.ADD);
+        SoundManager.effectChanged(effect.getEffect().value(), SoundManager.EffectType.ADD);
     }
 
     @Inject(method = "removeEffectNoUpdate", at = @At("HEAD"))
-    private void extrasounds$effectRemoved(MobEffect type, CallbackInfoReturnable<MobEffectInstance> cir) {
-        if (this.hasEffect(type)) {
-            SoundManager.effectChanged(type, SoundManager.EffectType.REMOVE);
+    private void extrasounds$effectRemoved(Holder<MobEffect> pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
+        if (this.hasEffect(pEffect)) {
+            SoundManager.effectChanged(pEffect.value(), SoundManager.EffectType.REMOVE);
         }
     }
 }

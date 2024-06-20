@@ -1,12 +1,12 @@
-dependencies {
-    minecraft "com.mojang:minecraft:${libs.versions.minecraft.get()}"
-    mappings loom.layered {
-        it.mappings("org.quiltmc:quilt-mappings:${libs.versions.minecraft.get()}+build.${libs.versions.quiltMappings.get()}:intermediary-v2")
-        it.parchment("org.parchmentmc.data:parchment-${libs.versions.minecraft.get()}:${libs.versions.parchment.get()}@zip")
-        it.officialMojangMappings { nameSyntheticMembers = false }
-    }
+configurations {
+    libraries {}
+    implementation.extendsFrom libraries
+    runtimeClasspath.extendsFrom localRuntime
+}
 
-    forge forge.minecraftForge
+dependencies {
+
+    implementation "net.neoforged:neoforge:${neo_version}"
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
@@ -19,64 +19,62 @@ dependencies {
     testImplementation 'io.javalin:javalin:5.4.2'
     testImplementation 'org.mockito:mockito-core:5.2.0'
 
-    implementation("io.github.llamalad7:mixinextras-forge:${this.forge.versions.mixinextras.get()}")
-
     // LDLib
-    modImplementation(forge.ldlib.forge) { transitive = false }
+//    implementation(neoforge.ldlib.neoforge) { transitive = false }
 
     // Registrate
-    modImplementation("com.tterrag.registrate:Registrate:${forge.versions.registrate.get()}")
+//    implementation("com.tterrag.registrate:Registrate:${forge.versions.registrate.get()}")
 
     // Create and its dependencies
-    modImplementation("com.simibubi.create:create-${libs.versions.minecraft.get()}:${forge.versions.createForge.get()}:all") { transitive = false }
-    modImplementation forge.flywheel
+//    implementation("com.simibubi.create:create-${libs.versions.minecraft.get()}:${forge.versions.createForge.get()}:all") { transitive = false }
+//    implementation forge.flywheel
 
     // JEI
-    modCompileOnly(forge.jei.common.api) { transitive = false }
-    modCompileOnly(forge.jei.forge.api) { transitive = false }
-    modImplementation(forge.jei.forge.impl) { transitive = false }
+    compileOnly(neoforge.jei.common.api) { transitive = false }
+    compileOnly(neoforge.jei.neoforge.api) { transitive = false }
+    implementation(neoforge.jei.neoforge.impl) { transitive = false }
 
     // REI
-    modCompileOnly forge.rei.plugin
-    modCompileOnly forge.rei.api
-    modCompileOnly forge.rei.forge
+    compileOnly neoforge.rei.plugin
+    compileOnly neoforge.rei.api
+    compileOnly neoforge.rei.neoforge
 
     // EMI
-    modCompileOnly("dev.emi:emi-forge:${forge.versions.emi.get()}:api")
-    modImplementation forge.emi
+    compileOnly("dev.emi:emi-neoforge:${neoforge.versions.emi.get()}:api")
+    implementation neoforge.emi
 
     // Jade
-    modImplementation(forge.jade)
+//    implementation(neoforge.jade)
 
     // Configuration
-    modImplementation(forge.configuration)
+//    implementation(neoforge.configuration)
 
     // Shimmer
-    modImplementation(forge.shimmer.forge) { transitive = false }
+//    implementation(forge.shimmer.forge) { transitive = false }
 
     // GTM
-    modImplementation(forge.gtm) { transitive = false }
+//    implementation(forge.gtm) { transitive = false }
 
     // AdAstra
-    modImplementation(forge.ad.astra) { transitive = false }
-    modImplementation(forge.resourcefullib) { transitive = false }
-    modImplementation(forge.resourcefulconfig)
-    modImplementation(forge.botarium)
-    forgeRuntimeLibrary("com.teamresourceful:ByteCodecs:1.0.2")
-    forgeRuntimeLibrary("com.teamresourceful:yabn:1.0.3")
+//    implementation(forge.ad.astra) { transitive = false }
+//    implementation(forge.resourcefullib) { transitive = false }
+//    implementation(forge.resourcefulconfig)
+//    implementation(forge.botarium)
+//    libraries("com.teamresourceful:ByteCodecs:1.0.2")
+//    libraries("com.teamresourceful:yabn:1.0.3")
 
     // test
-    modImplementation("curse.maven:mekanism-268560:4866575")
-    modImplementation("curse.maven:randomium-ore-523013:5078254")
-    modImplementation("curse.maven:selene-499980:5091454")
-    modImplementation("curse.maven:ultimate-car-mod-267458:5082451")
+    implementation("curse.maven:mekanism-268560:5433143")
+//    implementation("curse.maven:randomium-ore-523013:5078254")
+//    implementation("curse.maven:selene-499980:5091454")
+    implementation("curse.maven:ultimate-car-mod-267458:5440801")
 
     //others
-    modImplementation("curse.maven:supplementaries-412082:5147148")
+//    implementation("curse.maven:supplementaries-412082:5147148")
     //modImplementation("curse.maven:cc-tweaked-282001:5118388")
     //forgeRuntimeLibrary("cc.tweaked:cobalt:0.9.1")
-    modImplementation("curse.maven:selene-499980:5146536")
+//    implementation("curse.maven:selene-499980:5146536")
     // modImplementation("com.cobblemon:forge:1.4.0+")
-    modImplementation("curse.maven:sophisticated-backpacks-422301:5296475")
-    modImplementation("curse.maven:sophisticated-core-618298:5296318")
+//    implementation("curse.maven:sophisticated-backpacks-422301:5296475")
+//    implementation("curse.maven:sophisticated-core-618298:5296318")
 }

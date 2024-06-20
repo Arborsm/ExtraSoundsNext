@@ -1,9 +1,9 @@
 package org.arbor.extrasounds.annotation;
 
 import net.minecraft.world.item.Item;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.forgespi.language.ModFileScanData;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.mapping.DefaultAutoGenerator;
 import org.arbor.extrasounds.mapping.SoundDefinition;

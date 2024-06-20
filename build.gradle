@@ -1,35 +1,34 @@
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
-    alias libs.plugins.architectury
-    alias libs.plugins.architectury.loom
-    // alias libs.plugins.vineFlower // VineFlower, a better decompiler
-    alias libs.plugins.machete // automatic jar compressing on build
-    alias libs.plugins.shadow
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    alias libs.plugins.machete
 }
 
-apply plugin: "dev.architectury.loom"
-apply plugin: "java"
-apply plugin: "architectury-plugin"
-apply plugin: "maven-publish"
-
-architectury {
-    compileOnly()
-    minecraft = libs.versions.minecraft
-}
-
-tasks.register('remapSlimJar', RemapJarTask) {
-    dependsOn(jar)
-    inputFile.set jar.archiveFile
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 group = maven_group
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 // Formats the mod version to include the loader, Minecraft version, and build number (if present)
 String buildNumber = System.getenv("GITHUB_ACTION_NUMBER")
 version = "${mod_version}" + (buildNumber != null ? "-build_${System.getenv("GITHUB_RUN_NUMBER")}" : "")
 
-apply from: "$rootDir/gradle/scripts/architectury_loom.gradle"
+apply from: "$rootDir/gradle/scripts/neogradle.gradle"
 apply from: "$rootDir/gradle/scripts/repositories.gradle"
 apply from: "$rootDir/gradle/scripts/dependencies.gradle"
 apply from: "$rootDir/gradle/scripts/resources.gradle"
@@ -43,4 +42,11 @@ tasks.withType(JavaCompile).configureEach {
 machete {
     // disable machete locally for faster builds
     enabled = false
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

@@ -21,14 +21,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.arbor.extrasounds.ExtraSounds;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.arbor.extrasounds.sounds.SoundSouceInit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,9 +40,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry> {
-
-    public SoundList(Minecraft minecraftClient, int i, int j, int k, int l, int m) {
-        super(minecraftClient, i, j, k, l, m);
+    public SoundList(Minecraft minecraftClient, int width, int height, int y, int itemHeight) {
+        super(minecraftClient, width, height, y, itemHeight);
         this.centerListVertically = false;
     }
 
@@ -77,7 +78,7 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
     }
 
     public int getRowWidth() {
-        return 400;
+        return 310;
     }
 
     protected int getScrollbarPosition() {
@@ -119,9 +120,9 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
             return new SoundEntry(
                     List.of(
                             group.createButton(options, width / 2 - 155, 0, 285),
-                            new ImageButton(width / 2 + 135, 0, 20, 20, 0, 0, 20,
-                                    ExtraSounds.SETTINGS_ICON, 20, 40, pressAction)
-                    ));
+                            new ImageButton(width / 2 + 135, 0, 20, 20, pressAction)
+                    )
+            );
         }
 
         public @NotNull List<? extends GuiEventListener> children() {
