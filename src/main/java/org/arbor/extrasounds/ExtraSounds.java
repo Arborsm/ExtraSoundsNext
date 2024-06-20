@@ -17,6 +17,7 @@
 package org.arbor.extrasounds;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.resources.TextureAtlasHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.api.distmarker.Dist;
@@ -24,6 +25,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import org.arbor.extrasounds.debug.DebugUtils;
 import org.arbor.extrasounds.sounds.Mixers;
 import org.arbor.extrasounds.sounds.SoundType;
@@ -42,11 +44,16 @@ public class ExtraSounds {
 
     }
 
+
     @EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             DebugUtils.init();
+        }
+
+        @SubscribeEvent
+        public static void onRegisterClientReloadListenersEvent(RegisterClientReloadListenersEvent event) {
         }
     }
 

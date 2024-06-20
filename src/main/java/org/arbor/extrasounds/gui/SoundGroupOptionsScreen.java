@@ -33,8 +33,14 @@ public class SoundGroupOptionsScreen extends AbstractSoundListedScreen {
     }
 
     @Override
+    protected void repositionElements() {
+        super.repositionElements();
+        this.list.updateSize(this.width, this.layout);
+    }
+
+    @Override
     protected void addOptions() {
-        this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32);
+        this.list = this.layout.addToContents(new SoundList(this.minecraft, width, this.layout.getContentHeight(), this.layout.getHeaderHeight(), 25));
 
         this.list.addCategory(parentCategory);
 
@@ -42,8 +48,6 @@ public class SoundGroupOptionsScreen extends AbstractSoundListedScreen {
                 SoundSouceInit.PARENTS.containsKey(it) && SoundSouceInit.PARENTS.get(it) == parentCategory && it != parentCategory).toArray(SoundSource[]::new);
         this.list.addAllCategory(categories);
 
-        this.addWidget(this.list);
-
-        this.addDoneButton();
+        this.addRenderableWidget(this.list);
     }
 }

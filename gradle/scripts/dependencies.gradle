@@ -20,7 +20,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.2.0'
 
     // LDLib
-    implementation(neoforge.ldlib.neoforge) { transitive = false }
+//    implementation(neoforge.ldlib.neoforge) { transitive = false }
 
     // Registrate
 //    implementation("com.tterrag.registrate:Registrate:${forge.versions.registrate.get()}")
@@ -44,10 +44,10 @@ dependencies {
     implementation neoforge.emi
 
     // Jade
-    implementation(neoforge.jade)
+//    implementation(neoforge.jade)
 
     // Configuration
-    implementation(neoforge.configuration)
+//    implementation(neoforge.configuration)
 
     // Shimmer
 //    implementation(forge.shimmer.forge) { transitive = false }

@@ -17,8 +17,10 @@
 package org.arbor.extrasounds.mixin.gui;
 
 import net.minecraft.client.Options;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.OptionsScreen;
+import net.minecraft.network.chat.Component;
 import org.arbor.extrasounds.gui.CustomSoundOptionsScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,12 +31,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.function.Supplier;
 
 @Mixin(value = OptionsScreen.class, remap = false)
-public class SoundSettingsMixin {
+public abstract class SoundSettingsMixin {
     @Shadow
     private @Final Options options;
 
-    @Redirect(method = {"lambda$openScreenButton$15"}, at = @At(value = "INVOKE", target = "Ljava/util/function/Supplier;get()Ljava/lang/Object;"), remap = false)
-    private Object redirectToCustomScreen(Supplier<Screen> instance) {
-        return new CustomSoundOptionsScreen(OptionsScreen.class.cast(this), options);
+    @Shadow
+    protected abstract Button openScreenButton(Component p_345646_, Supplier<Screen> p_345565_);
+
+    @Redirect(method = {"init"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;", ordinal = 1), remap = false)
+    private Button redirectToCustomScreen(OptionsScreen instance, Component component, Supplier<Screen> unused) {
+        return this.openScreenButton(component, () -> new CustomSoundOptionsScreen(instance, this.options));
     }
 }

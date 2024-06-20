@@ -68,13 +68,4 @@ public abstract class AbstractSoundListedScreen extends OptionsSubScreen {
             );
         }
     }
-
-    public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(context, mouseX, mouseY, partialTick);
-        if (this.list != null) {
-            this.list.render(context, mouseX, mouseY, partialTick);
-        }
-        context.drawCenteredString(this.font, this.title, this.width / 2, 5, 0xffffff);
-        super.render(context, mouseX, mouseY, partialTick);
-    }
 }

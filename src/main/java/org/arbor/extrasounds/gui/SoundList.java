@@ -24,17 +24,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.arbor.extrasounds.ExtraSounds;
 import org.arbor.extrasounds.sounds.SoundSouceInit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,12 +40,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry> {
-
-    private static final WidgetSprites EXTRA_SOUNDS_ICONS = new WidgetSprites(
-            ResourceLocation.fromNamespaceAndPath(ExtraSounds.MODID, "textures/gui/settings/button"),
-            ResourceLocation.fromNamespaceAndPath(ExtraSounds.MODID, "textures/gui/settings/hover")
-    );
-
     public SoundList(Minecraft minecraftClient, int width, int height, int y, int itemHeight) {
         super(minecraftClient, width, height, y, itemHeight);
         this.centerListVertically = false;
@@ -88,7 +78,7 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
     }
 
     public int getRowWidth() {
-        return 400;
+        return 310;
     }
 
     protected int getScrollbarPosition() {
@@ -130,7 +120,7 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
             return new SoundEntry(
                     List.of(
                             group.createButton(options, width / 2 - 155, 0, 285),
-                            new ImageButton(width / 2 + 135, 0, 20, 20, EXTRA_SOUNDS_ICONS, pressAction)
+                            new ImageButton(width / 2 + 135, 0, 20, 20, pressAction)
                     )
             );
         }

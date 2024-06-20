@@ -31,9 +31,15 @@ public class CustomSoundOptionsScreen extends AbstractSoundListedScreen {
     }
 
     @Override
+    protected void repositionElements() {
+        super.repositionElements();
+        this.list.updateSize(this.width, this.layout);
+    }
+
+    @Override
     protected void addOptions() {
         assert this.minecraft != null;
-        this.list = new SoundList(this.minecraft, this.width, this.height, 32, this.height - 32);
+        this.list = this.layout.addToContents(new SoundList(this.minecraft, this.width, this.layout.getContentHeight(), this.layout.getHeaderHeight(), 25));
         this.list.addCategory(SoundSource.MASTER);
         SoundSource[] cats = Arrays.stream(SoundSource.values()).filter(it -> !SoundSouceInit.PARENTS.containsKey(it) &&
                 !SoundSouceInit.PARENTS.containsValue(it) &&
@@ -51,8 +57,6 @@ public class CustomSoundOptionsScreen extends AbstractSoundListedScreen {
                     this.minecraft.setScreen(new SoundGroupOptionsScreen(this, options, category)));
         }
 
-        this.addWidget(this.list);
-
-        this.addDoneButton();
+        this.addRenderableWidget(this.list);
     }
 }
