@@ -18,7 +18,7 @@ remapJar {
 }
 */
 jar {
-    archiveClassifier = "dev"
+    //archiveClassifier = "dev"
 }
 
 //remapSlimJar {
@@ -28,4 +28,4 @@ jar {
 
 //tasks.remapJar.dependsOn('remapSlimJar')
 
-archivesBaseName = "${project.name}-${libs.versions.minecraft.get()}-forge"
+archivesBaseName = "${project.name}-${libs.versions.minecraft.get()}-neoforge"
