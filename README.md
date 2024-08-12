@@ -1,4 +1,4 @@
-# Extra Sounds Forge
+# ExtraSoundsNext
 
 Porting From (cc-1.0): [extra-sounds](https://github.com/stashymane/extra-sounds)
 
