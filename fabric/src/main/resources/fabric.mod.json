@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "extrasounds",
+  "version": "${version}",
+  "name": "ExtraSounds Next",
+  "description": "Improve your clicks, scrolls and more with Extra Sounds.",
+  "authors": [
+    "Arbor", "stashymane"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Arborsm/ExtraSoundsForge"
+  },
+  "license": "MIT",
+  "icon": "assets/extrasoundsnext/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.arbor.extrasoundsnext.fabric.ExtraSoundsNextFabric"
+    ],
+    "client": [
+      "dev.arbor.extrasoundsnext.fabric.client.ExtraSoundsNextFabricClient"
+    ],
+    "sounds_generator": [
+      "dev.arbor.extrasoundsnext.mapping.DefaultAutoGenerator"
+    ]
+  },
+  "mixins": [
+    "extrasounds.mixins.json",
+    "extrasounds-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

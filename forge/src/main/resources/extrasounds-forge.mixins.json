@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "package": "dev.arbor.extrasoundsnext.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "plugin": "dev.arbor.extrasoundsnext.mixin.ESMixinPlugin",
+  "client": [
+    "emi.EmiApiMixin",
+    "emi.EmiScreenManagerMixin",
+    "emi.RecipeScreenMixin",
+    "forge.MinecraftClientMixin",
+    "forge.ClientPlayerEntityMixin",
+    "jei.IngredientGridWithNavigationMixin",
+    "jei.RecipeGuiLogicMixin",
+    "jei.TypedIngredientMixin",
+    "rei.EntryWidgetMixin",
+    "rei.ScreenOverlayImplMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

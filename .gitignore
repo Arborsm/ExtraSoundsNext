@@ -1,0 +1,17 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea/
+*.iml
+out
+gen
+
+# Gradle
+.gradle/
+
+/common/build/
+/fabric/build/
+/fabric/run/
+/forge/build/
+/forge/run/

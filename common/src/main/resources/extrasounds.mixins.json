@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "package": "dev.arbor.extrasoundsnext.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "action.ClientPlayerEntityMixin",
+    "action.ClientPlayerInteractionManagerMixin",
+    "action.LivingEntityMixin",
+    "chat.ChatHudMixin",
+    "effect.ClientPlayerEntityMixin",
+    "gui.GameOptionsMixin",
+    "gui.SoundCategoryMixin",
+    "gui.SoundSettingsMixin",
+    "hotbar.ClientPlayNetworkHandlerMixin",
+    "hotbar.MinecraftClientMixin",
+    "hotbar.MouseMixin",
+    "inventory.ClientPlayerInteractionManagerMixin",
+    "inventory.CreativeInventoryScreenMixin",
+    "inventory.CreativeScreenHandlerMixin",
+    "inventory.HandledScreenMixin",
+    "inventory.MinecraftClientMixin",
+    "misc.BucketFluidAccessor",
+    "misc.SoundManagerMixin",
+    "typing.AbstractSignEditScreenMixin",
+    "typing.ChatScreenMixin",
+    "typing.SelectionManagerMixin",
+    "typing.SuggestionWindowMixin",
+    "typing.TextFieldWidgetMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
