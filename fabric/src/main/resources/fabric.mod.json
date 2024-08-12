@@ -8,10 +8,10 @@
     "Arbor", "stashymane"
   ],
   "contact": {
-    "homepage": "https://github.com/Arborsm/ExtraSoundsForge"
+    "homepage": "https://github.com/Arborsm/ExtraSoundsNext"
   },
   "license": "MIT",
-  "icon": "assets/extrasoundsnext/icon.png",
+  "icon": "assets/extrasounds/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
