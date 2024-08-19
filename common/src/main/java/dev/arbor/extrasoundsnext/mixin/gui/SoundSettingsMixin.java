@@ -17,25 +17,29 @@
 package dev.arbor.extrasoundsnext.mixin.gui;
 
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.OptionsScreen;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import dev.arbor.extrasoundsnext.gui.CustomSoundOptionsScreen;
-import org.spongepowered.asm.mixin.Dynamic;
+import net.minecraft.client.gui.screens.options.OptionsScreen;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.function.Supplier;
 
 @Mixin(OptionsScreen.class)
-public class SoundSettingsMixin {
+public abstract class SoundSettingsMixin {
     @Shadow
     private @Final Options options;
 
-    @Dynamic
-    @Inject(method = "method_19829", at = @At("RETURN"), cancellable = true)
-    private void redirectToCustomScreen(CallbackInfoReturnable<Screen> cir) {
-        cir.setReturnValue(new CustomSoundOptionsScreen(OptionsScreen.class.cast(this), options));
+    @Shadow
+    protected abstract Button openScreenButton(Component p_345646_, Supplier<Screen> p_345565_);
+
+    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;", ordinal = 1))
+    private Button redirectToCustomScreen(OptionsScreen instance, Component component, Supplier<Screen> unused) {
+        return this.openScreenButton(component, () -> new CustomSoundOptionsScreen(instance, this.options));
     }
 }

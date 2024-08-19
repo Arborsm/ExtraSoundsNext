@@ -2,21 +2,29 @@ package dev.arbor.extrasoundsnext.mapping;
 
 import dev.arbor.extrasoundsnext.annotation.SoundsGeneratorFabic;
 import net.minecraft.client.resources.sounds.Sound;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import dev.arbor.extrasoundsnext.annotation.SoundsGenerator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import static dev.arbor.extrasoundsnext.sounds.Categories.*;
 import static dev.arbor.extrasoundsnext.sounds.Sounds.*;
+import static net.minecraft.world.item.ArmorMaterials.*;
 
 public final class DefaultAutoGenerator implements SoundsGeneratorFabic {
     @SoundsGenerator
     public final static SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, DefaultAutoGenerator::autoGenerator);
 
+    private static final List<Holder<ArmorMaterial>> armorMaterials = List.of(LEATHER, CHAIN, IRON, GOLD, DIAMOND, TURTLE, NETHERITE, ARMADILLO);
+
     public static SoundDefinition autoGenerator(Item item) {
-        if (item instanceof RecordItem) {
+        String itemId = BuiltInRegistries.ITEM.getKey(item).getPath();
+        if (itemId.contains("music_disc")) {
             return SoundDefinition.of(aliased(MUSIC_DISC));
         } else if (item instanceof BoatItem) {
             return SoundDefinition.of(aliased(BOAT));
@@ -26,8 +34,8 @@ public final class DefaultAutoGenerator implements SoundsGeneratorFabic {
             }
             return SoundDefinition.of(aliased(Gear.GENERIC));
         } else if (item instanceof ArmorItem armorItem) {
-            if (armorItem.getMaterial() instanceof ArmorMaterials mat) {
-                return getArmorMaterialSound(mat);
+            if (armorMaterials.contains(armorItem.getMaterial())) {
+                return getArmorMaterialSound(armorItem.getMaterial());
             }
             return SoundDefinition.of(aliased(Gear.GENERIC));
         } else if (item instanceof ShieldItem) {
@@ -46,7 +54,7 @@ public final class DefaultAutoGenerator implements SoundsGeneratorFabic {
             return SoundDefinition.of(aliased(DUST));
         } else if (item instanceof SpawnEggItem) {
             return SoundDefinition.of(aliased(WET_SLIPPERY));
-        } else if (item instanceof BowlFoodItem || item instanceof SuspiciousStewItem) {
+        } else if (item instanceof BowItem || item instanceof SuspiciousStewItem) {
             return SoundDefinition.of(aliased(BOWL));
         } else if (item instanceof InstrumentItem) {
             return SoundDefinition.of(single(LOOSE_METAL.getLocation(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
@@ -91,22 +99,33 @@ public final class DefaultAutoGenerator implements SoundsGeneratorFabic {
         return SoundDefinition.of(aliased(ITEM_PICK));
     }
 
-    @SuppressWarnings("all")
     @NotNull
-    private static SoundDefinition getArmorMaterialSound(ArmorMaterials mat) {
-        return switch (mat) {
-            case IRON -> SoundDefinition.of(aliased(Gear.IRON));
-            case GOLD -> SoundDefinition.of(aliased(Gear.GOLDEN));
-            case DIAMOND -> SoundDefinition.of(aliased(Gear.DIAMOND));
-            case NETHERITE -> SoundDefinition.of(aliased(Gear.NETHERITE));
-            case CHAIN -> SoundDefinition.of(aliased(Gear.CHAIN));
-            case TURTLE -> SoundDefinition.of(aliased(Gear.TURTLE));
-            case LEATHER -> SoundDefinition.of(aliased(Gear.LEATHER));
-            default -> SoundDefinition.of(aliased(Gear.GENERIC));
-        };
+    private static SoundDefinition getArmorMaterialSound(Holder<ArmorMaterial> mat) {
+        if (mat == LEATHER){
+            return SoundDefinition.of(aliased(Gear.LEATHER));
+        }
+        if (mat == CHAIN){
+            return SoundDefinition.of(aliased(Gear.CHAIN));
+        }
+        if (mat == IRON){
+            return SoundDefinition.of(aliased(Gear.IRON));
+        }
+        if (mat == GOLD){
+            return SoundDefinition.of(aliased(Gear.GOLDEN));
+        }
+        if (mat == DIAMOND){
+            return SoundDefinition.of(aliased(Gear.DIAMOND));
+        }
+        if (mat == TURTLE){
+            return SoundDefinition.of(aliased(Gear.TURTLE));
+        }
+        if (mat == NETHERITE){
+            return SoundDefinition.of(aliased(Gear.NETHERITE));
+        }
+        return SoundDefinition.of(aliased(Gear.GENERIC));
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings("UnnecessaryDefault")
     @NotNull
     private static SoundDefinition getTierItemSound(Tiers mat) {
         return switch (mat) {
@@ -121,7 +140,7 @@ public final class DefaultAutoGenerator implements SoundsGeneratorFabic {
     }
 
     private static boolean isGearGoldenItem(Item item) {
-        return item instanceof HorseArmorItem || item instanceof CompassItem ||
+        return item instanceof AnimalArmorItem || item instanceof CompassItem ||
                 item instanceof SpyglassItem || item instanceof ShearsItem;
     }
 

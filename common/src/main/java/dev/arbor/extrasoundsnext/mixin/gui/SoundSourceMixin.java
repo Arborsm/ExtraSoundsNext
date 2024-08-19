@@ -35,7 +35,7 @@ import java.util.*;
 
 @Mixin(SoundSource.class)
 @Environment(EnvType.CLIENT)
-public class SoundCategoryMixin {
+public class SoundSourceMixin {
     // And you
     @Shadow(aliases = "$VALUES", remap = false)
     @Final
@@ -81,7 +81,7 @@ public class SoundCategoryMixin {
             }
             newCategory = REGISTERED_VARIANTS.get(displayName);
         } else {
-            newCategory = extra_sounds$newSoundCategory(varName, EDITING_CATS.get(EDITING_CATS.size() - 1).ordinal() + 1, displayName);
+            newCategory = extra_sounds$newSoundCategory(varName, EDITING_CATS.getLast().ordinal() + 1, displayName);
         }
 
         field.set(instance, newCategory);

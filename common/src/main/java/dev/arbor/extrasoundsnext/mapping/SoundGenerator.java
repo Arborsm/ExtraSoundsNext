@@ -60,7 +60,7 @@ public final class SoundGenerator {
 
     public static SoundType getSoundType(Block block) {
         try {
-            return block.getSoundType(block.defaultBlockState());
+            return block.defaultBlockState().getSoundType();
         } catch (Throwable e) {
             if (DebugUtils.DEBUG) {
                 ExtraSoundsNext.LOGGER.error("Failed to get sound type for block {}", block, e);

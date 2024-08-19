@@ -5,7 +5,7 @@
   "name": "ExtraSounds Next",
   "description": "Improve your clicks, scrolls and more with Extra Sounds.",
   "authors": [
-    "Arbor", "stashymane"
+    "Arborsm", "stashymane"
   ],
   "contact": {
     "homepage": "https://github.com/Arborsm/ExtraSoundsNext"
@@ -30,8 +30,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.16.0",
-    "minecraft": "~1.20.1",
-    "java": ">=17",
+    "minecraft": "~1.21",
+    "java": ">=21",
     "fabric-api": "*"
   },
   "suggests": {

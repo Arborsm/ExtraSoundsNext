@@ -10,7 +10,7 @@
     "chat.ChatHudMixin",
     "effect.ClientPlayerEntityMixin",
     "gui.GameOptionsMixin",
-    "gui.SoundCategoryMixin",
+    "gui.SoundSourceMixin",
     "gui.SoundSettingsMixin",
     "hotbar.ClientPlayNetworkHandlerMixin",
     "hotbar.MinecraftClientMixin",

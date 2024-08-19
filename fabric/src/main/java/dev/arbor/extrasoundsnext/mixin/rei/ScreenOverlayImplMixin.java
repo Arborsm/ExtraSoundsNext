@@ -18,7 +18,7 @@ public class ScreenOverlayImplMixin {
     private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
 
     @Inject(method = "mouseScrolled", at = @At("HEAD"))
-    private void mouseScrolled(double mouseX, double mouseY, double amount, CallbackInfoReturnable<Boolean> cir) {
+    private void mouseScrolled(double mouseX, double mouseY, double amountX, double amountY, CallbackInfoReturnable<Boolean> cir) {
         extra_sounds$scrollSound.play();
     }
 }

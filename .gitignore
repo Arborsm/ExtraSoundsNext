@@ -15,3 +15,6 @@ gen
 /fabric/run/
 /forge/build/
 /forge/run/
+/.architectury-transformer/
+/neoforge/build/
+/neoforge/run/

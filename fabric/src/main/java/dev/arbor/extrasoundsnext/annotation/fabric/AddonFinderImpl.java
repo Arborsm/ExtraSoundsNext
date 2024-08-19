@@ -57,4 +57,12 @@ public class AddonFinderImpl {
         }
         return list;
     }
+
+    public static List<String> getModList() {
+        return FabricLoader.getInstance().getAllMods().stream()
+                .map(modContainer -> modContainer.getMetadata().getId())
+                .filter(s -> !s.contains("generated"))
+                .sorted()
+                .toList();
+    }
 }

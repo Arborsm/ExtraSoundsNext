@@ -43,7 +43,6 @@ public abstract class GameOptionsMixin {
      * Modifies a Constant of the default sound volume that exists in {@link SoundSouceInit#DEFAULT_LEVELS} and matches {@link GameOptionsMixin#extra_sounds$currentCategory}.<br>
      * default value is 1.0.
      *
-     * @see Options#createSoundSliderOptionInstance
      * @see Options#Options
      */
     @ModifyConstant(method = "createSoundSliderOptionInstance", constant = @Constant(doubleValue = 1.0))

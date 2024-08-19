@@ -60,7 +60,7 @@ public class Sounds {
 
     public static SoundEventRegistration single(ResourceLocation id, float volume, float pitch, Sound.Type type) {
         return new SoundEventRegistration(List.of(
-                new Sound(id.toString(), ConstantFloat.of(volume), ConstantFloat.of(pitch), 1,
+                new Sound(id, ConstantFloat.of(volume), ConstantFloat.of(pitch), 1,
                         type, false, false, 16)
         ), false, null);
     }

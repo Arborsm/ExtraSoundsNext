@@ -17,7 +17,6 @@
 package dev.arbor.extrasoundsnext.gui;
 
 import com.mojang.datafixers.util.Pair;
-import dev.arbor.extrasoundsnext.ExtraSoundsNext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -38,9 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry> {
-
-    public SoundList(Minecraft minecraftClient, int i, int j, int k, int l, int m) {
-        super(minecraftClient, i, j, k, l, m);
+    public SoundList(Minecraft minecraftClient, int width, int height, int y, int itemHeight) {
+        super(minecraftClient, width, height, y, itemHeight);
         this.centerListVertically = false;
     }
 
@@ -77,7 +75,7 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
     }
 
     public int getRowWidth() {
-        return 400;
+        return 310;
     }
 
     protected int getScrollbarPosition() {
@@ -119,9 +117,9 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
             return new SoundEntry(
                     List.of(
                             group.createButton(options, width / 2 - 155, 0, 285),
-                            new ImageButton(width / 2 + 135, 0, 20, 20, 0, 0, 20,
-                                    ExtraSoundsNext.SETTINGS_ICON, 20, 40, pressAction)
-                    ));
+                            new ImageButton(width / 2 + 135, 0, 20, 20, pressAction)
+                    )
+            );
         }
 
         public @NotNull List<? extends GuiEventListener> children() {

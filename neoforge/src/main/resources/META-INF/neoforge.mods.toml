@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "extrasounds"
+version = "${version}"
+displayName = "ExtraSoundsNext"
+authors = "Arborsm, stashymane"
+description = "Improve your clicks, scrolls and more with Extra Sounds."
+
+[[dependencies.extrasounds]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extrasounds]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "extrasounds.mixins.json"
+
+[[mixins]]
+config = "extrasounds-forge.mixins.json"

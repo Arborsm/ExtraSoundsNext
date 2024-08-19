@@ -13,8 +13,8 @@ public final class ExtraSoundsNext {
     public static final String MODID = "extrasounds";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final Mixers MIXERS = new Mixers();
-    public static final ResourceLocation SETTINGS_ICON = new ResourceLocation(MODID, "textures/gui/settings.png");
-    public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "missing"));
+    public static final ResourceLocation SETTINGS_ICON = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/settings.png");
+    public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, "missing"));
     public static void init() {
         DebugUtils.init();
     }
@@ -24,12 +24,12 @@ public final class ExtraSoundsNext {
         if (id == null || type == null) {
             return null;
         }
-        return new ResourceLocation(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
+        return ResourceLocation.fromNamespaceAndPath(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
     }
 
     public static SoundEvent createEvent(String path) {
         try {
-            return SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, path));
+            return SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, path));
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSoundsNext.class.getSimpleName()), ex);
         }
@@ -46,6 +46,6 @@ public final class ExtraSoundsNext {
     }
 
     public static ResourceLocation id(String id) {
-        return new ResourceLocation(ExtraSoundsNext.MODID, id);
+        return ResourceLocation.fromNamespaceAndPath(ExtraSoundsNext.MODID, id);
     }
 }

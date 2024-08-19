@@ -35,4 +35,9 @@ public class AddonFinder {
     public static List<SoundGenerator> getSoundGenerators() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static List<String> getModList(){
+        throw new AssertionError();
+    }
 }

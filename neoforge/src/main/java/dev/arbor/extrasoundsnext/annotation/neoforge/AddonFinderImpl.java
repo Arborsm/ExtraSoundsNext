@@ -1,4 +1,4 @@
-package dev.arbor.extrasoundsnext.annotation.forge;
+package dev.arbor.extrasoundsnext.annotation.neoforge;
 
 import com.mojang.text2speech.Narrator;
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
@@ -8,9 +8,10 @@ import dev.arbor.extrasoundsnext.mapping.DefaultAutoGenerator;
 import dev.arbor.extrasoundsnext.mapping.SoundDefinition;
 import dev.arbor.extrasoundsnext.mapping.SoundGenerator;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.forgespi.language.ModFileScanData;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforgespi.language.IModInfo;
+import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Field;
@@ -70,5 +71,13 @@ public class AddonFinderImpl {
             list.add(SoundGenerator.of(namespace, soundGenerators.getOrDefault(namespace, DefaultAutoGenerator::autoGenerator)));
         }
         return list;
+    }
+
+    public static List<String> getModList() {
+        return ModList.get().getMods().stream()
+                .map(IModInfo::getModId)
+                .filter(s -> !s.contains("generated"))
+                .sorted()
+                .toList();
     }
 }

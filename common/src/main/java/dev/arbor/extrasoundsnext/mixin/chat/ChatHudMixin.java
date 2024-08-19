@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(ChatComponent.class)
 public abstract class ChatHudMixin {
     @Shadow
@@ -28,15 +30,15 @@ public abstract class ChatHudMixin {
     @Unique
     private int extra_sounds$currentLines;
 
-    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V", at = @At("RETURN"))
-    private void extrasounds$receiveMessage(Component message, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag indicator, boolean refresh, CallbackInfo ci) {
+    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component,@Nullable MessageSignature pHeaderSignature,@Nullable GuiMessageTag pTag, CallbackInfo ci) {
         final LocalPlayer player = this.minecraft.player;
-        if (player == null || refresh) {
+        if (player == null) {
             return;
         }
 
-        String msg = message.getString();
-        if (msg.contains("@" + player.getName().getString()) || msg.contains("@" + player.getDisplayName().getString())) {
+        String msg = component.getString();
+        if (msg.contains("@" + player.getName().getString()) || msg.contains("@" + Objects.requireNonNull(player.getDisplayName()).getString())) {
             SoundManager.playSound(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
         } else {
             SoundManager.playSound(Sounds.CHAT, SoundType.CHAT);

@@ -1,5 +1,6 @@
 package dev.arbor.extrasoundsnext.mixin.misc;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.client.sounds.SoundManager;
@@ -14,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,7 +31,7 @@ public class SoundManagerMixin {
             Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(SoundManager.GSON, reader, SoundManager.SOUND_EVENT_REGISTRATION_TYPE);
             profilerFiller.popPush("register");
             for(Map.Entry<String, SoundEventRegistration> entry : ExtraSoundsMap.entrySet()) {
-                preparations.handleRegistration(new ResourceLocation(ExtraSoundsNext.MODID, entry.getKey()), entry.getValue());
+                preparations.handleRegistration(ResourceLocation.fromNamespaceAndPath(ExtraSoundsNext.MODID, entry.getKey()), entry.getValue());
             }
             profilerFiller.pop();
         } catch (Throwable throwable) {
@@ -52,10 +52,9 @@ public class SoundManagerMixin {
             slice = @Slice(
                     from = @At(value = "INVOKE", target = "Lnet/minecraft/client/sounds/SoundManager$Preparations;listResources(Lnet/minecraft/server/packs/resources/ResourceManager;)V"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ResourceManager;getResourceStack(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/List;")
-            ),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            )
     )
-    private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, SoundManager.Preparations preparations) {
+    private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
         if (SoundPackLoader.GENERATED_SOUNDS != null) {
             extra_sounds$extracted(profilerFiller, preparations);
         }

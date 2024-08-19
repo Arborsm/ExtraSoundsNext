@@ -1,8 +1,8 @@
 package dev.arbor.extrasoundsnext.mixin.jei;
 
 import mezz.jei.gui.recipes.RecipeGuiLogic;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import dev.arbor.extrasoundsnext.sounds.ScrollSound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

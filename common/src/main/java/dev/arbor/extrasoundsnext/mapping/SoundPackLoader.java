@@ -12,13 +12,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import dev.arbor.extrasoundsnext.annotation.AddonFinder;
 import dev.arbor.extrasoundsnext.debug.DebugUtils;
 import dev.arbor.extrasoundsnext.json.SoundEntrySerializer;
 import dev.arbor.extrasoundsnext.json.SoundSerializer;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -31,8 +30,11 @@ import java.util.stream.Collectors;
 
 public class SoundPackLoader {
     public static JsonObject GENERATED_SOUNDS;
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = ExtraSoundsNext.LOGGER;
     private static final String CACHE_FNAME = ExtraSoundsNext.MODID + ".cache";
+    private static final String CACHE_MODS = ExtraSoundsNext.MODID + ".modlist";
+    private static final Path CACHE_PATH_MODS =
+            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", CACHE_MODS);
     private static final Path CACHE_PATH_FILE =
             Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", CACHE_FNAME);
 
@@ -49,6 +51,12 @@ public class SoundPackLoader {
      * If the regeneration time is over 1000 milliseconds, it may be needed to refactor.
      */
     public static void init() {
+        List<String> modlist = List.of();
+        try {
+            modlist = Files.readAllLines(CACHE_PATH_MODS);
+        } catch (IOException e) {
+            DebugUtils.genericLog(e.getMessage());
+        }
         final long start = System.currentTimeMillis();
         final Map<String, SoundGenerator> soundGenMappers = new HashMap<>();
         // soundGenMappers.put(autoGenerator.generator.namespace, autoGenerator.generator);
@@ -58,7 +66,9 @@ public class SoundPackLoader {
         // Deleted once.
         try {
             Files.createDirectories(CACHE_PATH_FILE.getParent());
-            Files.deleteIfExists(CACHE_PATH_FILE);
+            if (!modlist.stream().sorted().toList().equals(AddonFinder.getModList())) {
+                Files.deleteIfExists(CACHE_PATH_FILE);
+            }
         } catch (Throwable ex) {
             DebugUtils.genericLog(ex.getMessage());
         }
@@ -82,7 +92,7 @@ public class SoundPackLoader {
         try {
             final CacheData cacheData = CacheData.read();
             final JsonObject jsonObject = cacheData.asJsonObject();
-            jsonObject.keySet().forEach(key -> putSoundEvent(new ResourceLocation(ExtraSoundsNext.MODID, key)));
+            jsonObject.keySet().forEach(key -> putSoundEvent(ResourceLocation.fromNamespaceAndPath(ExtraSoundsNext.MODID, key)));
             GENERATED_SOUNDS = jsonObject;
         } catch (JsonParseException e) {
             DebugUtils.genericLog(e.getMessage());
@@ -90,6 +100,15 @@ public class SoundPackLoader {
         if (DebugUtils.DEBUG) {
             DebugUtils.exportSoundsJson(CacheData.read().asJsonBytes());
             DebugUtils.exportGenerators(soundGenMappers);
+        }
+        try {
+            if (!modlist.stream().sorted().toList().equals(AddonFinder.getModList())) {
+                Files.deleteIfExists(CACHE_PATH_MODS);
+                Files.createFile(CACHE_PATH_MODS);
+                Files.write(CACHE_PATH_MODS, AddonFinder.getModList());
+            }
+        } catch (IOException e) {
+            DebugUtils.genericLog(e.getMessage());
         }
 
         final long tookMillis = System.currentTimeMillis() - start;

@@ -312,7 +312,7 @@ public class SoundManager {
         }
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
-                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
+                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getDefaultMaxStackSize());
         playSound(Sounds.ITEM_DROP, pitch, category, Mixers.ITEM_DROP);
     }
 

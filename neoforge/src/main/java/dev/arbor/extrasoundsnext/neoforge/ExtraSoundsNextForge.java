@@ -1,7 +1,7 @@
-package dev.arbor.extrasoundsnext.forge;
+package dev.arbor.extrasoundsnext.neoforge;
 
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.fml.common.Mod;
 
 @Mod(ExtraSoundsNext.MODID)
 public final class ExtraSoundsNextForge {
