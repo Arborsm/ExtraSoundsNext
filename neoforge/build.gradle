@@ -39,7 +39,7 @@ dependencies {
     modCompileOnly common.rei.neoforge
 
     // EMI
-    modImplementation common.emi.neoforge
+    modCompileOnly common.emi.neoforge
 }
 
 processResources {

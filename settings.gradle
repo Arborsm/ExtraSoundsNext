@@ -18,11 +18,11 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         // Minecraft Version
-        def minecraftVersion = "1.21"
+        def minecraftVersion = "1.21.1"
 
-        def jeiVersion = "19.8.2.99"
-        def reiVersion = "16.0.754"
-        def emiVersion = "1.1.12"
+        def jeiVersion = "19.21.0.246"
+        def reiVersion = "16.0.783"
+        def emiVersion = "1.1.16"
         //def forgeVersion = "47.2.23"
 
         // Libs

@@ -29,7 +29,7 @@ subprojects {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.layered() {
             officialMojangMappings() // { nameSyntheticMembers = false }
-            parchment("org.parchmentmc.data:parchment-${libs.versions.minecraft.get()}:${libs.versions.parchment.get()}@zip")
+            parchment("org.parchmentmc.data:parchment-1.21:${libs.versions.parchment.get()}@zip")
         }
     }
 
