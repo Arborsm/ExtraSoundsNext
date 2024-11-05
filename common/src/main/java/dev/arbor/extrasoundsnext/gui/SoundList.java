@@ -87,7 +87,7 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
         if (SoundSouceInit.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getFirst()) {
             return OptionInstance.createBoolean(simpleOption.toString(), value ->
                             Tooltip.create(SoundSouceInit.TOOLTIPS.getOrDefault(category, CommonComponents.EMPTY)),
-                    SoundSouceInit.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getSecond(), value -> simpleOption.set(value ? 1.0 : 0.0));
+                    simpleOption.get() == 1.0, value -> simpleOption.set(value ? 1.0 : 0.0));
         }
         return simpleOption;
     }
