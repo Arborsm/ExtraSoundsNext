@@ -16,9 +16,9 @@ dependencyResolutionManagement {
         // Minecraft Version
         def minecraftVersion = "1.20.1"
 
-        def jeiVersion = "15.2.0.27"
+        def jeiVersion = "15.20.0.106"
         def reiVersion = "12.0.684"
-        def emiVersion = "1.1.4"
+        def emiVersion = "1.1.21"
         def forgeVersion = "47.2.23"
 
         // Libs
@@ -26,7 +26,7 @@ dependencyResolutionManagement {
         def parchmentVersion = "2023.09.03" // https://parchmentmc.org/docs/getting-started
         def shadowVersion = "7.1.2"
         def architecturyPluginVersion = "3.4-SNAPSHOT"
-        def architecturyLoomVersion = "1.6-SNAPSHOT"
+        def architecturyLoomVersion = "1.10-SNAPSHOT"
         def vineFlowerVersion = "1.11.0"
         def macheteVersion = "1.+"
 

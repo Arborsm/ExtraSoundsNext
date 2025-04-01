@@ -7,6 +7,7 @@ loom {
         mixinConfig "extrasounds.mixins.json"
         mixinConfig "extrasounds-forge.mixins.json"
     }
+    accessWidenerPath = file("src/main/resources/extrasounds-forge.accesswidener")
 }
 
 architectury {
@@ -51,6 +52,11 @@ dependencies {
     // Carry On
     modImplementation("curse.maven:carry-on-274259:4882500")
     implementation(include("io.github.llamalad7:mixinextras-forge:0.4.1"))
+
+    // Sophisticated Backpacks
+    modImplementation("curse.maven:sophisticated-core-618298:6370947")
+    modImplementation("curse.maven:sophisticated-storage-619320:6373792")
+    modImplementation("curse.maven:sophisticated-backpacks-422301:6303388")
 }
 
 processResources {
@@ -77,5 +83,6 @@ shadowJar {
 }
 
 remapJar {
+    //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
 }

@@ -1,4 +1,4 @@
-package dev.arbor.extrasoundsnext.mixin.inventory;
+package dev.arbor.extrasoundsnext.mixin.inventory.scroll;
 
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import dev.arbor.extrasoundsnext.sounds.ScrollSound;

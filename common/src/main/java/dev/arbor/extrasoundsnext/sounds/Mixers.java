@@ -26,7 +26,7 @@ public class Mixers implements CategoryLoader {
     public static SoundSource EMPTY_HOTBAR;
     @Register(toggle = true)
     public static SoundSource ENABLED_FOOTSTEP;
-    @Register(toggle = true, defaultOn = false)
+    @Register(toggle = true)
     public static SoundSource ENABLED_EFFECTS;
     @Register(toggle = true, defaultOn = false)
     public static SoundSource ENABLED_POOF;

@@ -91,7 +91,7 @@ public class SoundManager {
 
         switch (actionType) {
             case PICKUP_ALL -> {
-                if (hasCursor) {
+                if (hasCursor && onCursor.getCount() < onCursor.getMaxStackSize()) {
                     playSound(Sounds.ITEM_PICK_ALL, SoundType.PICKUP);
                 }
             }
