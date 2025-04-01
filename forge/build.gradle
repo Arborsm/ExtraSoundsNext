@@ -51,7 +51,7 @@ dependencies {
 
     // Carry On
     modImplementation("curse.maven:carry-on-274259:4882500")
-    implementation(include("io.github.llamalad7:mixinextras-forge:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
 
     // Sophisticated Backpacks
     modImplementation("curse.maven:sophisticated-core-618298:6370947")
