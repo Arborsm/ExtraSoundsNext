@@ -14,7 +14,8 @@
     "jei.RecipeGuiLogicMixin",
     "jei.TypedIngredientMixin",
     "rei.EntryWidgetMixin",
-    "rei.ScreenOverlayImplMixin"
+    "rei.ScreenOverlayImplMixin",
+    "sophisticated.StorageScreenBaseMixin"
   ],
   "mixins": [
   ],

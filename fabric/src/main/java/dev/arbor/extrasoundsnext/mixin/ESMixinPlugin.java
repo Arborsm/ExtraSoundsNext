@@ -34,6 +34,8 @@ public class ESMixinPlugin implements IMixinConfigPlugin {
             return isClassFound("mezz.jei.api.JeiPlugin");
         } else if (mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.rei")) {
             return isClassFound("me.shedaniel.rei.api.common.plugins.REIPlugin");
+        } else if (mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.sophisticated")) {
+            return isClassFound("net.p3pp3rf1y.sophisticatedcore.SophisticatedCore");
         }
         return true;
     }
