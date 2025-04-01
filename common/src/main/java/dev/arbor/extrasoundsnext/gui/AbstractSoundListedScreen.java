@@ -17,11 +17,13 @@
 package dev.arbor.extrasoundsnext.gui;
 
 import net.minecraft.client.Options;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractSoundListedScreen extends OptionsSubScreen {
     protected SoundList list;
@@ -32,6 +34,11 @@ public abstract class AbstractSoundListedScreen extends OptionsSubScreen {
 
     protected void addDoneButton() {
         addDoneButton(false);
+    }
+
+    @SuppressWarnings("unused")
+    private void ignored() {
+        addDoneButton(true);
     }
 
     protected void addDoneButton(boolean withCancel) {
