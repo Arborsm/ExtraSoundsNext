@@ -7,6 +7,10 @@ architectury {
     fabric()
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/extrasounds-fabric.accesswidener")
+}
+
 configurations {
     common {
         canBeResolved = true
@@ -42,6 +46,10 @@ dependencies {
 
     // EMI
     modImplementation common.emi.fabric
+
+    // Sophisticated Backpacks Fabric
+    modImplementation "curse.maven:sophisticated-core-unofficial-fabric-port-979317:6099424"
+    modImplementation "curse.maven:sophisticated-backpacks-unofficial-fabric-port-979322:6099410"
 }
 
 processResources {
@@ -58,5 +66,6 @@ shadowJar {
 }
 
 remapJar {
+    //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
 }

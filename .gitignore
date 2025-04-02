@@ -18,3 +18,5 @@ gen
 /.architectury-transformer/
 /neoforge/build/
 /neoforge/run/
+
+/build/reports/problems/problems-report.html

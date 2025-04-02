@@ -1,0 +1,3 @@
+accessWidener   v2  named
+
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen draggingItem Lnet/minecraft/world/item/ItemStack;

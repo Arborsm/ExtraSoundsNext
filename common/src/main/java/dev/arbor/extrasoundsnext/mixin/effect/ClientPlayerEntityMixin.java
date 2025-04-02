@@ -12,6 +12,7 @@ import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -21,6 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(LocalPlayer.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
+    @Unique
+    private static Long extraSoundsNext$lastPlayedTimes = 0L;
+    @Unique
+    private static final long extraSoundsNext$cooldown = 1000;
+
     public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
@@ -28,13 +34,19 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
     @Override
     protected void onEffectAdded(@NotNull MobEffectInstance effect, @Nullable Entity source) {
         super.onEffectAdded(effect, source);
-        SoundManager.effectChanged(effect.getEffect().value(), SoundManager.EffectType.ADD);
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - extraSoundsNext$lastPlayedTimes > extraSoundsNext$cooldown) {
+            SoundManager.effectChanged(effect.getEffect().value(), SoundManager.EffectType.ADD);
+            extraSoundsNext$lastPlayedTimes = currentTime;
+        }
     }
 
     @Inject(method = "removeEffectNoUpdate", at = @At("HEAD"))
     private void extrasounds$effectRemoved(Holder<MobEffect> pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
-        if (this.hasEffect(pEffect)) {
+        long currentTime = System.currentTimeMillis();
+        if (this.hasEffect(pEffect) && currentTime - extraSoundsNext$lastPlayedTimes > extraSoundsNext$cooldown) {
             SoundManager.effectChanged(pEffect.value(), SoundManager.EffectType.REMOVE);
+            extraSoundsNext$lastPlayedTimes = currentTime;
         }
     }
 }

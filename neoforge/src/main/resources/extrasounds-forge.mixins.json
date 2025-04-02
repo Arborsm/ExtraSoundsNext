@@ -8,13 +8,14 @@
     "emi.EmiApiMixin",
     "emi.EmiScreenManagerMixin",
     "emi.RecipeScreenMixin",
-    "forge.MinecraftClientMixin",
     "forge.ClientPlayerEntityMixin",
+    "forge.MinecraftClientMixin",
     "jei.IngredientGridWithNavigationMixin",
     "jei.RecipeGuiLogicMixin",
     "jei.TypedIngredientMixin",
     "rei.EntryWidgetMixin",
-    "rei.ScreenOverlayImplMixin"
+    "rei.ScreenOverlayImplMixin",
+    "sophisticated.StorageScreenBaseMixin"
   ],
   "mixins": [
   ],

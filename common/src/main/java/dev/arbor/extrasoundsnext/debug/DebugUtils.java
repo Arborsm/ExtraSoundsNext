@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import dev.arbor.extrasoundsnext.mapping.SoundGenerator;
 import dev.arbor.extrasoundsnext.sounds.SoundManager;
+import dev.arbor.extrasoundsnext.sounds.Sounds;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +31,7 @@ public class DebugUtils {
     /**
      * For debugging.<br>
      * When run with a JVM argument {@link DebugUtils#JVM_ARG_SEARCH_UNDEF_SND}, the log shows a SoundEntry that plays
-     * the default {@link dev.arbor.extrasoundsnext.sounds.Sounds#ITEM_PICK}.<br>
+     * the default {@link Sounds#ITEM_PICK}.<br>
      * To ensure that the debugging statements are executed, it is recommended that you also run with the
      * {@link DebugUtils#NO_CACHE_VAR} JVM argument.
      */

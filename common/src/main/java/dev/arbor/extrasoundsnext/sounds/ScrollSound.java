@@ -1,8 +1,8 @@
 package dev.arbor.extrasoundsnext.sounds;
 
-public class ScrollSound {
+public final class ScrollSound {
 
-    private int lastPos = 0;
+    private int lastPos = -1;
 
     private long lastTime = 0L;
 
@@ -16,7 +16,7 @@ public class ScrollSound {
     public void play(int row) {
         final long now = System.currentTimeMillis();
         final long timeDiff = now - lastTime;
-        if (timeDiff > 20 && lastPos != row && !(lastPos != 1 && row == 0)) {
+        if (timeDiff > 20 && lastPos != row) {
             playScrollSound(timeDiff);
             lastTime = now;
             lastPos = row;

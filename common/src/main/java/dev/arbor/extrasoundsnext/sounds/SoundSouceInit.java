@@ -26,6 +26,7 @@ public final class SoundSouceInit {
     public static final Map<SoundSource, Component> TOOLTIPS = new HashMap<>();
     public static final List<String> SUPPRESSED_NAMES = new ArrayList<>();
     public static String[] MASTER_CLASSES;
+    public static boolean IS_INITIALIZED = false;
 
     public static Pair<CategoryLoader, List<Field>> getCategories() {
         return Pair.of(ExtraSoundsNext.MIXERS, getRegistrations());
@@ -41,6 +42,7 @@ public final class SoundSouceInit {
     }
 
     public static void initCategoryLoader() {
+        if (IS_INITIALIZED) return;
         //required so that the new categories are actually created, not used
         SoundSource.MASTER.getClass().getClassLoader();
 
@@ -126,5 +128,6 @@ public final class SoundSouceInit {
 
         // Cleanup.
         SUPPRESSED_NAMES.clear();
+        IS_INITIALIZED = true;
     }
 }

@@ -4,4 +4,5 @@ accessible class net/minecraft/client/sounds/SoundManager$Preparations
 accessible field net/minecraft/client/sounds/SoundManager GSON Lcom/google/gson/Gson;
 accessible field net/minecraft/world/item/CreativeModeTabs INVENTORY Lnet/minecraft/resources/ResourceKey;
 accessible field net/minecraft/client/sounds/SoundManager SOUND_EVENT_REGISTRATION_TYPE Lcom/google/gson/reflect/TypeToken;
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen draggingItem Lnet/minecraft/world/item/ItemStack;
 accessible method net/minecraft/client/sounds/SoundManager$Preparations handleRegistration (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/resources/sounds/SoundEventRegistration;)V
