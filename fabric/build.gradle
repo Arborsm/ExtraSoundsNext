@@ -48,8 +48,7 @@ dependencies {
     modImplementation common.emi.fabric
 
     // Sophisticated Backpacks Fabric
-    modImplementation "curse.maven:sophisticated-core-unofficial-fabric-port-979317:6099424"
-    modImplementation "curse.maven:sophisticated-backpacks-unofficial-fabric-port-979322:6099410"
+    modCompileOnly "curse.maven:sophisticated-core-unofficial-fabric-port-979317:6099425"
 }
 
 processResources {

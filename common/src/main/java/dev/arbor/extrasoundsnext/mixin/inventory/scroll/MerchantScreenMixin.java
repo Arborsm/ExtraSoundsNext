@@ -18,7 +18,7 @@ public class MerchantScreenMixin {
     int scrollOff;
 
     @Inject(method = "mouseScrolled", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/inventory/MerchantScreen;scrollOff:I"))
-    private void extrasounds$mouseScrolled(double mouseX, double mouseY, double delta, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
         extra_sounds$scrollSound.play(scrollOff);
     }
 }

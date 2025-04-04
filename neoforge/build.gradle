@@ -7,6 +7,10 @@ architectury {
     neoForge()
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/extrasounds-forge.accesswidener")
+}
+
 configurations {
     common {
         canBeResolved = true
@@ -40,6 +44,9 @@ dependencies {
 
     // EMI
     modCompileOnly common.emi.neoforge
+
+    modImplementation "curse.maven:sophisticated-backpacks-422301:6303380"
+    modImplementation "curse.maven:sophisticated-core-618298:6375811"
 }
 
 processResources {
@@ -56,5 +63,6 @@ shadowJar {
 }
 
 remapJar {
+    //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
 }
