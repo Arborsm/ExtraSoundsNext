@@ -11,7 +11,7 @@
     "effect.ClientPlayerEntityMixin",
     "gui.GameOptionsMixin",
     "gui.SoundCategoryMixin",
-    "gui.SoundSettingsMixin",
+    "gui.SoundOptionsScreenMixin",
     "hotbar.ClientPlayNetworkHandlerMixin",
     "hotbar.MinecraftClientMixin",
     "hotbar.MouseMixin",

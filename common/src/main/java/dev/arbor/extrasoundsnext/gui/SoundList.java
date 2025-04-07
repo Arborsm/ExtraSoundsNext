@@ -17,7 +17,6 @@
 package dev.arbor.extrasoundsnext.gui;
 
 import com.mojang.datafixers.util.Pair;
-import dev.arbor.extrasoundsnext.ExtraSoundsNext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -62,18 +61,8 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
         this.addSingleOptionEntry(this.createCustomizedOption(cat));
     }
 
-    public void addDoubleCategory(SoundSource first, @Nullable SoundSource second) {
-        this.addOptionEntry(this.createCustomizedOption(first),
-                (second != null) ? this.createCustomizedOption(second) : null
-        );
-    }
-
     public void addAllCategory(SoundSource[] categories) {
         this.addAll(Arrays.stream(categories).map(this::createCustomizedOption).toArray(OptionInstance[]::new));
-    }
-
-    public void addGroup(SoundSource group, Button.OnPress pressAction) {
-        super.addEntry(SoundEntry.createGroup(this.minecraft.options, this.createCustomizedOption(group), this.width, pressAction));
     }
 
     public int getRowWidth() {
@@ -84,8 +73,12 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
         return super.getScrollbarPosition() + 32;
     }
 
-    private OptionInstance<?> createCustomizedOption(SoundSource category) {
-        final OptionInstance<Double> simpleOption = this.minecraft.options.getSoundSourceOptionInstance(category);
+    public OptionInstance<?> createCustomizedOption(SoundSource category) {
+        return createCustomizedOption(this.minecraft, category);
+    }
+
+    public static OptionInstance<?> createCustomizedOption(Minecraft mc, SoundSource category) {
+        final OptionInstance<Double> simpleOption = mc.options.getSoundSourceOptionInstance(category);
         if (SoundSouceInit.TOGGLEABLE_CATS.getOrDefault(category, Pair.of(false, false)).getFirst()) {
             return OptionInstance.createBoolean(simpleOption.toString(), value ->
                             Tooltip.create(SoundSouceInit.TOOLTIPS.getOrDefault(category, CommonComponents.EMPTY)),
@@ -113,15 +106,6 @@ public class SoundList extends ContainerObjectSelectionList<SoundList.SoundEntry
                 widgets.add(second.createButton(options, width / 2 + 5, 0, 150));
             }
             return new SoundEntry(widgets);
-        }
-
-        public static SoundEntry createGroup(Options options, OptionInstance<?> group, int width, Button.OnPress pressAction) {
-            return new SoundEntry(
-                    List.of(
-                            group.createButton(options, width / 2 - 155, 0, 285),
-                            new ImageButton(width / 2 + 135, 0, 20, 20, 0, 0, 20,
-                                    ExtraSoundsNext.SETTINGS_ICON, 20, 40, pressAction)
-                    ));
         }
 
         public @NotNull List<? extends GuiEventListener> children() {
