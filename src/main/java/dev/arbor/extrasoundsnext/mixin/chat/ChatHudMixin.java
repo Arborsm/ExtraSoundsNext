@@ -1,0 +1,71 @@
+package dev.arbor.extrasoundsnext.mixin.chat;
+
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import dev.arbor.extrasoundsnext.sounds.SoundManager;
+import dev.arbor.extrasoundsnext.sounds.SoundType;
+import dev.arbor.extrasoundsnext.sounds.Sounds;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
+
+//? if >=1.19 {
+/*import net.minecraft.client.GuiMessageTag;
+import net.minecraft.network.chat.MessageSignature;
+*///?}
+
+@Mixin(ChatComponent.class)
+@MixinEnvironment()
+public abstract class ChatHudMixin {
+    @Shadow
+    private int chatScrollbarPos;
+    @Shadow
+    private @Final Minecraft minecraft;
+
+    @Unique
+    private int extra_sounds$currentLines;
+
+    //? if >=1.20 && fabric {
+    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;IZ)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag tag, boolean refresh, CallbackInfo ci) {
+    *///?} elif >=1.20 && (neoforge || forge) {
+    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag tag, boolean refresh, CallbackInfo ci) {
+    *///?} elif >=1.19 {
+    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag tag, boolean refresh, CallbackInfo ci) {
+    *///?} else {
+    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;IIZ)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, int messageId, int timestamp, boolean refresh, CallbackInfo ci) {
+    //?}
+        final LocalPlayer player = this.minecraft.player;
+        if (player == null) {
+            return;
+        }
+
+        String msg = component.getString();
+        if (msg.contains("@" + player.getName().getString()) || msg.contains("@" + Objects.requireNonNull(player.getDisplayName()).getString())) {
+            SoundManager.playSound(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
+        } else {
+            SoundManager.playSound(Sounds.CHAT, SoundType.CHAT);
+        }
+    }
+
+    @Inject(method = "scrollChat", at = @At("RETURN"))
+    private void extrasounds$onScroll(int amount, CallbackInfo ci) {
+        if (this.chatScrollbarPos != this.extra_sounds$currentLines) {
+            SoundManager.playSound(Sounds.INVENTORY_SCROLL, SoundType.CHAT);
+            this.extra_sounds$currentLines = this.chatScrollbarPos;
+        }
+    }
+}

@@ -24,10 +24,14 @@
   "accessWidener": "aw/${minecraft}.accesswidener",
   "entrypoints": {
     "main": [
-      "dev.arbor.extrasoundsnext.platform.fabric.FabricEntrypoint"
     ],
     "client": [
-      "dev.arbor.extrasoundsnext.platform.fabric.FabricClientEntrypoint"
+    ],
+    "modmenu": [
+      "dev.arbor.extrasoundsnext.platform.fabric.ModMenuIntegration"
+    ],
+    "sounds_generator": [
+      "dev.arbor.extrasoundsnext.mapping.DefaultAutoGenerator"
     ]
   },
   "mixins": [

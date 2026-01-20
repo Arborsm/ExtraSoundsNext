@@ -1,5 +1,5 @@
 {
-  "package": "dev.arbor.extrasoundsnext.core.mixin",
+  "package": "dev.arbor.extrasoundsnext.mixin",
   "required": true,
   "minVersion": "0.8",
   "compatibilityLevel": "${java}",
@@ -7,32 +7,6 @@
     "defaultRequire": 1
   },
   "client": [
-    "action.ClientPlayerEntityMixin",
-    "action.ClientPlayerInteractionManagerMixin",
-    "action.LivingEntityMixin",
-    "chat.ChatHudMixin",
-    "effect.ClientPlayerEntityMixin",
-    "gui.GameOptionsMixin",
-    "gui.SoundSourceMixin",
-    "gui.SoundSettingsMixin",
-    "hotbar.ClientPlayNetworkHandlerMixin",
-    "hotbar.MinecraftClientMixin",
-    "hotbar.MouseMixin",
-    "inventory.ClientPlayerInteractionManagerMixin",
-    "inventory.CreativeInventoryScreenMixin",
-    "inventory.HandledScreenMixin",
-    "inventory.MinecraftClientMixin",
-    "inventory.scroll.CreativeScreenHandlerMixin",
-    "inventory.scroll.LoomScreenMixin",
-    "inventory.scroll.MerchantScreenMixin",
-    "inventory.scroll.StonecutterScreenMixin",
-    "misc.BucketFluidAccessor",
-    "misc.SoundManagerMixin",
-    "typing.AbstractSignEditScreenMixin",
-    "typing.ChatScreenMixin",
-    "typing.SelectionManagerMixin",
-    "typing.SuggestionWindowMixin",
-    "typing.TextFieldWidgetMixin"
   ],
   "mixins": []
 }

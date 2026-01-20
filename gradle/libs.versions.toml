@@ -1,5 +1,5 @@
 [versions]
-stonecutter = "0.8"
+stonecutter = "0.9-alpha.3"
 	stonecutter-postprocess = "2.1-beta.8"
 mod-publish = "1.1.0"
 dotenv-gradle = "4.0.0"
@@ -13,6 +13,7 @@ fletching-table = "0.1.0-alpha.22"
 moulberry-mixinconstraints = "1.1.0"
 vanniktech-maven-publish = "0.35.0"
 mixin = "0.8.5"
+mixinextras = "0.3.5"
 
 [libraries]
 kikugie-postprocess = { module = "dev.kikugie:postprocess", version.ref = "stonecutter-postprocess" }
@@ -22,6 +23,8 @@ fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-l
 foojay-resolver = { module = "org.gradle.toolchains:foojay-resolver", version.ref = "foojay" }
 fletching-table = { module = "dev.kikugie:fletching-table", version.ref = "fletching-table" }
 moulberry-mixinconstraints = { module = "com.moulberry:mixinconstraints", version.ref = "moulberry-mixinconstraints" }
+mixinextras-forge = { module = "io.github.llamalad7:mixinextras-forge", version.ref = "mixinextras" }
+mixinextras-common = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinextras" }
 
 [plugins]
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }

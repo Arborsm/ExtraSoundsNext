@@ -3,6 +3,9 @@ loaderVersion = "[2,)"
 license = "${license}"
 issueTrackerURL = "${issues_url}"
 
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
 [[mods]]
 modId = "${id}"
 displayName = "${name}"

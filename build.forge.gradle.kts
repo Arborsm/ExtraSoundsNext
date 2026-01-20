@@ -1,6 +1,7 @@
 plugins {
 	id("mod-platform")
 	id("net.neoforged.moddev.legacyforge")
+	id("dev.kikugie.fletching-table")
 }
 
 platform {
@@ -15,14 +16,20 @@ platform {
 	}
 }
 
+fletchingTable {
+	accessConverter.register(sourceSets.main) {
+		add("aw/${stonecutter.current.version}.accesswidener")
+	}
+}
+
 legacyForge {
 	version = "${property("deps.minecraft")}-${property("deps.forge")}"
 
-	validateAccessTransformers = true
+	//validateAccessTransformers = true
 
-	accessTransformers.from(
-		rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg")
-	)
+	rootProject.file("versions/${stonecutter.current.version}-forge/build/resources/main/META-INF/accesstransformer.cfg").let {
+		if (it.exists()) accessTransformers.from(it)
+	}
 
 	runs {
 		register("client") {
@@ -59,16 +66,17 @@ repositories {
 dependencies {
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
 
+	annotationProcessor(libs.mixinextras.common)
+	compileOnly(libs.mixinextras.common)
+	implementation(libs.mixinextras.forge)
+	jarJar(libs.mixinextras.forge)
+
 	implementation(libs.moulberry.mixinconstraints)
 	jarJar(libs.moulberry.mixinconstraints)
 }
 
-sourceSets {
-	main {
-		resources.srcDir(
-			"${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated"
-		)
-	}
+sourceSets.main {
+	resources.srcDir("src/generated/resources")
 }
 
 tasks.named("createMinecraftArtifacts") {

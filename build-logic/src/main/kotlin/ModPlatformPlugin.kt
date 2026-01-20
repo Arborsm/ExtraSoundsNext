@@ -165,12 +165,12 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 				isNeoForge -> {
 					filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
-					exclude("META-INF/mods.toml", "fabric.mod.json", "aw/*.accesswidener", ".cache", "pack.mcmeta")
+					exclude("META-INF/mods.toml", "fabric.mod.json", ".cache", "pack.mcmeta")
 				}
 
 				isForge -> {
 					filesMatching("META-INF/mods.toml") { expand(props) }
-					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", "aw/*.accesswidener", ".cache")
+					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", ".cache")
 				}
 			}
 		}
@@ -225,7 +225,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	private fun Project.configureJava(stonecutter: StonecutterBuildExtension, requiredJava: JavaVersion) {
 		extensions.configure<JavaPluginExtension>("java") {
 			withSourcesJar()
-			withJavadocJar()
+			//withJavadocJar()
 			sourceCompatibility = requiredJava
 			targetCompatibility = requiredJava
 		}
@@ -243,7 +243,9 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	private fun Project.configureFletchingTable() {
 		extensions.configure<FletchingTableExtension> {
 			mixins.create("main").apply {
-				mixin("default", "${prop("mod.id")}.mixins.json")
+				mixin("default", "${prop("mod.id")}.mixins.json") {
+					env("CLIENT")
+				}
 			}
 		}
 	}
@@ -254,7 +256,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			from(
 				tasks.named(extension.jarTask.get()),
 				tasks.named(extension.sourcesJarTask.get()),
-				tasks.named("javadocJar").get()
+				//tasks.named("javadocJar").get()
 			)
 			into(rootProject.layout.buildDirectory.file("libs/$modVersion"))
 			dependsOn("build")

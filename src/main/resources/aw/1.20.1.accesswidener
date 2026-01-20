@@ -1,0 +1,7 @@
+accessWidener v2 named
+
+accessible class net/minecraft/client/sounds/SoundManager$Preparations
+accessible method net/minecraft/client/sounds/SoundManager$Preparations handleRegistration (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/resources/sounds/SoundEventRegistration;)V
+accessible class net/minecraft/client/gui/components/OptionsList$Entry
+accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry
+accessible method net/minecraft/client/gui/components/OptionsList$Entry <init> (Ljava/util/Map;)V

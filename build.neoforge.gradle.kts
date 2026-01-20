@@ -1,6 +1,15 @@
+import org.gradle.kotlin.dsl.accessTransformers
+import org.gradle.kotlin.dsl.from
+
 plugins {
 	id("mod-platform")
 	id("net.neoforged.moddev")
+}
+
+fletchingTable {
+	accessConverter.register(sourceSets.main) {
+		add("aw/${stonecutter.current.version}.accesswidener")
+	}
 }
 
 platform {
@@ -17,8 +26,12 @@ platform {
 
 neoForge {
 	version = property("deps.neoforge") as String
-	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
-	validateAccessTransformers = true
+
+	//validateAccessTransformers = true
+
+	rootProject.file("versions/${stonecutter.current.version}-neoforge/build/resources/main/META-INF/accesstransformer.cfg").let {
+		if (it.exists()) accessTransformers.from(it)
+	}
 
 	if (hasProperty("deps.parchment")) parchment {
 		val (mc, ver) = (property("deps.parchment") as String).split(':')
@@ -45,7 +58,7 @@ neoForge {
 			sourceSet(sourceSets["main"])
 		}
 	}
-	sourceSets["main"].resources.srcDir("${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated")
+	//sourceSets["main"].resources.srcDir("${rootDir}/versions/datagen/${stonecutter.current.version.split("-")[0]}/src/main/generated")
 }
 
 repositories {

@@ -1,38 +1,29 @@
 package dev.arbor.extrasoundsnext;
 
 import com.mojang.logging.LogUtils;
-import dev.arbor.extrasoundsnext.api.PlatformHelper;
-import dev.arbor.extrasoundsnext.core.sounds.Mixers;
-import dev.arbor.extrasoundsnext.core.sounds.SoundType;
+import dev.arbor.extrasoundsnext.debug.DebugUtils;
+import dev.arbor.extrasoundsnext.sounds.VolumeConfig;
+import dev.arbor.extrasoundsnext.sounds.SoundType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
-
-//? if fabric {
-import dev.arbor.extrasoundsnext.platform.fabric.FabricPlatformHelper;
-//?} neoforge {
-/*import dev.arbor.extrasoundsnext.platform.neoforge.NeoForgePlatformHelper;
- *///?}
+import reg.ExHelper;
 
 public final class ExtraSoundsNext {
     public static final String MODID = "extrasounds";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final Mixers MIXERS = new Mixers();
-    public static final ResourceLocation SETTINGS_ICON = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/settings.png");
-    public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, "missing"));
-
-    //? if fabric {
-    private static final PlatformHelper PLATFORM = new FabricPlatformHelper();
-    //?} neoforge {
-    /*private static final PlatformHelper PLATFORM = new NeoForgePlatformHelper();
-    *///?}
+    //? if >=1.21 {
+    /*public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(ExHelper.rl(MODID, "missing"));
+    *///?} elif >=1.19.3 {
+    /*public static final SoundEvent MISSING = SoundEvent.createVariableRangeEvent(ExHelper.id("missing"));
+    *///?} else {
+    public static final SoundEvent MISSING = new SoundEvent(ExHelper.rl("missing"));
+    //?}
 
     public static void init() {
         DebugUtils.init();
-        //? if neoforge {
-        /*SoundSourceInit.initCategoryLoader();
-        *///?}
+        VolumeConfig.load();
     }
 
     @Nullable
@@ -40,12 +31,18 @@ public final class ExtraSoundsNext {
         if (id == null || type == null) {
             return null;
         }
-        return ResourceLocation.fromNamespaceAndPath(MODID, "%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
+        return ExHelper.id("%s.%s.%s".formatted(type.prefix, id.getNamespace(), id.getPath()));
     }
 
     public static SoundEvent createEvent(String path) {
         try {
-            return SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MODID, path));
+            //? if >=1.21 {
+            /*return SoundEvent.createVariableRangeEvent(ExHelper.rl(path));
+            *///?} elif >=1.19.3 {
+            /*return SoundEvent.createVariableRangeEvent(ExHelper.id(path));
+            *///?} else {
+            return new SoundEvent(ExHelper.rl(path));
+            //?}
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSoundsNext.class.getSimpleName()), ex);
         }
@@ -54,18 +51,64 @@ public final class ExtraSoundsNext {
 
     public static SoundEvent createEvent(ResourceLocation path) {
         try {
-            return SoundEvent.createVariableRangeEvent(path);
+            //? if >=1.19.3 {
+            /*return SoundEvent.createVariableRangeEvent(path);
+            *///?} else {
+            return new SoundEvent(path);
+            //?}
         } catch (Throwable ex) {
             LOGGER.error("[%s] Failed to create SoundEvent".formatted(ExtraSoundsNext.class.getSimpleName()), ex);
         }
         return MISSING;
     }
 
-    public static ResourceLocation id(String id) {
-        return ResourceLocation.fromNamespaceAndPath(ExtraSoundsNext.MODID, id);
+    public static String getLoader() {
+		//? if fabric {
+        /*return "Fabric";
+		*///?} neoforge {
+        /*return "NeoForge";
+		*///?} forge {
+        return "Forge";
+		//?}
     }
 
-    public static PlatformHelper xplat() {
-        return PLATFORM;
+    public static boolean isClient() {
+		//? if fabric {
+        /*return net.fabricmc.loader.api.FabricLoader.getInstance().getEnvironmentType() == net.fabricmc.api.EnvType.CLIENT;
+		*///?} elif neoforge {
+        /*return net.neoforged.fml.loading.FMLLoader.getDist().isClient();
+		*///?} elif forge {
+        return net.minecraftforge.fml.loading.FMLLoader.getDist().isClient();
+		//?}
+    }
+
+    public static boolean isModLoaded(String modId) {
+		//? if fabric {
+        /*return net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded(modId);
+		*///?} elif neoforge {
+        /*return net.neoforged.fml.ModList.get().isLoaded(modId);
+		*///?} elif forge {
+        return net.minecraftforge.fml.ModList.get().isLoaded(modId);
+		//?}
+    }
+
+    public static String getMinecraftVersion() {
+		//? if fabric {
+        /*return net.fabricmc.loader.api.FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().getFriendlyString();
+		*///?} neoforge {
+        /*return net.neoforged.fml.ModList.get().getModContainerById("minecraft").get().getModInfo().getVersion().toString();
+		*///?} forge {
+         return net.minecraftforge.fml.ModList.get().getModContainerById("minecraft").get().getModInfo().getVersion().toString();
+		//?}
+    }
+
+    public static String getModVersion() {
+		//? if fabric {
+        /*return net.fabricmc.loader.api.FabricLoader.getInstance().getModContainer("extrasounds").get().getMetadata().getVersion().getFriendlyString();
+		*///?} neoforge {
+         /*return net.neoforged.fml.ModList.get().getModContainerById("extrasounds").get().getModInfo().getVersion().toString();
+		*///?} forge {
+         return net.minecraftforge.fml.ModList.get().getModContainerById("extrasounds").get().getModInfo().getVersion().toString();
+		//?}
     }
 }

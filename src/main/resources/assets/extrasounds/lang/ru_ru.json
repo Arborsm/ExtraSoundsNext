@@ -1,9 +1,17 @@
 {
-  "soundCategory.extrasounds$master": "ExtraSounds",
-  "soundCategory.extrasounds$inventory": "Инвентарь",
-  "soundCategory.extrasounds$action": "Действия с предметами",
-  "soundCategory.extrasounds$chat": "Сообщения в чате",
-  "soundCategory.extrasounds$chat_mention": "Упоминания в чате",
-  "soundCategory.extrasounds$effects": "Эффекты/Зелья",
-  "soundCategory.extrasounds$typing": "Ввод текста"
+  "extrasounds.volume.title": "Громкость ExtraSounds",
+  "extrasounds.mixer.master": "ExtraSounds",
+  "extrasounds.mixer.inventory": "Инвентарь",
+  "extrasounds.mixer.action": "Действия с предметами",
+  "extrasounds.mixer.chat": "Сообщения в чате",
+  "extrasounds.mixer.chat_mention": "Упоминания в чате",
+  "extrasounds.mixer.effects": "Эффекты/Зелья",
+  "extrasounds.mixer.hotbar": "Панель быстрого доступа",
+  "extrasounds.mixer.typing": "Ввод текста",
+  "extrasounds.mixer.item_drop": "Выброс предмета",
+  "extrasounds.mixer.empty_hotbar": "Пустая панель быстрого доступа",
+  "extrasounds.mixer.enabled_footstep": "Шаги",
+  "extrasounds.mixer.enabled_effects": "Эффекты",
+  "extrasounds.mixer.enabled_poof": "Пуф",
+  "extrasounds.mixer.action.tooltip": "Эта громкость применяется при взаимодействии с предметами, блоками и событиями сущностей."
 }

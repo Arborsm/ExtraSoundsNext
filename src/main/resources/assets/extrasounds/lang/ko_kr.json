@@ -1,9 +1,17 @@
 {
-  "soundCategory.extrasounds$master": "ExtraSounds",
-  "soundCategory.extrasounds$inventory": "목록",
-  "soundCategory.extrasounds$action": "아이템 액션",
-  "soundCategory.extrasounds$chat": "채팅 메시지",
-  "soundCategory.extrasounds$chat_mention": "채팅 언급",
-  "soundCategory.extrasounds$effects": "효과/포션",
-  "soundCategory.extrasounds$typing": "타이핑"
+  "extrasounds.volume.title": "ExtraSounds 볼륨",
+  "extrasounds.mixer.master": "ExtraSounds",
+  "extrasounds.mixer.inventory": "목록",
+  "extrasounds.mixer.action": "아이템 액션",
+  "extrasounds.mixer.chat": "채팅 메시지",
+  "extrasounds.mixer.chat_mention": "채팅 언급",
+  "extrasounds.mixer.effects": "효과/포션",
+  "extrasounds.mixer.hotbar": "단축바",
+  "extrasounds.mixer.typing": "타이핑",
+  "extrasounds.mixer.item_drop": "아이템 드롭",
+  "extrasounds.mixer.empty_hotbar": "빈 단축바",
+  "extrasounds.mixer.enabled_footstep": "발소리",
+  "extrasounds.mixer.enabled_effects": "효과",
+  "extrasounds.mixer.enabled_poof": "푸프",
+  "extrasounds.mixer.action.tooltip": "이 볼륨은 아이템 상호작용, 블록 상호작용 및 엔티티 이벤트에 적용됩니다."
 }
