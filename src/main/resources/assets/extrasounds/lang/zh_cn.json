@@ -1,0 +1,16 @@
+{
+  "soundCategory.extrasounds$master": "ExtraSounds/额外音效",
+  "soundCategory.extrasounds$inventory": "物品栏",
+  "soundCategory.extrasounds$action": "行为",
+  "soundCategory.extrasounds$chat": "聊天消息",
+  "soundCategory.extrasounds$chat_mention": "聊天提及",
+  "soundCategory.extrasounds$effects": "效果/药水",
+  "soundCategory.extrasounds$hotbar": "快捷栏",
+  "soundCategory.extrasounds$typing": "打字",
+  "soundCategory.extrasounds$item_drop": "丢弃物品音效",
+  "soundCategory.extrasounds$empty_hotbar": "空快捷栏音效",
+  "soundCategory.extrasounds$enabled_footstep": "脚步音效",
+  "soundCategory.extrasounds$enabled_effects": "效果音效",
+  "soundCategory.extrasounds$enabled_poof": "生物死亡音效",
+  "tooltip.soundCategory.extrasounds_action": "此音量适用于物品交互、方块交互和实体事件。"
+}

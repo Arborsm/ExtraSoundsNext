@@ -1,0 +1,16 @@
+{
+  "soundCategory.extrasounds$master": "額外音效",
+  "soundCategory.extrasounds$inventory": "物品欄",
+  "soundCategory.extrasounds$action": "動作",
+  "soundCategory.extrasounds$chat": "聊天訊息",
+  "soundCategory.extrasounds$chat_mention": "聊天提及",
+  "soundCategory.extrasounds$effects": "效果／藥水",
+  "soundCategory.extrasounds$hotbar": "快捷欄",
+  "soundCategory.extrasounds$typing": "打字",
+  "soundCategory.extrasounds$item_drop": "掉落物品",
+  "soundCategory.extrasounds$empty_hotbar": "空的快捷欄",
+  "soundCategory.extrasounds$enabled_footstep": "腳步聲",
+  "soundCategory.extrasounds$enabled_effects": "效果",
+  "soundCategory.extrasounds$enabled_poof": "噗",
+  "tooltip.soundCategory.extrasounds_action": "此音量適用於物品互動、方塊互動和實體事件。"
+}

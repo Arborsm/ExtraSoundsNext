@@ -1,0 +1,9 @@
+{
+  "soundCategory.extrasounds$master": "ExtraSounds",
+  "soundCategory.extrasounds$inventory": "목록",
+  "soundCategory.extrasounds$action": "아이템 액션",
+  "soundCategory.extrasounds$chat": "채팅 메시지",
+  "soundCategory.extrasounds$chat_mention": "채팅 언급",
+  "soundCategory.extrasounds$effects": "효과/포션",
+  "soundCategory.extrasounds$typing": "타이핑"
+}
