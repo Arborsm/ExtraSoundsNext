@@ -266,5 +266,5 @@ For help and support:
 - Uses [Fletching Table](https://github.com/LlamaLad7/MixinExtras) for annotation-driven mixin registration
 
 **Version History**:
-- **v0.9-alpha.3** - Major refactor: Migrated to Fletching Table, implemented multi-platform addon loader, flattened package structure, removed platform abstraction layer
-- **v1.4** - Current release with full multi-version/multi-loader support
+- **1.4-test version** - Major refactor: Migrated to Fletching Table, implemented multi-platform addon loader, flattened package structure, removed platform abstraction layer
+- **v1.5.0** - Current release with full multi-version/multi-loader support
