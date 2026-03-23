@@ -1,7 +1,7 @@
 package dev.arbor.extrasoundsnext.mixin.integration.jei;
 
 //? if 1.18.2 {
-import dev.arbor.extrasoundsnext.sounds.SoundManager;
+/*import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import mezz.jei.api.recipe.IFocus;
@@ -25,8 +25,8 @@ public class TypedIngredientMixin {
 		}
 	}
 }
-//?} elif >= 1.21.1 {
-/*import com.llamalad7.mixinextras.sugar.Local;
+*///?} elif >= 1.21.1 {
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -36,8 +36,8 @@ import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.library.focus.Focus;
 import net.minecraft.world.item.ItemStack;
 //? if neoforge {
-/^import net.neoforged.neoforge.fluids.FluidStack;
-^///?}
+import net.neoforged.neoforge.fluids.FluidStack;
+//?}
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -52,16 +52,16 @@ public class TypedIngredientMixin {
 		if (typedIngredientCopy.getIngredient() instanceof ItemStack itemStackCopy) {
 			itemStack = itemStackCopy;
 		//? if neoforge {
-		/^} else if (typedIngredientCopy.getIngredient() instanceof FluidStack fluidStack) {
+		} else if (typedIngredientCopy.getIngredient() instanceof FluidStack fluidStack) {
 			itemStack = fluidStack.getFluid().getBucket().getDefaultInstance();
-		^///?}
+		//?}
 		} else {
 			return;
 		}
 		SoundManager.playSound(itemStack, SoundType.PICKUP);
 	}
 }
-*///?} else {
+//?} else {
 /*import mezz.jei.api.ingredients.ITypedIngredient;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.library.ingredients.TypedIngredient;

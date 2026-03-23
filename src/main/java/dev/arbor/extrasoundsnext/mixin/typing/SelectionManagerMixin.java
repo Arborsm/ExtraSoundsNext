@@ -1,6 +1,6 @@
 package dev.arbor.extrasoundsnext.mixin.typing;
 //? if >=1.19.3 {
-/*import dev.kikugie.fletching_table.annotation.MixinEnvironment;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import org.spongepowered.asm.mixin.Final;
@@ -17,12 +17,12 @@ import java.util.function.Supplier;
 @Mixin(TextFieldHelper.class)
 @MixinEnvironment()
 public abstract class SelectionManagerMixin {
-    /^*
+    /**
      * Requires to store the current position to prevent excessive sounds in method <code>extrasounds$moveCursor</code>.<br>
      * Injected into <code>updateSelectionRange(Z)V</code>.
      *
      * @see TextFieldHelper
-     ^/
+     */
     @Unique
     private int extra_sounds$cursorStart = 0;
     @Unique
@@ -40,11 +40,11 @@ public abstract class SelectionManagerMixin {
     @Shadow
     private @Final Supplier<String> getMessageFn;
 
-    /^*
+    /**
      * Check the current position was updated.
      *
      * @return <code>true</code> if the position has changed.
-     ^/
+     */
     @Unique
     private boolean extrasounds$isPosUpdated() {
         return this.extra_sounds$cursorStart == this.cursorPos && this.extra_sounds$cursorEnd == this.selectionPos;
@@ -109,5 +109,5 @@ public abstract class SelectionManagerMixin {
         this.extra_sounds$cursorEnd = this.selectionPos;
     }
 }
-*///?} else {
+//?} else {
 //?}

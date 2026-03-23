@@ -71,10 +71,10 @@ public abstract class MEStorageScreenMixin<C extends MEStorageMenu> extends AEBa
 
 		if (entryWhat instanceof AEItemKey aeItemKey) {
 			//? if >=1.21.1 {
-			/*var itemStack = aeItemKey.getReadOnlyStack();
-			*///?} else {
-			var itemStack = aeItemKey.toStack();
-			//?}
+			var itemStack = aeItemKey.getReadOnlyStack();
+			//?} else {
+			/*var itemStack = aeItemKey.toStack();
+			*///?}
 			if (!itemStack.isEmpty()) {
 				SoundManager.playSound(itemStack, SoundType.PICKUP);
 			} else if (!menu.getCarried().isEmpty()) {
@@ -100,10 +100,10 @@ public abstract class MEStorageScreenMixin<C extends MEStorageMenu> extends AEBa
 	 */
 	@Inject(method = "mouseScrolled", at = @At("HEAD"), remap = false)
 	//? if >=1.21.1 {
-	/*private void onMouseScrolled(double x, double y, double deltaX, double wheelDelta, CallbackInfoReturnable<Boolean> cir) {
-	*///?} else {
-	private void onMouseScrolled(double x, double y, double wheelDelta, CallbackInfoReturnable<Boolean> cir) {
-	//?}
+	private void onMouseScrolled(double x, double y, double deltaX, double wheelDelta, CallbackInfoReturnable<Boolean> cir) {
+	//?} else {
+	/*private void onMouseScrolled(double x, double y, double wheelDelta, CallbackInfoReturnable<Boolean> cir) {
+	*///?}
 		if (wheelDelta != 0) {
 			boolean hasShiftDown = hasShiftDown();
 			if (hasShiftDown) {

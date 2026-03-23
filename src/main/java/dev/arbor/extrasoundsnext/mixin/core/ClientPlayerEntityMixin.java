@@ -6,8 +6,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 //? if >=1.21 {
-/*import net.minecraft.core.Holder;
-*///?}
+import net.minecraft.core.Holder;
+//?}
 //? if =1.19.3 {
 /*import net.minecraft.client.multiplayer.ProfileKeyPair;
 *///?}
@@ -39,10 +39,10 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
     private static final long extraSoundsNext$COOLDOWN = 1000L;
 
     //? if >=1.20 {
-    /*public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
+    public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
-    *///?} elif =1.19.3 {
+    //?} elif =1.19.3 {
     /*public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile, ProfileKeyPair profileKeyPair) {
         super(world, profile, profileKeyPair);
     }
@@ -51,10 +51,10 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
         super(world, profile, null);
     }
     *///?} else {
-    public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
+    /*public ClientPlayerEntityMixin(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
-    //?}
+    *///?}
 
     @Inject(method = "startUsingItem", at = @At("HEAD"))
     private void extrasounds$bowPullSound(InteractionHand hand, CallbackInfo ci) {
@@ -78,30 +78,30 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
         long currentTime = System.currentTimeMillis();
         if (currentTime - extraSoundsNext$lastPlayedTime > extraSoundsNext$COOLDOWN) {
             //? if >=1.21 {
-            /*SoundManager.effectChanged(effect.getEffect().value(), SoundManager.EffectType.ADD);
-            *///?} else {
-            SoundManager.effectChanged(effect.getEffect(), SoundManager.EffectType.ADD);
-            //?}
+            SoundManager.effectChanged(effect.getEffect().value(), SoundManager.EffectType.ADD);
+            //?} else {
+            /*SoundManager.effectChanged(effect.getEffect(), SoundManager.EffectType.ADD);
+            *///?}
             extraSoundsNext$lastPlayedTime = currentTime;
         }
     }
 
     @Inject(method = "removeEffectNoUpdate", at = @At("HEAD"))
     //? if >=1.21 {
-    /*private void extrasounds$effectRemoved(Holder<MobEffect> pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
+    private void extrasounds$effectRemoved(Holder<MobEffect> pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
         long currentTime = System.currentTimeMillis();
         if (this.hasEffect(pEffect) && currentTime - extraSoundsNext$lastPlayedTime > extraSoundsNext$COOLDOWN) {
             SoundManager.effectChanged(pEffect.value(), SoundManager.EffectType.REMOVE);
             extraSoundsNext$lastPlayedTime = currentTime;
         }
     }
-    *///?} else {
-    private void extrasounds$effectRemoved(MobEffect pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
+    //?} else {
+    /*private void extrasounds$effectRemoved(MobEffect pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
         long currentTime = System.currentTimeMillis();
         if (this.hasEffect(pEffect) && currentTime - extraSoundsNext$lastPlayedTime > extraSoundsNext$COOLDOWN) {
             SoundManager.effectChanged(pEffect, SoundManager.EffectType.REMOVE);
             extraSoundsNext$lastPlayedTime = currentTime;
         }
     }
-    //?}
+    *///?}
 }

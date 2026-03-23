@@ -7,8 +7,8 @@ import dev.arbor.extrasoundsnext.sounds.Sounds;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 //? if >=1.19.3 {
-/*import net.minecraft.core.registries.BuiltInRegistries;
-*///?} else {
+import net.minecraft.core.registries.BuiltInRegistries;
+//?} else {
 //?}
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -21,8 +21,8 @@ import dev.arbor.extrasoundsnext.json.SoundEntrySerializer;
 import dev.arbor.extrasoundsnext.json.SoundSerializer;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
 //? if forge {
-import net.minecraftforge.registries.ForgeRegistries;
-//?} elif <1.19.3 {
+/*import net.minecraftforge.registries.ForgeRegistries;
+*///?} elif <1.19.3 {
 /*import net.minecraft.core.Registry;
 *///?}
 import org.slf4j.Logger;
@@ -155,15 +155,15 @@ public class SoundPackLoader {
         }
 
         //? if >=1.20 {
-        /*for (Item item : BuiltInRegistries.ITEM) {
+        for (Item item : BuiltInRegistries.ITEM) {
             final ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
-        *///?} elif >=1.19.3 {
+        //?} elif >=1.19.3 {
         /*for (Item item : BuiltInRegistries.ITEM) {
             final ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
         *///?} elif forge {
-        for (Item item : ForgeRegistries.ITEMS) {
+        /*for (Item item : ForgeRegistries.ITEMS) {
             final ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
-        //?} else {
+        *///?} else {
         /*for (Item item : Registry.ITEM) {
             final ResourceLocation itemId = Registry.ITEM.getKey(item);
         *///?}
@@ -197,12 +197,12 @@ public class SoundPackLoader {
                 }
             }
         //? if >=1.20 {
-        /*}
-        *///?} elif >=1.19.3 {
+        }
+        //?} elif >=1.19.3 {
         /*}
         *///?} elif forge {
-        }
-        //?} else {
+        /*}
+        *///?} else {
         /*}
         *///?}
     }

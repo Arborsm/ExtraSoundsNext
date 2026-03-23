@@ -51,7 +51,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
     }
 
     //? if >=1.19 {
-    /*@Inject(method = "performUseItemOn", at = @At(value = "RETURN", ordinal = 2))
+    @Inject(method = "performUseItemOn", at = @At(value = "RETURN", ordinal = 2))
     private void extrasounds$repeaterSwitchSound(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (this.minecraft.level == null) {
             return;
@@ -68,5 +68,5 @@ public abstract class ClientPlayerInteractionManagerMixin {
             SoundManager.playSound(sound, SoundType.ACTION, Mixers.ENABLED_FOOTSTEP, blockPos);
         }
     }
-    *///?}
+    //?}
 }

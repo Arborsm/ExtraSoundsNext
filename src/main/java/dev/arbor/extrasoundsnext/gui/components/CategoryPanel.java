@@ -8,10 +8,10 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 //? if >=1.20 {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?} else {
-import com.mojang.blaze3d.vertex.PoseStack;
-//?}
+import net.minecraft.client.gui.GuiGraphics;
+//?} else {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?}
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +108,7 @@ public class CategoryPanel {
     }
 
     //? if >=1.20 {
-    /*public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         Font font = Minecraft.getInstance().font;
 
         // Draw background
@@ -139,8 +139,8 @@ public class CategoryPanel {
             }
         }
     }
-    *///?} else {
-    public void render(PoseStack context, int mouseX, int mouseY, float delta) {
+    //?} else {
+    /*public void render(PoseStack context, int mouseX, int mouseY, float delta) {
         Font font = Minecraft.getInstance().font;
 
         // Draw background
@@ -158,10 +158,10 @@ public class CategoryPanel {
         // Draw category name
         Component name;
         //? if >=1.19 {
-        /*name = Component.translatable(mixer.getTranslationKey());
-        *///?} else {
-        name = new net.minecraft.network.chat.TranslatableComponent(mixer.getTranslationKey());
-        //?}
+        name = Component.translatable(mixer.getTranslationKey());
+        //?} else {
+        /^name = new net.minecraft.network.chat.TranslatableComponent(mixer.getTranslationKey());
+        ^///?}
         font.draw(context, name, x + 20, y + 6, 0xFFFFFFFF);
 
         // Render volume slider (below header)
@@ -180,7 +180,7 @@ public class CategoryPanel {
     private void fill(PoseStack context, int x1, int y1, int x2, int y2, int color) {
         net.minecraft.client.gui.screens.Screen.fill(context, x1, y1, x2, y2, color);
     }
-    //?}
+    *///?}
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // Check if click is within panel bounds
@@ -250,10 +250,10 @@ public class CategoryPanel {
 
         public VolumeSlider(int x, int y, int width, int height, Mixers mixer) {
             //? if >=1.19 {
-            /*super(x, y, width, height, Component.empty(), VolumeConfig.getVolume(mixer));
-            *///?} else {
-            super(x, y, width, height, new net.minecraft.network.chat.TextComponent(""), VolumeConfig.getVolume(mixer));
-            //?}
+            super(x, y, width, height, Component.empty(), VolumeConfig.getVolume(mixer));
+            //?} else {
+            /*super(x, y, width, height, new net.minecraft.network.chat.TextComponent(""), VolumeConfig.getVolume(mixer));
+            *///?}
             this.mixer = mixer;
             updateMessage();
         }
@@ -262,10 +262,10 @@ public class CategoryPanel {
         protected void updateMessage() {
             int percent = (int)(this.value * 100);
             //? if >=1.19 {
-            /*this.setMessage(Component.literal(percent + "%"));
-            *///?} else {
-            this.setMessage(new net.minecraft.network.chat.TextComponent(percent + "%"));
-            //?}
+            this.setMessage(Component.literal(percent + "%"));
+            //?} else {
+            /*this.setMessage(new net.minecraft.network.chat.TextComponent(percent + "%"));
+            *///?}
         }
 
         @Override

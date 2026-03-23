@@ -10,12 +10,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 //? if >=1.20 {
-/*import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
-*///?} else {
-import com.mojang.blaze3d.vertex.PoseStack;
+//?} else {
+/*import com.mojang.blaze3d.vertex.PoseStack;
 import org.jetbrains.annotations.NotNull;
-//?}
+*///?}
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +41,10 @@ public class VolumeScreen extends Screen {
 
     public VolumeScreen(Screen parent) {
         //? if >=1.19 {
-        /*super(Component.translatable("extrasounds.volume.title"));
-        *///?} else {
-        super(new net.minecraft.network.chat.TranslatableComponent("extrasounds.volume.title"));
-        //?}
+        super(Component.translatable("extrasounds.volume.title"));
+        //?} else {
+        /*super(new net.minecraft.network.chat.TranslatableComponent("extrasounds.volume.title"));
+        *///?}
         this.parent = parent;
     }
 
@@ -55,10 +55,10 @@ public class VolumeScreen extends Screen {
         // Search box at top
         Component searchPlaceholder;
         //? if >=1.19 {
-        /*searchPlaceholder = Component.translatable("extrasounds.search.placeholder");
-        *///?} else {
-        searchPlaceholder = new net.minecraft.network.chat.TranslatableComponent("extrasounds.search.placeholder");
-        //?}
+        searchPlaceholder = Component.translatable("extrasounds.search.placeholder");
+        //?} else {
+        /*searchPlaceholder = new net.minecraft.network.chat.TranslatableComponent("extrasounds.search.placeholder");
+        *///?}
 
         this.searchBox = new SearchBox(
             this.font,
@@ -78,20 +78,20 @@ public class VolumeScreen extends Screen {
         // Clear search button
         Component clearText;
         //? if >=1.19 {
-        /*clearText = Component.literal("X");
-        *///?} else {
-        clearText = new net.minecraft.network.chat.TextComponent("X");
-        //?}
+        clearText = Component.literal("X");
+        //?} else {
+        /*clearText = new net.minecraft.network.chat.TextComponent("X");
+        *///?}
 
         //? if >=1.19.3 {
-        /*Button clearButton = Button.builder(clearText, btn -> {
+        Button clearButton = Button.builder(clearText, btn -> {
             this.searchBox.setValue("");
         }).bounds(this.width / 2 + 135, 20, 20, 20).build();
-        *///?} else {
-        Button clearButton = new Button(this.width / 2 + 135, 20, 20, 20, clearText, btn -> {
+        //?} else {
+        /*Button clearButton = new Button(this.width / 2 + 135, 20, 20, 20, clearText, btn -> {
             this.searchBox.setValue("");
         });
-        //?}
+        *///?}
         this.addRenderableWidget(clearButton);
 
         // Build category panels
@@ -100,36 +100,36 @@ public class VolumeScreen extends Screen {
         // Reset button
         Component resetText;
         //? if >=1.19 {
-        /*resetText = Component.translatable("extrasounds.button.reset");
-        *///?} else {
-        resetText = new net.minecraft.network.chat.TranslatableComponent("extrasounds.button.reset");
-        //?}
+        resetText = Component.translatable("extrasounds.button.reset");
+        //?} else {
+        /*resetText = new net.minecraft.network.chat.TranslatableComponent("extrasounds.button.reset");
+        *///?}
 
         //? if >=1.19.3 {
-        /*this.resetButton = Button.builder(resetText, btn -> {
+        this.resetButton = Button.builder(resetText, btn -> {
             VolumeConfig.resetToDefaults();
             this.minecraft.setScreen(new VolumeScreen(this.parent));
         }).bounds(this.width / 2 - 155, this.height - 28, 150, 20).build();
-        *///?} else {
- 		this.resetButton = new Button(this.width / 2 - 155, this.height - 28, 150, 20, resetText, btn -> {
+        //?} else {
+ 		/*this.resetButton = new Button(this.width / 2 - 155, this.height - 28, 150, 20, resetText, btn -> {
  			VolumeConfig.resetToDefaults();
  			this.minecraft.setScreen(new VolumeScreen(this.parent));
  		});
-        //?}
+        *///?}
         this.addRenderableWidget(resetButton);
 
         // Done button
         //? if >=1.19.3 {
-        /*this.doneButton = Button.builder(CommonComponents.GUI_DONE, btn -> {
+        this.doneButton = Button.builder(CommonComponents.GUI_DONE, btn -> {
             VolumeConfig.save();
             this.minecraft.setScreen(this.parent);
         }).bounds(this.width / 2 + 5, this.height - 28, 150, 20).build();
-        *///?} else {
- 		this.doneButton = new Button(this.width / 2 + 5, this.height - 28, 150, 20, CommonComponents.GUI_DONE, btn -> {
+        //?} else {
+ 		/*this.doneButton = new Button(this.width / 2 + 5, this.height - 28, 150, 20, CommonComponents.GUI_DONE, btn -> {
  			VolumeConfig.save();
  			this.minecraft.setScreen(this.parent);
  		});
-        //?}
+        *///?}
         this.addRenderableWidget(doneButton);
     }
 
@@ -166,10 +166,10 @@ public class VolumeScreen extends Screen {
             if (!searchQuery.isEmpty()) {
                 Component name;
                 //? if >=1.19 {
-                /*name = Component.translatable(mixer.getTranslationKey());
-                *///?} else {
-                name = new net.minecraft.network.chat.TranslatableComponent(mixer.getTranslationKey());
-                //?}
+                name = Component.translatable(mixer.getTranslationKey());
+                //?} else {
+                /*name = new net.minecraft.network.chat.TranslatableComponent(mixer.getTranslationKey());
+                *///?}
                 if (!name.getString().toLowerCase().contains(searchQuery)) {
                     continue;
                 }
@@ -190,13 +190,13 @@ public class VolumeScreen extends Screen {
     }
 
     //? if >=1.20 {
-    /*@Override
+    @Override
     public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
 		//? if >= 1.21 {
-		/^this.renderBackground(context, mouseX, mouseY, delta);
-		^///?} else {
-		this.renderBackground(context);
-		//?}
+		this.renderBackground(context, mouseX, mouseY, delta);
+		//?} else {
+		/*this.renderBackground(context);
+		*///?}
 		super.render(context, mouseX, mouseY, delta);
 
 		// Draw title
@@ -227,21 +227,21 @@ public class VolumeScreen extends Screen {
         // Render search box and buttons on top
         this.searchBox.render(context, mouseX, mouseY, delta);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public void render(@NotNull PoseStack context, int mouseX, int mouseY, float delta) {
         //? if >=1.19 {
-        /*this.renderBackground(context);
-        *///?} else {
-        this.renderBackground(context, 0);
-        //?}
+        this.renderBackground(context);
+        //?} else {
+        /^this.renderBackground(context, 0);
+        ^///?}
 
         // Draw title
         //? if >=1.19 {
-        /*drawCenteredString(context, this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
-        *///?} else {
         drawCenteredString(context, this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
-        //?}
+        //?} else {
+        /^drawCenteredString(context, this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
+        ^///?}
 
         // Define scrollable area
         int scrollAreaTop = 50;
@@ -269,7 +269,7 @@ public class VolumeScreen extends Screen {
         this.searchBox.render(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
     }
-    //?}
+    *///?}
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -377,7 +377,7 @@ public class VolumeScreen extends Screen {
     }
 
     //? if >=1.21 {
-    /*@Override
+    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         if (isDraggingScrollbar) {
             return false;
@@ -390,8 +390,8 @@ public class VolumeScreen extends Screen {
         rebuildPanels();
         return true;
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if (isDraggingScrollbar) {
             return false;
@@ -404,7 +404,7 @@ public class VolumeScreen extends Screen {
         rebuildPanels();
         return true;
     }
-    //?}
+    *///?}
 
     private void enableScissorTest(int x, int y, int width, int height) {
         double scale = this.minecraft.getWindow().getGuiScale();
@@ -422,7 +422,7 @@ public class VolumeScreen extends Screen {
     }
 
     //? if >=1.20 {
-    /*private void drawScrollbar(GuiGraphics context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
+    private void drawScrollbar(GuiGraphics context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
         int scrollbarX = this.width - 10;
         int scrollbarWidth = 6;
         int scrollbarHeight = bottom - top;
@@ -442,8 +442,8 @@ public class VolumeScreen extends Screen {
         int thumbColor = isHovered || isDraggingScrollbar ? 0xFFAAAAAA : 0xFF888888;
         context.fill(scrollbarX, thumbY, scrollbarX + scrollbarWidth, thumbY + thumbHeight, thumbColor);
     }
-    *///?} else {
-    private void drawScrollbar(PoseStack context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
+    //?} else {
+    /*private void drawScrollbar(PoseStack context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
         int scrollbarX = this.width - 10;
         int scrollbarWidth = 6;
         int scrollbarHeight = bottom - top;
@@ -463,7 +463,7 @@ public class VolumeScreen extends Screen {
         int thumbColor = isHovered || isDraggingScrollbar ? 0xFFAAAAAA : 0xFF888888;
         Screen.fill(context, scrollbarX, thumbY, scrollbarX + scrollbarWidth, thumbY + thumbHeight, thumbColor);
     }
-    //?}
+    *///?}
 
     @Override
     public void removed() {

@@ -7,10 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 //? if >=1.20 {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?} else {
-import com.mojang.blaze3d.vertex.PoseStack;
-//?}
+import net.minecraft.client.gui.GuiGraphics;
+//?} else {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?}
 
 /**
  * Individual sound entry row with toggle and preview buttons.
@@ -107,16 +107,16 @@ public class SoundEntryRow {
         if (previewButton != null) {
             Component text;
             //? if >=1.19 {
-            /*text = Component.literal(isPlaying ? "■" : "▶");
-            *///?} else {
-            text = new net.minecraft.network.chat.TextComponent(isPlaying ? "■" : "▶");
-            //?}
+            text = Component.literal(isPlaying ? "■" : "▶");
+            //?} else {
+            /*text = new net.minecraft.network.chat.TextComponent(isPlaying ? "■" : "▶");
+            *///?}
             previewButton.setMessage(text);
         }
     }
 
     //? if >=1.20 {
-    /*public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         Font font = Minecraft.getInstance().font;
 
         // Handle continuous playing
@@ -163,8 +163,8 @@ public class SoundEntryRow {
             toggleButton.render(context, mouseX, mouseY, delta);
         }
     }
-    *///?} else {
-    public void render(PoseStack context, int mouseX, int mouseY, float delta) {
+    //?} else {
+    /*public void render(PoseStack context, int mouseX, int mouseY, float delta) {
         Font font = Minecraft.getInstance().font;
 
         // Handle continuous playing
@@ -179,10 +179,10 @@ public class SoundEntryRow {
         // Draw sound name
         Component name;
         //? if >=1.19 {
-        /*name = Component.translatable(sound.getTranslationKey());
-        *///?} else {
-        name = new net.minecraft.network.chat.TranslatableComponent(sound.getTranslationKey());
-        //?}
+        name = Component.translatable(sound.getTranslationKey());
+        //?} else {
+        /^name = new net.minecraft.network.chat.TranslatableComponent(sound.getTranslationKey());
+        ^///?}
         font.draw(context, name, x + 10, y + 4, 0xFFAAAAAA);
 
         // Render preview button
@@ -220,7 +220,7 @@ public class SoundEntryRow {
     private void fill(PoseStack context, int x1, int y1, int x2, int y2, int color) {
         net.minecraft.client.gui.screens.Screen.fill(context, x1, y1, x2, y2, color);
     }
-    //?}
+    *///?}
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         // Check preview button first (manual bounds check)

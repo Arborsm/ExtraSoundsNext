@@ -7,19 +7,19 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 //? if >=1.19.3 {
-/*import net.minecraft.core.registries.BuiltInRegistries;
-*///?} else {
-import net.minecraft.core.Registry;
-//?}
+import net.minecraft.core.registries.BuiltInRegistries;
+//?} else {
+/*import net.minecraft.core.Registry;
+*///?}
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 //? if >=1.19 {
-/*import net.minecraft.util.RandomSource;
-*///?} else {
-import java.util.Random;
-//?}
+import net.minecraft.util.RandomSource;
+//?} else {
+/*import java.util.Random;
+*///?}
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -44,10 +44,10 @@ import java.util.function.BiPredicate;
 public class SoundManager {
     private static final Logger LOGGER = LogManager.getLogger();
     //? if >=1.19 {
-    /*private static final RandomSource MC_RANDOM = RandomSource.create();
-    *///?} else {
-    private static final Random MC_RANDOM = new java.util.Random();
-    //?}
+    private static final RandomSource MC_RANDOM = RandomSource.create();
+    //?} else {
+    /*private static final Random MC_RANDOM = new java.util.Random();
+    *///?}
 
     /**
      * Predicate of Right Mouse Click.
@@ -203,10 +203,10 @@ public class SoundManager {
 
     public static void playSound(ItemStack stack, SoundType type) {
         //? if >=1.19.3 {
-        /*var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        *///?} else {
-        var itemId = Registry.ITEM.getKey(stack.getItem());
-        //?}
+        var itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        //?} else {
+        /*var itemId = Registry.ITEM.getKey(stack.getItem());
+        *///?}
         ResourceLocation id = ExtraSoundsNext.getClickId(itemId, type);
         SoundEvent event = SoundPackLoader.CUSTOM_SOUND_EVENT.getOrDefault(id, null);
         if (event == null) {
@@ -218,12 +218,12 @@ public class SoundManager {
 
     public static void playDefaultSound(ItemStack stack, SoundType type) {
         //? if >=1.19.3 {
-        /*ResourceLocation defaultItem = ExtraSoundsNext.getClickId(BuiltInRegistries.ITEM.getKey(Items.DIAMOND), type);
+        ResourceLocation defaultItem = ExtraSoundsNext.getClickId(BuiltInRegistries.ITEM.getKey(Items.DIAMOND), type);
         ResourceLocation defaultBlock = ExtraSoundsNext.getClickId(BuiltInRegistries.ITEM.getKey(Items.STONE), type);
-        *///?} else {
-        ResourceLocation defaultItem = ExtraSoundsNext.getClickId(Registry.ITEM.getKey(Items.DIAMOND), type);
+        //?} else {
+        /*ResourceLocation defaultItem = ExtraSoundsNext.getClickId(Registry.ITEM.getKey(Items.DIAMOND), type);
         ResourceLocation defaultBlock = ExtraSoundsNext.getClickId(Registry.ITEM.getKey(Items.STONE), type);
-        //?}
+        *///?}
         SoundEvent defaultSound;
         if (stack.getItem() instanceof BlockItem){
             defaultSound = SoundPackLoader.CUSTOM_SOUND_EVENT.get(defaultBlock);
@@ -279,14 +279,14 @@ public class SoundManager {
             }
         }
         //? if >=1.19 {
-        /*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch, MC_RANDOM,
+        playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch, MC_RANDOM,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
-        *///?} else {
-		playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch,
+        //?} else {
+		/*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch,
 				false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
 				true));
-        //?}
+        *///?}
     }
 
     public static void playSound(SoundEvent snd, float pitch, Mixers... optionalVolumes) {
@@ -297,14 +297,14 @@ public class SoundManager {
             }
         }
         //? if >=1.19 {
-        /*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch, MC_RANDOM,
+        playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch, MC_RANDOM,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
-        *///?} else {
-		playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch,
+        //?} else {
+		/*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch,
 				false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
 				true));
-        //?}
+        *///?}
     }
 
     //? if =1.19.2 {
@@ -320,7 +320,7 @@ public class SoundManager {
                 true));
     }
     *///?} elif <1.19.3 {
-    public static void playSound(SoundEvent snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
+    /*public static void playSound(SoundEvent snd, float pitch, SoundSource category, SoundSource... optionalVolumes) {
         float volume = getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
             for (SoundSource cat : optionalVolumes) {
@@ -329,7 +329,7 @@ public class SoundManager {
         }
         playSound(new SimpleSoundInstance(snd, category, volume, pitch, 0.0D, 0.0D, 0.0D));
     }
-    //?}
+    *///?}
 
     public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position, Mixers... optionalVolumes) {
         playSound(snd, type, volume, pitch, position, false, optionalVolumes);
@@ -343,10 +343,10 @@ public class SoundManager {
             }
         }
         //? if >=1.19 {
-        /*playSound(new SimpleSoundInstance(snd, SoundSource.MASTER, volume, pitch, MC_RANDOM, position));
-        *///?} else {
-        playSound(new SimpleSoundInstance(snd, SoundSource.MASTER, volume, pitch, position));
-        //?}
+        playSound(new SimpleSoundInstance(snd, SoundSource.MASTER, volume, pitch, MC_RANDOM, position));
+        //?} else {
+        /*playSound(new SimpleSoundInstance(snd, SoundSource.MASTER, volume, pitch, position));
+        *///?}
     }
 
     public static void playSound(SoundEvent snd, SoundType type, Mixers enabledFootstep, BlockPos position) {
@@ -380,10 +380,10 @@ public class SoundManager {
         final float maxPitch = 2f;
         final float pitch = (!itemStack.isStackable()) ? maxPitch :
                 //? if >=1.21 {
-                /*Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getDefaultMaxStackSize());
-                *///?} else {
-                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
-                //?}
+                Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getDefaultMaxStackSize());
+                //?} else {
+                /*Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
+                *///?}
         playSound(Sounds.ITEM_DROP, pitch, Mixers.ITEM_DROP);
     }
 
@@ -439,12 +439,12 @@ public class SoundManager {
     }
 
     //? if <1.19.3 {
-    public static float getSoundVolume(SoundSource source, boolean... anti) {
+    /*public static float getSoundVolume(SoundSource source, boolean... anti) {
         final float volume = Minecraft.getInstance().options.getSoundSourceVolume(source);
         if (anti != null && anti.length > 0 && anti[0] && volume == 1f) {
             return 0f;
         }
         return volume;
     }
-    //?}
+    *///?}
 }

@@ -1,5 +1,5 @@
 //? if neoforge {
-/*package dev.arbor.extrasoundsnext.platform.neoforge;
+package dev.arbor.extrasoundsnext.platform.neoforge;
 
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
 import dev.arbor.extrasoundsnext.gui.VolumeScreen;
@@ -17,7 +17,7 @@ public final class ExtraSoundsNextForge {
         );
     }
 }
-*///?} elif forge && >=1.19 {
+//?} elif forge && >=1.19 {
 /*package dev.arbor.extrasoundsnext.platform.neoforge;
 
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
@@ -40,7 +40,7 @@ public final class ExtraSoundsNextForge {
     }
 }
 *///?} elif forge {
-package dev.arbor.extrasoundsnext.platform.neoforge;
+/*package dev.arbor.extrasoundsnext.platform.neoforge;
 
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
 import dev.arbor.extrasoundsnext.mapping.SoundPackLoader;
@@ -53,5 +53,5 @@ public final class ExtraSoundsNextForge {
         SoundPackLoader.init();
     }
 }
-//?} else {
+*///?} else {
 //?}

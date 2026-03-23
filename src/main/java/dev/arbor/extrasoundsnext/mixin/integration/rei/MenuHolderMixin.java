@@ -17,10 +17,10 @@ public class MenuHolderMixin {
 
     @Inject(method = "mouseScrolled", at = @At("HEAD"))
 	//? if >=1.21.1 {
-    /*private void mouseScrolled(double mouseX, double mouseY, double amountX, double amountY, CallbackInfoReturnable<Boolean> cir) {
-	*///?} else {
-	private void mouseScrolled(double mouseX, double mouseY, double amount, CallbackInfoReturnable<Boolean> cir) {
-	//?}
+    private void mouseScrolled(double mouseX, double mouseY, double amountX, double amountY, CallbackInfoReturnable<Boolean> cir) {
+	//?} else {
+	/*private void mouseScrolled(double mouseX, double mouseY, double amount, CallbackInfoReturnable<Boolean> cir) {
+	*///?}
         extra_sounds$scrollSound.play();
     }
 }

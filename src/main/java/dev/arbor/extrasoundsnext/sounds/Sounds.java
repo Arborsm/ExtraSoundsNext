@@ -60,11 +60,11 @@ public class Sounds {
 
     public static SoundEventRegistration single(ResourceLocation id, float volume, float pitch, Sound.Type type) {
         //? if >=1.21 {
-        /*return new SoundEventRegistration(List.of(
+        return new SoundEventRegistration(List.of(
                 new Sound(id, ConstantFloat.of(volume), ConstantFloat.of(pitch), 1,
                         type, false, false, 16)
         ), false, null);
-        *///?} elif >=1.19.3 {
+        //?} elif >=1.19.3 {
         /*return new SoundEventRegistration(List.of(
                 new Sound(id.toString(), ConstantFloat.of(volume), ConstantFloat.of(pitch), 1,
                         type, false, false, 16)
@@ -75,10 +75,10 @@ public class Sounds {
                         type, false, false, 16)
         ), false, null);
         *///?} else {
-        return new SoundEventRegistration(List.of(
+        /*return new SoundEventRegistration(List.of(
                 new Sound(id.toString(), volume, pitch, 1,
                         type, false, false, 16)
         ), false, null);
-        //?}
+        *///?}
     }
 }

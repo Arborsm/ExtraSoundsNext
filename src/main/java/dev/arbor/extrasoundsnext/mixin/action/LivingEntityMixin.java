@@ -21,20 +21,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /*import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 *///?} elif neoforge {
-/*import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-*///?} elif forge {
-import net.minecraftforge.api.distmarker.Dist;
+//?} elif forge {
+/*import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-//?}
+*///?}
 
 //? if fabric {
 /*@Environment(EnvType.CLIENT)
 *///?} elif neoforge {
-/*@OnlyIn(Dist.CLIENT)
-*///?} elif forge {
 @OnlyIn(Dist.CLIENT)
-//?}
+//?} elif forge {
+/*@OnlyIn(Dist.CLIENT)
+*///?}
 @Mixin(LivingEntity.class)
 @MixinEnvironment()
 public abstract class LivingEntityMixin extends Entity {
@@ -45,10 +45,10 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "makePoofParticles", at = @At("HEAD"))
     private void extrasounds$poofSound(CallbackInfo ci) {
         //? if >=1.20 {
-        /*if (!this.level().isClientSide) {
-        *///?} else {
-        if (!this.getCommandSenderWorld().isClientSide) {
-        //?}
+        if (!this.level().isClientSide) {
+        //?} else {
+        /*if (!this.getCommandSenderWorld().isClientSide) {
+        *///?}
             return;
         }
 

@@ -2,7 +2,7 @@ package dev.arbor.extrasoundsnext.mixin.integration.emi;
 
 //? if > 1.18.2 {
 
-/*import dev.emi.emi.screen.EmiScreenManager;
+import dev.emi.emi.screen.EmiScreenManager;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import dev.arbor.extrasoundsnext.sounds.ScrollSound;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,4 +28,4 @@ public class EmiScreenManagerMixin {
         }
     }
 }
-*///?}
+//?}

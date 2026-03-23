@@ -20,9 +20,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 //? if >=1.19 {
-/*import net.minecraft.client.GuiMessageTag;
+import net.minecraft.client.GuiMessageTag;
 import net.minecraft.network.chat.MessageSignature;
-*///?}
+//?}
 
 @Mixin(ChatComponent.class)
 @MixinEnvironment()
@@ -36,9 +36,9 @@ public abstract class ChatHudMixin {
     private int extra_sounds$currentLines;
 
 	//? if >=1.21 {
-    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
+    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
     private void extrasounds$receiveMessage(Component component, MessageSignature signature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
-    *///?} elif >=1.20 && fabric {
+    //?} elif >=1.20 && fabric {
     /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
     private void extrasounds$receiveMessage(Component component, MessageSignature messageSignature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
     *///?} elif >=1.20 && (neoforge || forge) {
@@ -48,9 +48,9 @@ public abstract class ChatHudMixin {
     /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V", at = @At("RETURN"))
     private void extrasounds$receiveMessage(Component component, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag tag, boolean refresh, CallbackInfo ci) {
     *///?} else {
-    @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;IIZ)V", at = @At("RETURN"))
+    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;IIZ)V", at = @At("RETURN"))
     private void extrasounds$receiveMessage(Component component, int messageId, int timestamp, boolean refresh, CallbackInfo ci) {
-    //?}
+    *///?}
         final LocalPlayer player = this.minecraft.player;
         if (player == null) {
             return;

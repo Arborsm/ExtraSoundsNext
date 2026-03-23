@@ -33,12 +33,12 @@ public class SoundManagerMixin {
 	@MixinEnvironment()
 	public interface PreparationsInvoker {
 		//? if >=1.19.4 {
-		/*@Invoker("handleRegistration")
-		void extrasounds$handleRegistration(ResourceLocation rl, SoundEventRegistration soundEventRegistration);
-		*///?} else {
 		@Invoker("handleRegistration")
+		void extrasounds$handleRegistration(ResourceLocation rl, SoundEventRegistration soundEventRegistration);
+		//?} else {
+		/*@Invoker("handleRegistration")
 		void extrasounds$handleRegistration(ResourceLocation rl, SoundEventRegistration soundEventRegistration, ResourceManager resourceManager);
-		//?}
+		*///?}
 	}
 
 	@Accessor("GSON")
@@ -52,7 +52,7 @@ public class SoundManagerMixin {
 	}
 
 	//? if >=1.19.3 {
-	/*@Inject(
+	@Inject(
 			method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V", shift = At.Shift.AFTER),
 			slice = @Slice(
@@ -61,7 +61,7 @@ public class SoundManagerMixin {
 			)
 	)
 	private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
-	*///?} elif =1.19.2 {
+	//?} elif =1.19.2 {
 	/*@Inject(
 			method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;startTick()V", shift = At.Shift.AFTER),
@@ -72,7 +72,7 @@ public class SoundManagerMixin {
 	)
 	private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
 	*///?} else {
-	@Inject(
+	/*@Inject(
 			method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;push(Ljava/lang/String;)V", shift = At.Shift.AFTER),
 			slice = @Slice(
@@ -81,7 +81,7 @@ public class SoundManagerMixin {
 			)
 	)
 	private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
-	//?}
+	*///?}
 		if (SoundPackLoader.GENERATED_SOUNDS != null) {
 			profilerFiller.push(ExtraSoundsNext.MODID);
 			Reader reader = new StringReader(SoundPackLoader.GENERATED_SOUNDS.toString());
@@ -91,10 +91,10 @@ public class SoundManagerMixin {
 				profilerFiller.popPush("register");
 				for(Map.Entry<String, SoundEventRegistration> entry : ExtraSoundsMap.entrySet()) {
 					//? if >=1.19.4 {
-					/*((PreparationsInvoker)preparations).extrasounds$handleRegistration(ExHelper.id(entry.getKey()), entry.getValue());
-					 *///?} else {
-					((PreparationsInvoker)preparations).extrasounds$handleRegistration(ExHelper.id(entry.getKey()), entry.getValue(), resourceManager);
-					//?}
+					((PreparationsInvoker)preparations).extrasounds$handleRegistration(ExHelper.id(entry.getKey()), entry.getValue());
+					 //?} else {
+					/*((PreparationsInvoker)preparations).extrasounds$handleRegistration(ExHelper.id(entry.getKey()), entry.getValue(), resourceManager);
+					*///?}
 				}
 				profilerFiller.pop();
 			} catch (Throwable throwable) {

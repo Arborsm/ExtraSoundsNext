@@ -1,10 +1,10 @@
 package dev.arbor.extrasoundsnext.mixin.integration.jei;
 
 //? if 1.18.2 {
-import mezz.jei.common.input.IUserInputHandler;
-//?} elif >=1.21.1 {
-/*import mezz.jei.library.gui.widgets.AbstractScrollWidget;
-*///?} else {
+/*import mezz.jei.common.input.IUserInputHandler;
+*///?} elif >=1.21.1 {
+import mezz.jei.library.gui.widgets.AbstractScrollWidget;
+//?} else {
 /*import mezz.jei.gui.input.IUserInputHandler;
 *///?}
 import dev.arbor.extrasoundsnext.sounds.ScrollSound;
@@ -18,10 +18,10 @@ import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import java.util.Optional;
 
 //? if 1.18.2 {
-@Mixin(targets = "mezz.jei.common.gui.overlay.IngredientGridWithNavigation.UserInputHandler")
-//?} else if >=1.21.1 {
-/*@Mixin(targets = "mezz.jei.gui.overlay.IngredientGridWithNavigation$IngredientGridPaged")
-*///?} else {
+/*@Mixin(targets = "mezz.jei.common.gui.overlay.IngredientGridWithNavigation.UserInputHandler")
+*///?} else if >=1.21.1 {
+@Mixin(targets = "mezz.jei.gui.overlay.IngredientGridWithNavigation$IngredientGridPaged")
+//?} else {
 /*@Mixin(targets = "mezz.jei.gui.overlay.IngredientGridWithNavigation$UserInputHandler")
 *///?}
 @MixinEnvironment
@@ -30,7 +30,7 @@ public abstract class IngredientGridWithNavigationMixin {
 	private static final ScrollSound extra_sounds$scrollSound = new ScrollSound();
 
 	//? if >=1.21.1 {
-	/*@Inject(method = "nextPage", at = @At("HEAD"), remap = false)
+	@Inject(method = "nextPage", at = @At("HEAD"), remap = false)
 	private void nextPage(CallbackInfoReturnable<Boolean> cir) {
 		extra_sounds$scrollSound.play();
 	}
@@ -48,10 +48,10 @@ public abstract class IngredientGridWithNavigationMixin {
 			extra_sounds$scrollSound.play();
 		}
 	}
-	*///?} else {
-	@Inject(method = "handleMouseScrolled", at = @At("HEAD"), remap = false)
+	//?} else {
+	/*@Inject(method = "handleMouseScrolled", at = @At("HEAD"), remap = false)
 	private void handleMouseScrolled(double mouseX, double mouseY, double scrollDelta, CallbackInfoReturnable<Optional<IUserInputHandler>> cir) {
 		extra_sounds$scrollSound.play();
 	}
-	//?}
+	*///?}
 }

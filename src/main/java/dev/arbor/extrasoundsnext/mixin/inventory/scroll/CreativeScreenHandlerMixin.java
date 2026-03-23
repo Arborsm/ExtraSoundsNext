@@ -3,23 +3,23 @@ package dev.arbor.extrasoundsnext.mixin.inventory.scroll;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 //? if >=1.19.3 {
-/*import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Inject;
 import dev.arbor.extrasoundsnext.sounds.ScrollSound;
-*///?} else {
-import net.minecraft.sounds.SoundEvent;
-//?}
+//?} else {
+/*import net.minecraft.sounds.SoundEvent;
+*///?}
 import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import dev.arbor.extrasoundsnext.sounds.Sounds;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 //? if >=1.19.3 {
-/*import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-*///?} else {
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-//?}
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//?} else {
+/*import org.spongepowered.asm.mixin.injection.ModifyVariable;
+*///?}
 
 /**
  * For Creative screen scroll sound.
@@ -29,17 +29,17 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class CreativeScreenHandlerMixin {
     @Unique
     //? if >=1.19.3 {
-    /*private final ScrollSound extra_sounds$scrollSound = new ScrollSound();
-    *///?} else {
-    private static final SoundEvent extra_sounds$e = Sounds.INVENTORY_SCROLL;
+    private final ScrollSound extra_sounds$scrollSound = new ScrollSound();
+    //?} else {
+    /*private static final SoundEvent extra_sounds$e = Sounds.INVENTORY_SCROLL;
     @Unique
     private static int extra_sounds$lastPos = 0;
     @Unique
     private static long extra_sounds$lastTime = 0L;
-    //?}
+    *///?}
 
     //? if >=1.19.3 {
-    /*@Shadow
+    @Shadow
     protected abstract int getRowIndexForScroll(float scroll);
 
     @Inject(method = "scrollTo", at = @At("HEAD"))
@@ -47,8 +47,8 @@ public abstract class CreativeScreenHandlerMixin {
         final int row = this.getRowIndexForScroll(position);
         extra_sounds$scrollSound.play(row);
     }
-    *///?} else {
-    @ModifyVariable(method = "scrollTo", at = @At("STORE"), ordinal = 1)
+    //?} else {
+    /*@ModifyVariable(method = "scrollTo", at = @At("STORE"), ordinal = 1)
     int scroll(int position) {
         long now = System.currentTimeMillis();
         long timeDiff = now - extra_sounds$lastTime;
@@ -59,5 +59,5 @@ public abstract class CreativeScreenHandlerMixin {
         }
         return position;
     }
-    //?}
+    *///?}
 }

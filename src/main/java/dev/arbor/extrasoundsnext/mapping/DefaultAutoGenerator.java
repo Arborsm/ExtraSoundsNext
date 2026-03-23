@@ -3,12 +3,12 @@ package dev.arbor.extrasoundsnext.mapping;
 import dev.arbor.extrasoundsnext.annotation.ISoundsGenerator;
 import net.minecraft.client.resources.sounds.Sound;
 //? if >=1.21 {
-/*import net.minecraft.core.Holder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import static net.minecraft.world.item.ArmorMaterials.*;
-*///?} else {
-import net.minecraft.core.Registry;
-//?}
+//?} else {
+/*import net.minecraft.core.Registry;
+*///?}
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
@@ -16,8 +16,8 @@ import dev.arbor.extrasoundsnext.annotation.SoundsGenerator;
 import org.jetbrains.annotations.NotNull;
 
 //? if >=1.21 {
-/*import java.util.List;
-*///?}
+import java.util.List;
+//?}
 
 import static dev.arbor.extrasoundsnext.sounds.Categories.*;
 import static dev.arbor.extrasoundsnext.sounds.Sounds.*;
@@ -27,16 +27,16 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
     public final static SoundGenerator generator = SoundGenerator.of(ResourceLocation.DEFAULT_NAMESPACE, DefaultAutoGenerator::autoGenerator);
 
     //? if >=1.21 {
-    /*private static final List<Holder<ArmorMaterial>> armorMaterials = List.of(LEATHER, CHAIN, IRON, GOLD, DIAMOND, TURTLE, NETHERITE, ARMADILLO);
-    *///?}
+    private static final List<Holder<ArmorMaterial>> armorMaterials = List.of(LEATHER, CHAIN, IRON, GOLD, DIAMOND, TURTLE, NETHERITE, ARMADILLO);
+    //?}
 
     public static SoundDefinition autoGenerator(Item item) {
         //? if >=1.21 {
-        /*String itemId = BuiltInRegistries.ITEM.getKey(item).getPath();
+        String itemId = BuiltInRegistries.ITEM.getKey(item).getPath();
         if (itemId.contains("music_disc")) {
-        *///?} else {
-        if (item instanceof RecordItem) {
-        //?}
+        //?} else {
+        /*if (item instanceof RecordItem) {
+        *///?}
             return SoundDefinition.of(aliased(MUSIC_DISC));
         } else if (item instanceof BoatItem) {
             return SoundDefinition.of(aliased(BOAT));
@@ -47,14 +47,14 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
             return SoundDefinition.of(aliased(Gear.GENERIC));
         } else if (item instanceof ArmorItem armorItem) {
             //? if >=1.21 {
-            /*if (armorMaterials.contains(armorItem.getMaterial())) {
+            if (armorMaterials.contains(armorItem.getMaterial())) {
                 return getArmorMaterialSound(armorItem.getMaterial());
             }
-            *///?} else {
-            if (armorItem.getMaterial() instanceof ArmorMaterials mat) {
+            //?} else {
+            /*if (armorItem.getMaterial() instanceof ArmorMaterials mat) {
                 return getArmorMaterialSound(mat);
             }
-            //?}
+            *///?}
             return SoundDefinition.of(aliased(Gear.GENERIC));
         } else if (item instanceof ShieldItem) {
             return SoundDefinition.of(aliased(Gear.IRON));
@@ -73,23 +73,23 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
         } else if (item instanceof SpawnEggItem) {
             return SoundDefinition.of(aliased(WET_SLIPPERY));
         //? if >=1.21 {
-        /*} else if (item instanceof BowItem || item instanceof SuspiciousStewItem) {
-        *///?} else {
-        } else if (item instanceof BowlFoodItem || item instanceof SuspiciousStewItem) {
-        //?}
+        } else if (item instanceof BowItem || item instanceof SuspiciousStewItem) {
+        //?} else {
+        /*} else if (item instanceof BowlFoodItem || item instanceof SuspiciousStewItem) {
+        *///?}
             return SoundDefinition.of(aliased(BOWL));
         //? if >=1.19 {
-        /*} else if (item instanceof InstrumentItem) {
+        } else if (item instanceof InstrumentItem) {
             return SoundDefinition.of(single(LOOSE_METAL.getLocation(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
-        *///?}
+        //?}
         //? if >=1.20 {
-        /*} else if (item instanceof SmithingTemplateItem) {
+        } else if (item instanceof SmithingTemplateItem) {
             return SoundDefinition.of(aliased(LOOSE_METAL));
-        *///?}
+        //?}
         //? if >=1.19 {
-        /*} else if (item instanceof DiscFragmentItem) {
+        } else if (item instanceof DiscFragmentItem) {
             return SoundDefinition.of(single(METAL_BITS.getLocation(), 0.7f, 0.85f, Sound.Type.SOUND_EVENT));
-        *///?}
+        //?}
         } else if (isBrickItem(item)) {
             return SoundDefinition.of(aliased(BRICK));
         } else if (isGearGoldenItem(item)) {
@@ -118,9 +118,9 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
                     return SoundDefinition.of(event(soundId));
                 }
             //? if >=1.19 {
-            /*} else if (block instanceof RotatedPillarBlock pillarBlock && SoundGenerator.getSoundType(pillarBlock).equals(SoundType.FROGLIGHT)) {
+            } else if (block instanceof RotatedPillarBlock pillarBlock && SoundGenerator.getSoundType(pillarBlock).equals(SoundType.FROGLIGHT)) {
                 return SoundDefinition.of(event(blockSound, 0.3f));
-            *///?}
+            //?}
             }
 
             return SoundDefinition.of(event(blockSound));
@@ -130,7 +130,7 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
     }
 
     //? if >=1.21 {
-    /*@NotNull
+    @NotNull
     private static SoundDefinition getArmorMaterialSound(Holder<ArmorMaterial> mat) {
         if (mat == LEATHER){
             return SoundDefinition.of(aliased(Gear.LEATHER));
@@ -155,8 +155,8 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
         }
         return SoundDefinition.of(aliased(Gear.GENERIC));
     }
-    *///?} else {
-    @SuppressWarnings("all")
+    //?} else {
+    /*@SuppressWarnings("all")
     @NotNull
     private static SoundDefinition getArmorMaterialSound(ArmorMaterials mat) {
         return switch (mat) {
@@ -170,7 +170,7 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
             default -> SoundDefinition.of(aliased(Gear.GENERIC));
         };
     }
-    //?}
+    *///?}
 
     @SuppressWarnings("UnnecessaryDefault")
     @NotNull
@@ -188,12 +188,12 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
 
     private static boolean isGearGoldenItem(Item item) {
         //? if >=1.21 {
-        /*return item instanceof AnimalArmorItem || item instanceof CompassItem ||
+        return item instanceof AnimalArmorItem || item instanceof CompassItem ||
                 item instanceof SpyglassItem || item instanceof ShearsItem;
-        *///?} else {
-        return item instanceof HorseArmorItem || item instanceof CompassItem ||
+        //?} else {
+        /*return item instanceof HorseArmorItem || item instanceof CompassItem ||
                 item instanceof SpyglassItem || item instanceof ShearsItem;
-        //?}
+        *///?}
     }
 
     private static boolean isGearLeatherItem(Item item) {

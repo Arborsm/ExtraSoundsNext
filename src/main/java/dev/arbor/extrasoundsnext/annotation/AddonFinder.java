@@ -8,20 +8,20 @@ import dev.arbor.extrasoundsnext.mapping.SoundGenerator;
 /*import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 *///?} elif neoforge {
-/*import com.mojang.text2speech.Narrator;
+import com.mojang.text2speech.Narrator;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforgespi.language.IModInfo;
 import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
-*///?} elif forge {
-import com.mojang.text2speech.Narrator;
+//?} elif forge {
+/*import com.mojang.text2speech.Narrator;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
-//?}
+*///?}
 import net.minecraft.world.item.Item;
 
 import java.lang.reflect.Field;
@@ -100,7 +100,7 @@ public class AddonFinder {
     }
     *///?} neoforge {
 
-    /*public static List<Field> getAnnotatedFields() {
+    public static List<Field> getAnnotatedFields() {
         Type annotationType = Type.getType(SoundsGenerator.class);
         List<ModFileScanData> allScanData = ModList.get().getAllScanData();
         Set<Field> annotatedFields = new LinkedHashSet<>();
@@ -161,9 +161,9 @@ public class AddonFinder {
                 .sorted()
                 .toList();
     }
-    *///?} forge {
+    //?} forge {
 
-	public static List<Field> getAnnotatedFields() {
+	/*public static List<Field> getAnnotatedFields() {
 		Type annotationType = Type.getType(SoundsGenerator.class);
 		List<ModFileScanData> allScanData = ModList.get().getAllScanData();
 		Set<Field> annotatedFields = new LinkedHashSet<>();
@@ -224,5 +224,5 @@ public class AddonFinder {
                 .sorted()
                 .toList();
     }
-    //?}
+    *///?}
 }

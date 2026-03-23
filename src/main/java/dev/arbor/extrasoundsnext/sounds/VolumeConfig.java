@@ -177,9 +177,9 @@ public final class VolumeConfig {
         //? if fabric {
         /*return net.fabricmc.loader.api.FabricLoader.getInstance().getConfigDir().resolve("extrasounds.json");
         *///?} elif neoforge {
-        /*return net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get().resolve("extrasounds.json");
-        *///?} elif forge {
-        return net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get().resolve("extrasounds.json");
-        //?}
+        return net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get().resolve("extrasounds.json");
+        //?} elif forge {
+        /*return net.minecraftforge.fml.loading.FMLPaths.CONFIGDIR.get().resolve("extrasounds.json");
+        *///?}
     }
 }

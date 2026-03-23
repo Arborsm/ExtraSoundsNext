@@ -3,10 +3,10 @@ package dev.arbor.extrasoundsnext.mixin.hotbar;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.Minecraft;
 //? if >=1.20.2 {
-/*import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
-*///?} else {
-import net.minecraft.client.multiplayer.ClientPacketListener;
-//?}
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+//?} else {
+/*import net.minecraft.client.multiplayer.ClientPacketListener;
+*///?}
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.world.item.ItemStack;
@@ -23,20 +23,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * For Swap with Off-hand action.
  */
 //? if >=1.20.2 {
-/*@Mixin(ClientCommonPacketListenerImpl.class)
-*///?} else {
-@Mixin(ClientPacketListener.class)
-//?}
+@Mixin(ClientCommonPacketListenerImpl.class)
+//?} else {
+/*@Mixin(ClientPacketListener.class)
+*///?}
 @MixinEnvironment()
 public abstract class ClientPlayNetworkHandlerMixin {
     @Shadow @Final
 	private Minecraft minecraft;
 
     //? if >=1.20.2 {
-    /*@Inject(method = "send", at = @At("HEAD"))
-    *///?} else {
-    @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"))
-    //?}
+    @Inject(method = "send", at = @At("HEAD"))
+    //?} else {
+    /*@Inject(method = "send(Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"))
+    *///?}
     private void extrasounds$hotbarSwapEvent(Packet<?> packet, CallbackInfo ci) {
         if (this.minecraft.player == null) {
             return;

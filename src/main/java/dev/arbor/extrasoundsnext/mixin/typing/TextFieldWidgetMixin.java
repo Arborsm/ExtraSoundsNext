@@ -106,9 +106,9 @@ public abstract class TextFieldWidgetMixin {
 	@Unique
 	private static final String extrasounds$moveCursorArg =
 			//? if >= 1.21 {
-			 /*"Z";
-			*///?} else
-			"";
+			 "Z";
+			//?} else
+			//"";
 
 
     @Inject(method = "keyPressed",
@@ -124,9 +124,9 @@ public abstract class TextFieldWidgetMixin {
     }
 
 	//? if >=1.20.1 {
-    /*@Inject(method = "onClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(I" + extrasounds$moveCursorArg + ")V", shift = At.Shift.AFTER))
+    @Inject(method = "onClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(I" + extrasounds$moveCursorArg + ")V", shift = At.Shift.AFTER))
     private void extrasounds$clickEvent(double mouseX, double mouseY, CallbackInfo ci) {
         this.extrasounds$cursorChanged();
     }
-    *///?}
+    //?}
 }

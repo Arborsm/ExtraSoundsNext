@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //? if >=1.19 {
-/*@Mixin(LoomScreen.class)
+@Mixin(LoomScreen.class)
 @MixinEnvironment()
 public class LoomScreenMixin {
     @Unique
@@ -22,18 +22,18 @@ public class LoomScreenMixin {
 
     @Inject(method = "mouseScrolled", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/inventory/LoomScreen;startRow:I"))
 	//? if >=1.21 {
-    /^private void extrasounds$mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
-    ^///?} else {
-	private void extrasounds$mouseScrolled(double mouseX, double mouseY, double scroll, CallbackInfoReturnable<Boolean> cir) {
-    //?}
+    private void extrasounds$mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
+    //?} else {
+	/*private void extrasounds$mouseScrolled(double mouseX, double mouseY, double scroll, CallbackInfoReturnable<Boolean> cir) {
+    *///?}
         extra_sounds$scrollSound.play(startRow);
     }
 }
-*///?} else {
-@Mixin(LoomScreen.class)
+//?} else {
+/*@Mixin(LoomScreen.class)
 @MixinEnvironment()
 public class LoomScreenMixin {
     // LoomScreen.startRow field does not exist or is not accessible in 1.18.2
     // This mixin is disabled for this version
 }
-//?}
+*///?}

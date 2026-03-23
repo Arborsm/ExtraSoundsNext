@@ -4,18 +4,18 @@ import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 //? if >=1.20 {
-/*import net.minecraft.core.registries.BuiltInRegistries;
-*///?} else {
-import net.minecraft.core.Registry;
-//?}
+import net.minecraft.core.registries.BuiltInRegistries;
+//?} else {
+/*import net.minecraft.core.Registry;
+*///?}
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.CreativeModeTab;
 //? if >=1.19.4 {
-/*import net.minecraft.world.item.CreativeModeTabs;
-*///?}
+import net.minecraft.world.item.CreativeModeTabs;
+//?}
 import net.minecraft.world.item.ItemStack;
 import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
@@ -37,22 +37,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class CreativeInventoryScreenMixin extends EffectRenderingInventoryScreen<CreativeModeInventoryScreen.ItemPickerMenu> {
     @Unique
     //? if >=1.20 {
-    /*private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
-    *///?} elif >=1.19.4 {
+    private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
+    //?} elif >=1.19.4 {
     /*private static final CreativeModeTab GROUP_INVENTORY = CreativeModeTabs.INVENTORY;
     *///?} elif >=1.19.3 {
     /*private static final CreativeModeTab GROUP_INVENTORY = CreativeModeTab.TABS[0]; // Inventory tab
     *///?} else {
-    private static final int GROUP_INVENTORY = CreativeModeTab.TAB_INVENTORY.getId();
-    //?}
+    /*private static final int GROUP_INVENTORY = CreativeModeTab.TAB_INVENTORY.getId();
+    *///?}
 
     //? if >=1.19.3 {
-    /*@Shadow
-    private static CreativeModeTab selectedTab;
-    *///?} else {
     @Shadow
+    private static CreativeModeTab selectedTab;
+    //?} else {
+    /*@Shadow
     private static int selectedTab;
-    //?}
+    *///?}
     @Shadow
     @Nullable
     private Slot destroyItemSlot;
@@ -133,15 +133,15 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
         final double screenX = mouseX - this.leftPos;
         final double screenY = mouseY - this.topPos;
         //? if >=1.19.4 {
-        /*for (CreativeModeTab itemGroup : CreativeModeTabs.tabs()) {
-        *///?} else {
-        for (CreativeModeTab itemGroup : CreativeModeTab.TABS) {
-        //?}
+        for (CreativeModeTab itemGroup : CreativeModeTabs.tabs()) {
+        //?} else {
+        /*for (CreativeModeTab itemGroup : CreativeModeTab.TABS) {
+        *///?}
             //? if >=1.19.3 {
-            /*if (this.checkTabClicked(itemGroup, screenX, screenY) && selectedTab != itemGroup) {
-            *///?} else {
-            if (this.checkTabClicked(itemGroup, screenX, screenY) && selectedTab != itemGroup.getId()) {
-            //?}
+            if (this.checkTabClicked(itemGroup, screenX, screenY) && selectedTab != itemGroup) {
+            //?} else {
+            /*if (this.checkTabClicked(itemGroup, screenX, screenY) && selectedTab != itemGroup.getId()) {
+            *///?}
                 SoundManager.playSound(itemGroup.getIconItem(), SoundType.PICKUP);
                 return;
             }

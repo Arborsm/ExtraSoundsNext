@@ -1,10 +1,10 @@
 package dev.arbor.extrasoundsnext.gui.components;
 
 //? if >=1.20 {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?} else {
-import com.mojang.blaze3d.vertex.PoseStack;
-//?}
+import net.minecraft.client.gui.GuiGraphics;
+//?} else {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///?}
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -23,10 +23,10 @@ public class ToggleButton extends AbstractWidget {
 
     public ToggleButton(int x, int y, int width, int height, boolean initialState, Consumer<Boolean> onToggle) {
         //? if >=1.19 {
-        /*super(x, y, width, height, Component.empty());
-        *///?} else {
-        super(x, y, width, height, new net.minecraft.network.chat.TextComponent(""));
-        //?}
+        super(x, y, width, height, Component.empty());
+        //?} else {
+        /*super(x, y, width, height, new net.minecraft.network.chat.TextComponent(""));
+        *///?}
         this.toggled = initialState;
         this.onToggle = onToggle;
         this.animationProgress = initialState ? 1f : 0f;
@@ -85,7 +85,7 @@ public class ToggleButton extends AbstractWidget {
 	*///?}
 
 	//? if >=1.20 {
-    /*@Override
+    @Override
     public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
         // Update animation (fixed speed)
         if (this.toggled && this.animationProgress < 1f) {
@@ -118,8 +118,8 @@ public class ToggleButton extends AbstractWidget {
         int circleY = y1 + 2;
         context.fill(circleX, circleY, circleX + circleSize, circleY + circleSize, 0xFFFFFFFF);
     }
-    *///?} elif < 1.19.4 {
-    @Override
+    //?} elif < 1.19.4 {
+    /*@Override
     public void renderButton(@NotNull PoseStack context, int mouseX, int mouseY, float delta) {
         // Update animation (fixed speed)
         if (this.toggled && this.animationProgress < 1f) {
@@ -152,7 +152,7 @@ public class ToggleButton extends AbstractWidget {
         int circleY = y1 + 2;
         fill(context, circleX, circleY, circleX + circleSize, circleY + circleSize, 0xFFFFFFFF);
     }
-    //?}
+    *///?}
 
     private int interpolateColor(int color1, int color2, float progress) {
         int a1 = (color1 >> 24) & 0xFF;
@@ -174,20 +174,20 @@ public class ToggleButton extends AbstractWidget {
     }
 
     //? if >= 1.19.4 {
-    /*@Override
+    @Override
     public void updateWidgetNarration(NarrationElementOutput builder) {
         this.defaultButtonNarrationText(builder);
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public void updateNarration(@NotNull NarrationElementOutput builder) {
         this.defaultButtonNarrationText(builder);
     }
-    //?}
+    *///?}
 
     //? if <1.20 {
-    private void fillRect(PoseStack context, int x1, int y1, int x2, int y2, int color) {
+    /*private void fillRect(PoseStack context, int x1, int y1, int x2, int y2, int color) {
         net.minecraft.client.gui.screens.Screen.fill(context, x1, y1, x2, y2, color);
     }
-	//?}
+	*///?}
 }
