@@ -42,7 +42,7 @@ public final class SoundGenerator {
         String id = "";
         try {
             id = item.getDescriptionId();
-        } catch (NullPointerException ignored) {
+        } catch (Throwable ignored) {
         }
         return id;
     }
@@ -52,7 +52,7 @@ public final class SoundGenerator {
         try {
             final Fluid fluid = ((BucketFluidAccessor) bucketItem).getContent();
             soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
-        } catch (NullPointerException ignored) {
+        } catch (Throwable ignored) {
             soundEntry = aliased(METAL);
         }
         return SoundDefinition.of(soundEntry);
