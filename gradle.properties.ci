@@ -1,0 +1,4 @@
+org.gradle.jvmargs=-Xmx3G -XX:MaxMetaspaceSize=512m
+org.gradle.parallel=false
+org.gradle.workers.max=2
+org.gradle.configuration-cache=false

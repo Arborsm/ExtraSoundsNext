@@ -193,4 +193,4 @@ jobs:
 
       - name: Publish to Platforms
         run: |
-          ./gradlew publishMods --stacktrace
+          ./gradlew publishMods --stacktrace -Dorg.gradle.jvmargs="-Xmx3G -XX:MaxMetaspaceSize=512m" -Dorg.gradle.parallel=false -Dorg.gradle.workers.max=1

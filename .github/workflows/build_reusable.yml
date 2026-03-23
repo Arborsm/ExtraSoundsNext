@@ -44,7 +44,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew buildAndCollect --no-daemon
+        run: ./gradlew buildAndCollect --no-daemon -Dorg.gradle.jvmargs="-Xmx3G -XX:MaxMetaspaceSize=512m" -Dorg.gradle.parallel=false -Dorg.gradle.workers.max=1
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
