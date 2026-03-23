@@ -290,6 +290,10 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, float pitch, Mixers... optionalVolumes) {
+        if (!shouldPlaySound(snd)) {
+            return;
+        }
+
         float volume = getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
             for (Mixers cat : optionalVolumes) {
@@ -336,6 +340,10 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position, boolean anti, Mixers... optionalVolumes) {
+        if (!shouldPlaySound(snd)) {
+            return;
+        }
+
         volume *= getSoundVolume(Mixers.MASTER) * getSoundVolume(type);
         if (optionalVolumes != null) {
             for (Mixers cat : optionalVolumes) {
@@ -447,4 +455,22 @@ public class SoundManager {
         return volume;
     }
     *///?}
+
+    /**
+     * Checks if a sound should be played based on the enabled/disabled state in config.
+     * This is a unified helper method to ensure all sound playback paths respect user settings.
+     *
+     * @param event The sound event to check
+     * @return true if the sound should be played, false if it's disabled
+     */
+    private static boolean shouldPlaySound(SoundEvent event) {
+        if (event == null) {
+            return true; // Allow null sounds to pass through (fallback behavior)
+        }
+        SoundEntry entry = SoundEntry.fromSoundEvent(event);
+        if (entry == null) {
+            return true; // Sound not in our registry, allow it
+        }
+        return VolumeConfig.isSoundEnabled(entry);
+    }
 }

@@ -1,6 +1,6 @@
 # ExtraSounds Next - Changelog
 
-## [1.5.0] - Upcoming
+## [1.5.0]
 
 **New Features**
 - Added sound support for popular mods:
@@ -14,4 +14,8 @@
 
 **Technical Changes**
 - Migrated to Stonecutter architecture for better multi-version support
----
+
+## [1.5.1]
+
+**Fixes**
+- Sound switches not working properly
