@@ -9,8 +9,8 @@ public final class ScrollSound {
     private static void playScrollSound(long timeDiff) {
         SoundManager.playSound(
                 Sounds.INVENTORY_SCROLL,
-                (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff)),
-                Mixers.INVENTORY);
+                (1f - 0.1f + 0.1f * Math.min(1, 50f / timeDiff))
+        );
     }
 
     public void play(int row) {

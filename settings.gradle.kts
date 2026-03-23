@@ -16,11 +16,21 @@ pluginManagement {
 		}
 	}
 	includeBuild("build-logic")
+
+	val stonecutterVersion = file("gradle/libs.versions.toml").readLines()
+		.filter { it.trim().startsWith("stonecutter") }
+		.firstNotNullOfOrNull { line ->
+			Regex("""".*"""").find(line)?.value?.replace("\"", "")
+		}
+
+	plugins {
+		id("dev.kikugie.stonecutter") version stonecutterVersion
+	}
 }
 
 plugins {
 	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-	id("dev.kikugie.stonecutter") version "0.9-alpha.3"
+	id("dev.kikugie.stonecutter")
 }
 
 stonecutter {

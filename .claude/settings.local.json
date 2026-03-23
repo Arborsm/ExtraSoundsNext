@@ -11,7 +11,8 @@
       "Bash(tee:*)",
       "Bash(for:*)",
       "Bash(do echo \"=== Building $version ===\")",
-      "Bash(do echo \"Building $version...\")"
+      "Bash(do echo \"Building $version...\")",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }

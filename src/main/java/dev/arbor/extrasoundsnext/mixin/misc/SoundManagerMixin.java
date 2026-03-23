@@ -4,21 +4,22 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.arbor.extrasoundsnext.ExtraSoundsNext;
-import dev.arbor.extrasoundsnext.mixin.accessors.PreparationsInvoker;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.resources.sounds.SoundEventRegistration;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import dev.arbor.extrasoundsnext.mapping.SoundPackLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import reg.ExHelper;
+import dev.arbor.extrasoundsnext.reg.ExHelper;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -27,6 +28,19 @@ import java.util.Map;
 @Mixin(SoundManager.class)
 @MixinEnvironment()
 public class SoundManagerMixin {
+
+	@Mixin(SoundManager.Preparations.class)
+	@MixinEnvironment()
+	public interface PreparationsInvoker {
+		//? if >=1.19.4 {
+		/*@Invoker("handleRegistration")
+		void extrasounds$handleRegistration(ResourceLocation rl, SoundEventRegistration soundEventRegistration);
+		*///?} else {
+		@Invoker("handleRegistration")
+		void extrasounds$handleRegistration(ResourceLocation rl, SoundEventRegistration soundEventRegistration, ResourceManager resourceManager);
+		//?}
+	}
+
 	@Accessor("GSON")
 	public static Gson getGSON() {
 		throw new AssertionError();
@@ -60,9 +74,10 @@ public class SoundManagerMixin {
 	*///?} else {
 	@Inject(
 			method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;startTick()V", shift = At.Shift.AFTER),
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;push(Ljava/lang/String;)V", shift = At.Shift.AFTER),
 			slice = @Slice(
-					from = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;startTick()V")
+					from = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ResourceManager;getNamespaces()Ljava/util/Set;"),
+					to = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ResourceManager;getResources(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/List;")
 			)
 	)
 	private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
@@ -72,7 +87,7 @@ public class SoundManagerMixin {
 			Reader reader = new StringReader(SoundPackLoader.GENERATED_SOUNDS.toString());
 			try {
 				profilerFiller.push("parse");
-				Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(getGSON(), reader,getSOUND_EVENT_REGISTRATION_TYPE());
+				Map<String, SoundEventRegistration> ExtraSoundsMap = GsonHelper.fromJson(getGSON(), reader, getSOUND_EVENT_REGISTRATION_TYPE());
 				profilerFiller.popPush("register");
 				for(Map.Entry<String, SoundEventRegistration> entry : ExtraSoundsMap.entrySet()) {
 					//? if >=1.19.4 {

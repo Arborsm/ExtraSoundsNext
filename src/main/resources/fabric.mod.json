@@ -26,6 +26,7 @@
     "main": [
     ],
     "client": [
+      "dev.arbor.extrasoundsnext.platform.fabric.ExtraSoundsNextFabricClient"
     ],
     "modmenu": [
       "dev.arbor.extrasoundsnext.platform.fabric.ModMenuIntegration"

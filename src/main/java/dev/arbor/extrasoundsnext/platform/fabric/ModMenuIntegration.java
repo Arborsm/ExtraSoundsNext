@@ -1,8 +1,5 @@
-// ModMenu integration is disabled due to optional dependency issues
-// To enable, add ModMenu as a compileOnly dependency in build.gradle
-/*
 //? if fabric {
-package dev.arbor.extrasoundsnext.platform.fabric;
+/*package dev.arbor.extrasoundsnext.platform.fabric;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -14,5 +11,5 @@ public class ModMenuIntegration implements ModMenuApi {
         return VolumeScreen::new;
     }
 }
-//?}
-*/
+*///?}
+

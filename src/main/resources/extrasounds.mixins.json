@@ -3,6 +3,7 @@
   "required": true,
   "minVersion": "0.8",
   "compatibilityLevel": "${java}",
+  "plugin": "dev.arbor.extrasoundsnext.mixin.ESMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   },

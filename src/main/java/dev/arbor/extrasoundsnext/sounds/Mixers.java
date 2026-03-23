@@ -5,7 +5,6 @@ public enum Mixers {
     INVENTORY("inventory", 1.0f, false, true),
     ACTION("action", 1.0f, false, true),
     CHAT("chat", 1.0f, false, true),
-    CHAT_MENTION("chat_mention", 1.0f, false, true),
     EFFECTS("effects", 1.0f, false, true),
     HOTBAR("hotbar", 1.0f, false, true),
     TYPING("typing", 1.0f, false, true),

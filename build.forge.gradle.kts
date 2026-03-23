@@ -16,12 +16,6 @@ platform {
 	}
 }
 
-fletchingTable {
-	accessConverter.register(sourceSets.main) {
-		add("aw/${stonecutter.current.version}.accesswidener")
-	}
-}
-
 legacyForge {
 	version = "${property("deps.minecraft")}-${property("deps.forge")}"
 
@@ -58,10 +52,7 @@ mixin {
 	config("${prop("mod.id")}.mixins.json")
 }
 
-repositories {
-	mavenCentral()
-	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
-}
+apply(from = "${rootDir}/gradle/scripts/repositories.gradle.kts")
 
 dependencies {
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
@@ -73,6 +64,18 @@ dependencies {
 
 	implementation(libs.moulberry.mixinconstraints)
 	jarJar(libs.moulberry.mixinconstraints)
+
+	modCompileOnly("mezz.jei:jei-${prop("deps.minecraft")}-forge-api:${prop("deps.jei")}")
+	modImplementation("mezz.jei:jei-${prop("deps.minecraft")}-forge:${prop("deps.jei")}")
+	modCompileOnly("maven.modrinth:rei:${prop("deps.rei")}")
+	if (sc.current.parsed > "1.18.2") {
+		modCompileOnly("dev.emi:emi-forge:${prop("deps.emi")}:api")
+		modCompileOnly("dev.emi:emi-forge:${prop("deps.emi")}")
+	}
+	modImplementation("appeng:appliedenergistics2-forge:${prop("deps.ae2")}")
+	if (prop("deps.guideme").isNotEmpty()) {
+		modImplementation("org.appliedenergistics:guideme:${prop("deps.guideme")}")
+	}
 }
 
 sourceSets.main {

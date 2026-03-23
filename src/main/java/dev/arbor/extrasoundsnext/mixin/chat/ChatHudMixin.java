@@ -35,9 +35,12 @@ public abstract class ChatHudMixin {
     @Unique
     private int extra_sounds$currentLines;
 
-    //? if >=1.20 && fabric {
-    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;IZ)V", at = @At("RETURN"))
-    private void extrasounds$receiveMessage(Component component, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag tag, boolean refresh, CallbackInfo ci) {
+	//? if >=1.21 {
+    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, MessageSignature signature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
+    *///?} elif >=1.20 && fabric {
+    /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, MessageSignature messageSignature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
     *///?} elif >=1.20 && (neoforge || forge) {
     /*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V", at = @At("RETURN"))
     private void extrasounds$receiveMessage(Component component, @Nullable MessageSignature signature, int ticks, @Nullable GuiMessageTag tag, boolean refresh, CallbackInfo ci) {
@@ -55,7 +58,7 @@ public abstract class ChatHudMixin {
 
         String msg = component.getString();
         if (msg.contains("@" + player.getName().getString()) || msg.contains("@" + Objects.requireNonNull(player.getDisplayName()).getString())) {
-            SoundManager.playSound(Sounds.CHAT_MENTION, SoundType.CHAT_MENTION);
+            SoundManager.playSound(Sounds.CHAT_MENTION, SoundType.CHAT);
         } else {
             SoundManager.playSound(Sounds.CHAT, SoundType.CHAT);
         }

@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 //?}
 
@@ -32,8 +33,8 @@ public class SoundPackLoaderForge {
         /^if (!event.getRegistryKey().equals(Registries.LOOT_CONDITION_TYPE))
             return;
         ^///?} else {
-        if (!event.getRegistryKey().equals(Registry.LOOT_CONDITION_TYPE))
-            return;
+		if (!event.getRegistryKey().equals(Registry.LOOT_ITEM_REGISTRY))
+			return;
         //?}
         SoundPackLoader.init();
     }

@@ -6,7 +6,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
-import dev.arbor.extrasoundsnext.sounds.Mixers;
 import dev.arbor.extrasoundsnext.sounds.SoundManager;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
 import dev.arbor.extrasoundsnext.sounds.Sounds;
@@ -46,9 +45,9 @@ public abstract class MinecraftClientMixin {
     @Inject(at = @At("HEAD"), method = "setScreen")
     private void extrasounds$screenChange(@Nullable Screen screen1, CallbackInfo ci) {
         if (screen != screen1 && screen1 instanceof AbstractContainerScreen && !(screen1 instanceof CreativeModeInventoryScreen)) {
-            SoundManager.playSound(Sounds.INVENTORY_OPEN, 1f, Mixers.INVENTORY);
+            SoundManager.playSound(Sounds.INVENTORY_OPEN, 1f);
         } else if (screen1 == null && screen instanceof AbstractContainerScreen) {
-            SoundManager.playSound(Sounds.INVENTORY_CLOSE, 1f, Mixers.INVENTORY);
+            SoundManager.playSound(Sounds.INVENTORY_CLOSE, 1f);
         }
     }
 }

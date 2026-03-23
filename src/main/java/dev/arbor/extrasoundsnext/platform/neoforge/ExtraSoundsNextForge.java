@@ -50,8 +50,6 @@ import net.minecraftforge.fml.common.Mod;
 public final class ExtraSoundsNextForge {
     public ExtraSoundsNextForge() {
         ExtraSoundsNext.init();
-        // ConfigScreenHandler not available in 1.18.2
-        // Call SoundPackLoader.init() directly since RegisterEvent is not available
         SoundPackLoader.init();
     }
 }

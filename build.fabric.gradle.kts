@@ -46,11 +46,7 @@ fabricApi {
 	}
 }
 
-repositories {
-	mavenCentral()
-	strictMaven("https://maven.terraformersmc.com/", "com.terraformersmc") { name = "TerraformersMC" }
-	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
-}
+apply(from = "${rootDir}/gradle/scripts/repositories.gradle.kts")
 
 dependencies {
 	minecraft("com.mojang:minecraft:${prop("deps.minecraft")}")
@@ -63,7 +59,25 @@ dependencies {
 	implementation(libs.moulberry.mixinconstraints)
 	include(libs.moulberry.mixinconstraints)
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
-	modLocalRuntime("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
+	modImplementation("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
+
+	modCompileOnly("mezz.jei:jei-${prop("deps.minecraft")}-fabric-api:${prop("deps.jei")}")
+	modImplementation("mezz.jei:jei-${prop("deps.minecraft")}-fabric:${prop("deps.jei")}")
+	modCompileOnly("maven.modrinth:rei:${prop("deps.rei")}")
+	if (sc.current.parsed <= "1.18.2") {
+		modCompileOnly("dev.emi:emi:${prop("deps.emi")}")
+		modCompileOnly("dev.emi:emi:${prop("deps.emi")}:api")
+	}
+	else {
+		modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}")
+		modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}:api")
+	}
+	if(sc.current.parsed <= "1.20.1") {
+		modCompileOnly("appeng:appliedenergistics2-fabric:${prop("deps.ae2")}") { isTransitive = false }
+	}
+	else {
+		modImplementation("org.appliedenergistics:appliedenergistics2:${prop("deps.ae2")}")
+	}
 }
 
 stonecutter {

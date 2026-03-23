@@ -1,5 +1,8 @@
 package dev.arbor.extrasoundsnext.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import dev.arbor.extrasoundsnext.gui.components.CategoryPanel;
+import dev.arbor.extrasoundsnext.gui.components.SearchBox;
 import dev.arbor.extrasoundsnext.sounds.Mixers;
 import dev.arbor.extrasoundsnext.sounds.VolumeConfig;
 import net.minecraft.client.gui.components.Button;
@@ -11,13 +14,30 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 *///?} else {
 import com.mojang.blaze3d.vertex.PoseStack;
+import org.jetbrains.annotations.NotNull;
 //?}
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Volume configuration screen with search, collapsible categories, and individual sound control.
+ */
 public class VolumeScreen extends Screen {
     private final Screen parent;
+    private SearchBox searchBox;
+	private final List<CategoryPanel> categoryPanels = new ArrayList<>();
     private double scrollOffset = 0;
     private int contentHeight = 0;
+    private String searchQuery = "";
+    private boolean isDraggingScrollbar = false;
+    private double scrollbarDragStartY = 0;
+    private double scrollOffsetAtDragStart = 0;
+    private Button resetButton;
     private Button doneButton;
+
+    // Track expanded state for each mixer
+    private final java.util.Map<Mixers, Boolean> expandedStates = new java.util.HashMap<>();
 
     public VolumeScreen(Screen parent) {
         //? if >=1.19 {
@@ -30,178 +50,423 @@ public class VolumeScreen extends Screen {
 
     @Override
     protected void init() {
-        int y = 32 + (int) scrollOffset;
-        int centerX = this.width / 2;
+        categoryPanels.clear();
 
-        // Top spacing
-        y += 4;
+        // Search box at top
+        Component searchPlaceholder;
+        //? if >=1.19 {
+        /*searchPlaceholder = Component.translatable("extrasounds.search.placeholder");
+        *///?} else {
+        searchPlaceholder = new net.minecraft.network.chat.TranslatableComponent("extrasounds.search.placeholder");
+        //?}
 
-        // MASTER slider at top
-        addVolumeSlider(centerX - 155, y, Mixers.MASTER, true);
+        this.searchBox = new SearchBox(
+            this.font,
+            this.width / 2 - 150,
+            20,
+            280,
+            20,
+            searchPlaceholder
+        );
+        this.searchBox.setOnTextChanged(text -> {
+            this.searchQuery = text.toLowerCase();
+            rebuildPanels();
+        });
+        this.addRenderableWidget(this.searchBox);
+        this.setInitialFocus(this.searchBox);
 
-        // Sub-category sliders (2 columns)
-        Mixers[] sliderCats = {
-                Mixers.INVENTORY, Mixers.ACTION,
-                Mixers.CHAT, Mixers.CHAT_MENTION,
-                Mixers.EFFECTS, Mixers.HOTBAR,
-                Mixers.TYPING
-        };
-        for (int i = 0; i < sliderCats.length; i += 2) {
-			y += 24;
-            addVolumeSlider(centerX - 155, y, sliderCats[i], false);
-            if (i + 1 < sliderCats.length) {
-                addVolumeSlider(centerX + 5, y, sliderCats[i + 1], false);
-            }
-        }
+        // Clear search button
+        Component clearText;
+        //? if >=1.19 {
+        /*clearText = Component.literal("X");
+        *///?} else {
+        clearText = new net.minecraft.network.chat.TextComponent("X");
+        //?}
 
-        // Toggle buttons (2 columns)
-        Mixers[] toggleCats = {
-                Mixers.ITEM_DROP, Mixers.EMPTY_HOTBAR,
-                Mixers.ENABLED_FOOTSTEP, Mixers.ENABLED_EFFECTS,
-                Mixers.ENABLED_POOF
-        };
-        for (int i = 0; i < toggleCats.length; i += 2) {
-			y += 24;
-            addToggleButton(centerX - 155, y, toggleCats[i]);
-            if (i + 1 < toggleCats.length) {
-                addToggleButton(centerX + 5, y, toggleCats[i + 1]);
-            }
-        }
-		y -= 6;
+        //? if >=1.19.3 {
+        /*Button clearButton = Button.builder(clearText, btn -> {
+            this.searchBox.setValue("");
+        }).bounds(this.width / 2 + 135, 20, 20, 20).build();
+        *///?} else {
+        Button clearButton = new Button(this.width / 2 + 135, 20, 20, 20, clearText, btn -> {
+            this.searchBox.setValue("");
+        });
+        //?}
+        this.addRenderableWidget(clearButton);
 
-        // Save content height
-        contentHeight = y - (int) scrollOffset;
+        // Build category panels
+        rebuildPanels();
+
+        // Reset button
+        Component resetText;
+        //? if >=1.19 {
+        /*resetText = Component.translatable("extrasounds.button.reset");
+        *///?} else {
+        resetText = new net.minecraft.network.chat.TranslatableComponent("extrasounds.button.reset");
+        //?}
+
+        //? if >=1.19.3 {
+        /*this.resetButton = Button.builder(resetText, btn -> {
+            VolumeConfig.resetToDefaults();
+            this.minecraft.setScreen(new VolumeScreen(this.parent));
+        }).bounds(this.width / 2 - 155, this.height - 28, 150, 20).build();
+        *///?} else {
+ 		this.resetButton = new Button(this.width / 2 - 155, this.height - 28, 150, 20, resetText, btn -> {
+ 			VolumeConfig.resetToDefaults();
+ 			this.minecraft.setScreen(new VolumeScreen(this.parent));
+ 		});
+        //?}
+        this.addRenderableWidget(resetButton);
 
         // Done button
-        //? if >=1.19.4 {
-        /*doneButton = Button.builder(CommonComponents.GUI_DONE, button -> onClose())
-				.bounds(this.width / 2 - 100, this.height - 27, 200, 20)
-                .build();
-        this.addRenderableWidget(doneButton);
-        *///?} else {
-        doneButton = new Button(centerX - 100, this.height - 27, 200, 20, CommonComponents.GUI_DONE, button -> onClose());
-        this.addRenderableWidget(doneButton);
-        //?}
-    }
-
-    private void addVolumeSlider(int x, int y, Mixers category, boolean isMaster) {
-        int w = isMaster ? 310 : 150;
-        VolumeSlider slider = new VolumeSlider(x, y, w, 20, category);
-        this.addRenderableWidget(slider);
-    }
-
-    private void addToggleButton(int x, int y, Mixers category) {
-        boolean on = VolumeConfig.getVolume(category) >= 0.5f;
-        Component text = getToggleText(category, on);
-        //? if >=1.19.4 {
-        /*this.addRenderableWidget(
-                Button.builder(text, button -> {
-                            boolean current = VolumeConfig.getVolume(category) >= 0.5f;
-                            boolean next = !current;
-                            VolumeConfig.setVolume(category, next ? 1.0f : 0.0f);
-                            button.setMessage(getToggleText(category, next));
-                        })
-                        .bounds(x, y, 150, 20)
-                        .build()
-        );
-        *///?} else {
-        this.addRenderableWidget(
-                new Button(x, y, 150, 20, text, button -> {
-                    boolean current = VolumeConfig.getVolume(category) >= 0.5f;
-                    boolean next = !current;
-                    VolumeConfig.setVolume(category, next ? 1.0f : 0.0f);
-                    button.setMessage(getToggleText(category, next));
-                })
-        );
-        //?}
-    }
-
-    private Component getToggleText(Mixers category, boolean on) {
-        //? if >=1.19 {
-        /*return Component.translatable(category.getTranslationKey())
-                .append(": ")
-                .append(on ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF);
-        *///?} else {
-        return new net.minecraft.network.chat.TranslatableComponent(category.getTranslationKey())
-                .append(": ")
-                .append(on ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF);
-        //?}
-    }
-
-    @Override
-    public void onClose() {
-        VolumeConfig.save();
-        if (this.minecraft != null) {
+        //? if >=1.19.3 {
+        /*this.doneButton = Button.builder(CommonComponents.GUI_DONE, btn -> {
+            VolumeConfig.save();
             this.minecraft.setScreen(this.parent);
-        }
-    }
-
-    @Override
-    //? if >=1.20.3 {
-    /*public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-    *///?} else {
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollY) {
-    //?}
-        int maxScroll = Math.max(0, contentHeight - (this.height - 64));
-        scrollOffset = Math.max(-maxScroll, Math.min(0, scrollOffset + scrollY * 15));
-        //? if >=1.19 {
-        /*this.rebuildWidgets();
+        }).bounds(this.width / 2 + 5, this.height - 28, 150, 20).build();
         *///?} else {
-        this.init(); // rebuildWidgets doesn't exist in 1.18.2
+ 		this.doneButton = new Button(this.width / 2 + 5, this.height - 28, 150, 20, CommonComponents.GUI_DONE, btn -> {
+ 			VolumeConfig.save();
+ 			this.minecraft.setScreen(this.parent);
+ 		});
         //?}
-        return true;
+        this.addRenderableWidget(doneButton);
     }
 
-    @Override
-    //? if >=1.20 {
-    /*public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
-        //? if >=1.21 {
-        /^super.render(context, mouseX, mouseY, delta);
-        ^///?} else {
-        this.renderBackground(context);
-        //?}
+    private void rebuildPanels() {
+        categoryPanels.clear();
 
-        context.drawCenteredString(this.font, this.title, this.width / 2, 20, 0xFFFFFF);
+        int panelY = 50 + (int)scrollOffset;
+        int panelWidth = 320;
+        int centerX = this.width / 2 - panelWidth / 2;
 
-        // Draw scrollable area background
-        context.fill(0, 32, this.width, this.height - 32, 0xA0000000);
+        // MASTER panel (always visible)
+        CategoryPanel masterPanel = new CategoryPanel(Mixers.MASTER, centerX, panelY, panelWidth);
+        masterPanel.setExpanded(expandedStates.getOrDefault(Mixers.MASTER, false));
+        masterPanel.setOnExpandToggle(panel -> {
+            expandedStates.put(Mixers.MASTER, panel.isExpanded());
+            rebuildPanels();
+        });
+        masterPanel.init(this.minecraft);
+        categoryPanels.add(masterPanel);
+        panelY += masterPanel.getHeight() + 4;
 
-        // Enable scissor for scrollable content
-        context.enableScissor(0, 32, this.width, this.height - 32);
+        // Other category panels
+        Mixers[] categories = {
+            Mixers.INVENTORY,
+            Mixers.CHAT,
+            Mixers.HOTBAR,
+            Mixers.TYPING,
+            Mixers.EFFECTS,
+            Mixers.ACTION
+        };
 
-        // Render scrollable widgets (exclude Done button)
-        for (var widget : this.children()) {
-            //? if >=1.20 {
-            /^if (widget instanceof net.minecraft.client.gui.components.Renderable renderable && widget != doneButton) {
-                renderable.render(context, mouseX, mouseY, delta);
+        for (Mixers mixer : categories) {
+            // Filter by search query
+            if (!searchQuery.isEmpty()) {
+                Component name;
+                //? if >=1.19 {
+                /*name = Component.translatable(mixer.getTranslationKey());
+                *///?} else {
+                name = new net.minecraft.network.chat.TranslatableComponent(mixer.getTranslationKey());
+                //?}
+                if (!name.getString().toLowerCase().contains(searchQuery)) {
+                    continue;
+                }
             }
-            ^///?} else {
-            if (widget instanceof net.minecraft.client.gui.components.AbstractWidget abstractWidget && widget != doneButton) {
-                abstractWidget.render(context, mouseX, mouseY, delta);
-            }
-            //?}
+
+            CategoryPanel panel = new CategoryPanel(mixer, centerX, panelY, panelWidth);
+            panel.setExpanded(expandedStates.getOrDefault(mixer, false));
+            panel.setOnExpandToggle(p -> {
+                expandedStates.put(mixer, p.isExpanded());
+                rebuildPanels();
+            });
+            panel.init(this.minecraft);
+            categoryPanels.add(panel);
+            panelY += panel.getHeight() + 4;
         }
 
+        contentHeight = panelY - 50 - (int)scrollOffset;
+    }
+
+    //? if >=1.20 {
+    /*@Override
+    public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
+		//? if >= 1.21 {
+		/^this.renderBackground(context, mouseX, mouseY, delta);
+		^///?} else {
+		this.renderBackground(context);
+		//?}
+		super.render(context, mouseX, mouseY, delta);
+
+		// Draw title
+        context.drawCenteredString(this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
+
+        // Define scrollable area
+        int scrollAreaTop = 50;
+        int scrollAreaBottom = this.height - 30;
+        int scrollAreaHeight = scrollAreaBottom - scrollAreaTop;
+
+        // Enable scissor test for scrollable content
+        context.enableScissor(0, scrollAreaTop, this.width, scrollAreaBottom);
+
+        // Render category panels
+        for (CategoryPanel panel : categoryPanels) {
+            panel.render(context, mouseX, mouseY, delta);
+        }
+
+        // Disable scissor test
         context.disableScissor();
 
-        // Render Done button outside scissor
-        if (doneButton != null) {
-            doneButton.render(context, mouseX, mouseY, delta);
+        // Draw scrollbar if content is larger than viewport
+        int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+        if (maxScroll > 0) {
+            drawScrollbar(context, mouseX, mouseY, scrollAreaTop, scrollAreaBottom, maxScroll);
         }
 
-        // Draw scrollbar
-        int maxScroll = Math.max(0, contentHeight - (this.height - 64));
-        if (maxScroll > 0) {
-            int scrollbarHeight = Math.max(20, (this.height - 64) * (this.height - 64) / contentHeight);
-            int scrollbarY = 32 + (int)((-scrollOffset / maxScroll) * (this.height - 64 - scrollbarHeight));
-            context.fill(this.width - 8, scrollbarY, this.width - 2, scrollbarY + scrollbarHeight, 0xFFC0C0C0);
-        }
+        // Render search box and buttons on top
+        this.searchBox.render(context, mouseX, mouseY, delta);
     }
     *///?} else {
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        this.renderBackground(poseStack);
-        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 20, 0xFFFFFF);
-        super.render(poseStack, mouseX, mouseY, delta);
+    @Override
+    public void render(@NotNull PoseStack context, int mouseX, int mouseY, float delta) {
+        //? if >=1.19 {
+        /*this.renderBackground(context);
+        *///?} else {
+        this.renderBackground(context, 0);
+        //?}
+
+        // Draw title
+        //? if >=1.19 {
+        /*drawCenteredString(context, this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
+        *///?} else {
+        drawCenteredString(context, this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
+        //?}
+
+        // Define scrollable area
+        int scrollAreaTop = 50;
+        int scrollAreaBottom = this.height - 30;
+        int scrollAreaHeight = scrollAreaBottom - scrollAreaTop;
+
+        // Enable scissor test for scrollable content
+        enableScissorTest(0, scrollAreaTop, this.width, scrollAreaHeight);
+
+        // Render category panels
+        for (CategoryPanel panel : categoryPanels) {
+            panel.render(context, mouseX, mouseY, delta);
+        }
+
+        // Disable scissor test
+        disableScissorTest();
+
+        // Draw scrollbar if content is larger than viewport
+        int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+        if (maxScroll > 0) {
+            drawScrollbar(context, mouseX, mouseY, scrollAreaTop, scrollAreaBottom, maxScroll);
+        }
+
+        // Render search box and buttons on top
+        this.searchBox.render(context, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
     }
     //?}
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        // Check scrollbar first
+        int scrollAreaTop = 50;
+        int scrollAreaBottom = this.height - 30;
+        int scrollAreaHeight = scrollAreaBottom - scrollAreaTop;
+        int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+
+        if (maxScroll > 0 && button == 0) {
+            int scrollbarX = this.width - 10;
+            int scrollbarWidth = 6;
+
+            // Calculate thumb position
+            float contentRatio = (float)scrollAreaHeight / (float)(contentHeight);
+            int thumbHeight = Math.max(20, (int)(scrollAreaHeight * contentRatio));
+            float scrollRatio = (float)(-scrollOffset) / (float)maxScroll;
+            int thumbY = scrollAreaTop + (int)((scrollAreaHeight - thumbHeight) * scrollRatio);
+
+            // Check if clicked on scrollbar thumb
+            if (mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth &&
+                mouseY >= thumbY && mouseY <= thumbY + thumbHeight) {
+                isDraggingScrollbar = true;
+                scrollbarDragStartY = mouseY;
+                scrollOffsetAtDragStart = scrollOffset;
+                return true;
+            }
+        }
+
+        // Check buttons first (Done, Reset, Clear)
+        if (super.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
+
+        // Check search box
+        if (this.searchBox.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
+
+        // Check category panels
+        for (CategoryPanel panel : categoryPanels) {
+            if (panel.mouseClicked(mouseX, mouseY, button)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        // Handle scrollbar dragging
+        if (isDraggingScrollbar) {
+            int scrollAreaTop = 50;
+            int scrollAreaBottom = this.height - 30;
+            int scrollAreaHeight = scrollAreaBottom - scrollAreaTop;
+            int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+
+            float contentRatio = (float)scrollAreaHeight / (float)(contentHeight);
+            int thumbHeight = Math.max(20, (int)(scrollAreaHeight * contentRatio));
+            int availableScrollSpace = scrollAreaHeight - thumbHeight;
+
+            double dragDelta = mouseY - scrollbarDragStartY;
+            double scrollDelta = (dragDelta / availableScrollSpace) * maxScroll;
+
+            scrollOffset = Math.max(-maxScroll, Math.min(0, scrollOffsetAtDragStart - scrollDelta));
+            rebuildPanels();
+            return true;
+        }
+
+        // Check buttons first
+        if (super.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
+            return true;
+        }
+
+        // Check category panels
+        for (CategoryPanel panel : categoryPanels) {
+            if (panel.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        // Release scrollbar drag
+        if (isDraggingScrollbar) {
+            isDraggingScrollbar = false;
+            return true;
+        }
+
+        // Check buttons first
+        if (super.mouseReleased(mouseX, mouseY, button)) {
+            return true;
+        }
+
+        // Check category panels
+        for (CategoryPanel panel : categoryPanels) {
+            if (panel.mouseReleased(mouseX, mouseY, button)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //? if >=1.21 {
+    /*@Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if (isDraggingScrollbar) {
+            return false;
+        }
+
+        // Scroll content
+        int scrollAreaHeight = this.height - 80;
+        int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+        scrollOffset = Math.max(-maxScroll, Math.min(0, scrollOffset - verticalAmount * 10));
+        rebuildPanels();
+        return true;
+    }
+    *///?} else {
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        if (isDraggingScrollbar) {
+            return false;
+        }
+
+        // Scroll content
+        int scrollAreaHeight = this.height - 80;
+        int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+        scrollOffset = Math.max(-maxScroll, Math.min(0, scrollOffset + amount * 10));
+        rebuildPanels();
+        return true;
+    }
+    //?}
+
+    private void enableScissorTest(int x, int y, int width, int height) {
+        double scale = this.minecraft.getWindow().getGuiScale();
+        int scaledY = (int)(this.minecraft.getWindow().getHeight() - (y + height) * scale);
+        RenderSystem.enableScissor(
+            (int)(x * scale),
+            scaledY,
+            (int)(width * scale),
+            (int)(height * scale)
+        );
+    }
+
+    private void disableScissorTest() {
+        RenderSystem.disableScissor();
+    }
+
+    //? if >=1.20 {
+    /*private void drawScrollbar(GuiGraphics context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
+        int scrollbarX = this.width - 10;
+        int scrollbarWidth = 6;
+        int scrollbarHeight = bottom - top;
+
+        // Calculate scrollbar thumb size and position
+        float contentRatio = (float)scrollbarHeight / (float)(contentHeight);
+        int thumbHeight = Math.max(20, (int)(scrollbarHeight * contentRatio));
+        float scrollRatio = (float)(-scrollOffset) / (float)maxScroll;
+        int thumbY = top + (int)((scrollbarHeight - thumbHeight) * scrollRatio);
+
+        // Draw scrollbar track
+        context.fill(scrollbarX, top, scrollbarX + scrollbarWidth, bottom, 0x80000000);
+
+        // Draw scrollbar thumb
+        boolean isHovered = mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth &&
+                           mouseY >= thumbY && mouseY <= thumbY + thumbHeight;
+        int thumbColor = isHovered || isDraggingScrollbar ? 0xFFAAAAAA : 0xFF888888;
+        context.fill(scrollbarX, thumbY, scrollbarX + scrollbarWidth, thumbY + thumbHeight, thumbColor);
+    }
+    *///?} else {
+    private void drawScrollbar(PoseStack context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
+        int scrollbarX = this.width - 10;
+        int scrollbarWidth = 6;
+        int scrollbarHeight = bottom - top;
+
+        // Calculate scrollbar thumb size and position
+        float contentRatio = (float)scrollbarHeight / (float)(contentHeight);
+        int thumbHeight = Math.max(20, (int)(scrollbarHeight * contentRatio));
+        float scrollRatio = (float)(-scrollOffset) / (float)maxScroll;
+        int thumbY = top + (int)((scrollbarHeight - thumbHeight) * scrollRatio);
+
+        // Draw scrollbar track
+        Screen.fill(context, scrollbarX, top, scrollbarX + scrollbarWidth, bottom, 0x80000000);
+
+        // Draw scrollbar thumb
+        boolean isHovered = mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth &&
+                           mouseY >= thumbY && mouseY <= thumbY + thumbHeight;
+        int thumbColor = isHovered || isDraggingScrollbar ? 0xFFAAAAAA : 0xFF888888;
+        Screen.fill(context, scrollbarX, thumbY, scrollbarX + scrollbarWidth, thumbY + thumbHeight, thumbColor);
+    }
+    //?}
+
+    @Override
+    public void removed() {
+        VolumeConfig.save();
+    }
 }

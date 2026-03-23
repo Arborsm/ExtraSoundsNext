@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
-import reg.ExHelper;
+import dev.arbor.extrasoundsnext.reg.ExHelper;
 
 public final class ExtraSoundsNext {
     public static final String MODID = "extrasounds";

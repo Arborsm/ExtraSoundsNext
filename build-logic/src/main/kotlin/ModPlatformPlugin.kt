@@ -1,6 +1,7 @@
 @file:Suppress("unused", "DuplicatedCode")
 
 import dev.kikugie.fletching_table.extension.FletchingTableExtension
+import dev.kikugie.postprocess.sourceSets
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import me.modmuss50.mpp.ModPublishExtension
 import me.modmuss50.mpp.ReleaseType
@@ -90,10 +91,11 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			extension.dependencies { required("java") { versionRange = ">=${extension.requiredJava.get().majorVersion}" } }
 		}
 
-		configureFletchingTable()
+		configureFletchingTable(isFabric)
 		configureJarTask(modId, loader)
 		configureIdea()
 		configureProcessResources(isFabric, isNeoForge, isForge, modId, "$modVersion$channelTag", mcVersion, extension, extension.requiredJava.get())
+		configureMixinsValidation(isFabric, isNeoForge, isForge, modId)
 		configureJava(stonecutter, extension.requiredJava.get())
 		registerBuildAndCollectTask(extension, "$modVersion$channelTag")
 		configurePublishing(extension, loader, stonecutter, "$modVersion$channelTag", channelTag, version.toString())
@@ -126,7 +128,9 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			dependsOn(tasks.named("stonecutterGenerate"))
 			dependsOn("kspKotlin")
 
-			filesMatching("*.mixins.json") { expand("java" to "JAVA_${requiredJava.majorVersion}") }
+			filesMatching("*.mixins.json") {
+				expand("java" to "JAVA_${requiredJava.majorVersion}")
+			}
 
 			var contributors = prop("mod.contributors")
 			var authors = prop("mod.authors")
@@ -240,11 +244,21 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		}
 	}
 
-	private fun Project.configureFletchingTable() {
+	private fun Project.configureFletchingTable(isFabric: Boolean) {
 		extensions.configure<FletchingTableExtension> {
 			mixins.create("main").apply {
 				mixin("default", "${prop("mod.id")}.mixins.json") {
 					env("CLIENT")
+				}
+			}
+		}
+
+		if (!isFabric) {
+			extensions.configure<FletchingTableExtension> {
+				sourceSets?.let {
+					accessConverter.register(it["main"]) {
+						add("aw/${prop("deps.minecraft")}.accesswidener")
+					}
 				}
 			}
 		}
@@ -344,5 +358,68 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		deps.optional.forEach { dep -> whenNotNull(dep.curseforge) { optional(it) } }
 		deps.incompatible.forEach { dep -> whenNotNull(dep.curseforge) { incompatible(it) } }
 		deps.embeds.forEach { dep -> whenNotNull(dep.curseforge) { embeds(it) } }
+	}
+
+	private fun Project.configureMixinsValidation(
+		isFabric: Boolean,
+		isNeoForge: Boolean,
+		isForge: Boolean,
+		modId: String
+	) {
+		val version = project.name.substringBefore('-')
+
+		// 确定要对比的兄弟平台
+		val siblingLoader = when {
+			isFabric -> if (rootProject.subprojects.any { it.name == "$version-neoforge" }) "neoforge" else "forge"
+			isNeoForge || isForge -> "fabric"
+			else -> return
+		}
+
+		val siblingProject = rootProject.subprojects.find { it.name == "$version-$siblingLoader" } ?: return
+
+		tasks.register("validateMixinsJson") {
+			group = "verification"
+			description = "验证 $modId.mixins.json 与 $siblingLoader 版本是否一致"
+
+			dependsOn(tasks.named("processResources"))
+			dependsOn(siblingProject.tasks.named("processResources"))
+
+			doLast {
+				val currentFile = file("${project.layout.buildDirectory.get()}/resources/main/$modId.mixins.json")
+				val siblingFile = file("${siblingProject.layout.buildDirectory.get()}/resources/main/$modId.mixins.json")
+
+				if (!currentFile.exists()) throw IllegalStateException("当前项目的 mixins.json 不存在: ${currentFile.absolutePath}")
+				if (!siblingFile.exists()) throw IllegalStateException("$siblingLoader 项目的 mixins.json 不存在: ${siblingFile.absolutePath}")
+
+				val currentContent = currentFile.readText()
+				val siblingContent = siblingFile.readText()
+
+				if (currentContent != siblingContent) {
+					logger.warn("========================================")
+					logger.warn("mixins.json 与 $siblingLoader 版本不一致")
+					logger.warn("当前项目 (${project.name}): ${currentFile.absolutePath} (${currentContent.length} 字符)")
+					logger.warn("兄弟项目 ($siblingLoader): ${siblingFile.absolutePath} (${siblingContent.length} 字符)")
+					logger.warn("========================================")
+
+					val shorterProject = if (currentContent.length < siblingContent.length) project else siblingProject
+
+					logger.warn("较短的 mixins.json 来自: ${shorterProject.name}")
+					logger.warn("正在删除 ${shorterProject.name} 的 build 文件夹...")
+
+					val buildDir = shorterProject.layout.buildDirectory.asFile.get()
+					if (buildDir.deleteRecursively()) {
+						logger.warn("✓ 已删除: ${buildDir.absolutePath}")
+					} else {
+						logger.error("✗ 删除失败: ${buildDir.absolutePath}")
+					}
+
+					logger.error("请重新运行构建以重新生成资源文件")
+				} else {
+					logger.quiet("✓ mixins.json 验证通过")
+				}
+			}
+		}
+
+		tasks.named("build") { dependsOn("validateMixinsJson") }
 	}
 }

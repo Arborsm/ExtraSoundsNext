@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Fluid;
 import dev.arbor.extrasoundsnext.debug.DebugUtils;
-import dev.arbor.extrasoundsnext.mixin.misc.BucketFluidAccessor;
+import dev.arbor.extrasoundsnext.mixin.accessors.BucketFluidAccessor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;

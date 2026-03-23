@@ -9,7 +9,6 @@ import net.minecraft.client.resources.sounds.SoundEventRegistration;
 //? if >=1.19.3 {
 /*import net.minecraft.core.registries.BuiltInRegistries;
 *///?} else {
-import net.minecraft.core.Registry;
 //?}
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -21,8 +20,13 @@ import dev.arbor.extrasoundsnext.debug.DebugUtils;
 import dev.arbor.extrasoundsnext.json.SoundEntrySerializer;
 import dev.arbor.extrasoundsnext.json.SoundSerializer;
 import dev.arbor.extrasoundsnext.sounds.SoundType;
+//? if forge {
+import net.minecraftforge.registries.ForgeRegistries;
+//?} elif <1.19.3 {
+/*import net.minecraft.core.Registry;
+*///?}
 import org.slf4j.Logger;
-import reg.ExHelper;
+import dev.arbor.extrasoundsnext.reg.ExHelper;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -39,9 +43,11 @@ public class SoundPackLoader {
     private static final String CACHE_FNAME = ExtraSoundsNext.MODID + ".cache";
     private static final String CACHE_MODS = ExtraSoundsNext.MODID + ".modlist";
     private static final Path CACHE_PATH_MODS =
-            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", CACHE_MODS);
+            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft",
+					ExtraSoundsNext.getMinecraftVersion(), ExtraSoundsNext.getLoader(), CACHE_MODS);
     private static final Path CACHE_PATH_FILE =
-            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft", CACHE_FNAME);
+            Path.of(System.getProperty("java.io.tmpdir"), ".minecraft",
+					ExtraSoundsNext.getMinecraftVersion(), ExtraSoundsNext.getLoader(), CACHE_FNAME);
 
     public static final Map<ResourceLocation, SoundEvent> CUSTOM_SOUND_EVENT = new HashMap<>();
 
@@ -154,10 +160,13 @@ public class SoundPackLoader {
         *///?} elif >=1.19.3 {
         /*for (Item item : BuiltInRegistries.ITEM) {
             final ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(item);
-        *///?} else {
-        for (Item item : Registry.ITEM) {
+        *///?} elif forge {
+        for (Item item : ForgeRegistries.ITEMS) {
+            final ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
+        //?} else {
+        /*for (Item item : Registry.ITEM) {
             final ResourceLocation itemId = Registry.ITEM.getKey(item);
-        //?}
+        *///?}
             final SoundDefinition definition;
             if (soundGenerator.containsKey(Objects.requireNonNull(itemId).getNamespace())) {
                 definition = soundGenerator.get(itemId.getNamespace()).itemSoundGenerator.apply(item);
@@ -187,7 +196,15 @@ public class SoundPackLoader {
                     LOGGER.warn("unregistered sound was found: '{}'", itemId);
                 }
             }
+        //? if >=1.20 {
+        /*}
+        *///?} elif >=1.19.3 {
+        /*}
+        *///?} elif forge {
         }
+        //?} else {
+        /*}
+        *///?}
     }
 
     /**

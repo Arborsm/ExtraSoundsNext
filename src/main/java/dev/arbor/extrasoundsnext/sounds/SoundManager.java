@@ -36,7 +36,7 @@ import dev.arbor.extrasoundsnext.ExtraSoundsNext;
 import dev.arbor.extrasoundsnext.debug.DebugUtils;
 import dev.arbor.extrasoundsnext.mapping.SoundPackLoader;
 import org.jetbrains.annotations.Nullable;
-import reg.ExHelper;
+import dev.arbor.extrasoundsnext.reg.ExHelper;
 
 import java.util.Map;
 import java.util.function.BiPredicate;
@@ -257,18 +257,43 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, SoundType type) {
+        // Check if this specific sound is enabled
+        SoundEntry entry = SoundEntry.fromSoundEvent(snd);
+        if (entry != null && !VolumeConfig.isSoundEnabled(entry)) {
+            return; // Sound is disabled, skip playback
+        }
         playSound(snd, type.pitch, type.category);
     }
 
     public static void playSound(SoundEvent snd, SoundType type, Mixers... optionalVolumes) {
-        playSound(snd, type.pitch, type.category, optionalVolumes);
+        // Check if this specific sound is enabled
+        SoundEntry entry = SoundEntry.fromSoundEvent(snd);
+        if (entry != null && !VolumeConfig.isSoundEnabled(entry)) {
+            return; // Sound is disabled, skip playback
+        }
+
+        float volume = getSoundVolume(Mixers.MASTER) * getSoundVolume(type.category);
+        if (optionalVolumes != null) {
+            for (Mixers cat : optionalVolumes) {
+                volume *= getSoundVolume(cat);
+            }
+        }
+        //? if >=1.19 {
+        /*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch, MC_RANDOM,
+                false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
+                true));
+        *///?} else {
+		playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch,
+				false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
+				true));
+        //?}
     }
 
-    public static void playSound(SoundEvent snd, float pitch, Mixers category, Mixers... optionalVolumes) {
+    public static void playSound(SoundEvent snd, float pitch, Mixers... optionalVolumes) {
         float volume = getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
             for (Mixers cat : optionalVolumes) {
-                volume = Math.min(getSoundVolume(cat), volume);
+                volume *= getSoundVolume(cat);
             }
         }
         //? if >=1.19 {
@@ -276,7 +301,9 @@ public class SoundManager {
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
         *///?} else {
-        playSound(new SimpleSoundInstance(snd, SoundSource.MASTER, volume, pitch, 0.0D, 0.0D, 0.0D));
+		playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch,
+				false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
+				true));
         //?}
     }
 
@@ -297,7 +324,7 @@ public class SoundManager {
         float volume = getSoundVolume(Mixers.MASTER);
         if (optionalVolumes != null) {
             for (SoundSource cat : optionalVolumes) {
-                volume = Math.min(getSoundVolume(cat), volume);
+                volume *= getSoundVolume(cat);
             }
         }
         playSound(new SimpleSoundInstance(snd, category, volume, pitch, 0.0D, 0.0D, 0.0D));
@@ -309,9 +336,10 @@ public class SoundManager {
     }
 
     public static void playSound(SoundEvent snd, SoundType type, float volume, float pitch, BlockPos position, boolean anti, Mixers... optionalVolumes) {
+        volume *= getSoundVolume(Mixers.MASTER) * getSoundVolume(type);
         if (optionalVolumes != null) {
             for (Mixers cat : optionalVolumes) {
-                volume = Math.min(getSoundVolume(cat, anti), volume * getSoundVolume(Mixers.MASTER));
+                volume *= getSoundVolume(cat, anti);
             }
         }
         //? if >=1.19 {
@@ -356,7 +384,7 @@ public class SoundManager {
                 *///?} else {
                 Mth.clampedLerp(maxPitch, 1.5f, (float) itemStack.getCount() / itemStack.getItem().getMaxStackSize());
                 //?}
-        playSound(Sounds.ITEM_DROP, pitch, Mixers.INVENTORY, Mixers.ITEM_DROP);
+        playSound(Sounds.ITEM_DROP, pitch, Mixers.ITEM_DROP);
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {
@@ -392,8 +420,18 @@ public class SoundManager {
         }
     }
 
+	public static float getSoundVolume(SoundType type, boolean... anti) {
+		float volume = getSoundVolume(type.category);
+		if (anti != null && anti.length > 0 && anti[0] && volume == 1f) {
+			return 0f;
+		}
+		return volume * type.pitch;
+	}
+
     public static float getSoundVolume(Mixers category, boolean... anti) {
-        final float volume = VolumeConfig.getVolume(category);
+        float volume = VolumeConfig.getVolume(category);
+		if (category == Mixers.MASTER)
+			volume *= 2f;
         if (anti != null && anti.length > 0 && anti[0] && volume == 1f) {
             return 0f;
         }
