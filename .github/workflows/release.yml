@@ -188,6 +188,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Publish to Platforms
         run: |
           ./gradlew publishMods --stacktrace

@@ -353,6 +353,8 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		projectId = project.prop("publish.curseforge")
 		accessToken = acesssToken
 		minecraftVersions.addAll(listOf(currentVersion) + additionalVersions)
+		clientRequired.set(true)
+		serverRequired.set(false)
 
 		deps.required.forEach { dep -> whenNotNull(dep.curseforge) { requires(it) } }
 		deps.optional.forEach { dep -> whenNotNull(dep.curseforge) { optional(it) } }
