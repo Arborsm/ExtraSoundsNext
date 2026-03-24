@@ -21,9 +21,7 @@ legacyForge {
 
 	//validateAccessTransformers = true
 
-	rootProject.file("versions/${stonecutter.current.version}-forge/build/resources/main/META-INF/accesstransformer.cfg").let {
-		if (it.exists()) accessTransformers.from(it)
-	}
+	accessTransformers.from(tasks.named("generateAccessTransformer"))
 
 	runs {
 		register("client") {

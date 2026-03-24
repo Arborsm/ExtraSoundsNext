@@ -20,9 +20,7 @@ neoForge {
 
 	//validateAccessTransformers = true
 
-	rootProject.file("versions/${stonecutter.current.version}-neoforge/build/resources/main/META-INF/accesstransformer.cfg").let {
-		if (it.exists()) accessTransformers.from(it)
-	}
+	accessTransformers.from(tasks.named("generateAccessTransformer"))
 
 	if (hasProperty("deps.parchment")) parchment {
 		val (mc, ver) = (property("deps.parchment") as String).split(':')

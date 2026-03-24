@@ -1,19 +1,23 @@
 @file:Suppress("unused", "DuplicatedCode")
 
 import dev.kikugie.fletching_table.extension.FletchingTableExtension
-import dev.kikugie.postprocess.sourceSets
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import me.modmuss50.mpp.ModPublishExtension
 import me.modmuss50.mpp.ReleaseType
+import org.gradle.api.DefaultTask
 import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
@@ -35,6 +39,47 @@ fun RepositoryHandler.strictMaven(
 	filter { groups.forEach(::includeGroup) }
 }
 
+abstract class GenerateAccessTransformerTask : DefaultTask() {
+	@get:InputFile
+	abstract val inputFile: RegularFileProperty
+
+	@get:OutputFile
+	abstract val outputFile: RegularFileProperty
+
+	@TaskAction
+	fun generate() {
+		val output = outputFile.get().asFile
+		output.parentFile.mkdirs()
+
+		val converted = linkedSetOf<String>()
+
+		inputFile.get().asFile.readLines()
+			.map(String::trim)
+			.filter { it.isNotEmpty() && !it.startsWith("accessWidener") }
+			.forEach { converted.addAll(convertAccessWidenerLine(it)) }
+
+		output.writeText(converted.joinToString(System.lineSeparator()))
+	}
+
+	private fun convertAccessWidenerLine(line: String): List<String> {
+		val parts = line.split(Regex("\\s+"))
+		if (parts.isEmpty() || parts[0] != "accessible") return emptyList()
+
+		return when (parts.getOrNull(1)) {
+			"class" -> listOf("public ${parts[2].replace('/', '.')}")
+			"field" -> listOf(
+				"public ${parts[2].replace('/', '.')}",
+				"public ${parts[2].replace('/', '.')} ${parts[3]}"
+			)
+			"method" -> listOf(
+				"public ${parts[2].replace('/', '.')}",
+				"public ${parts[2].replace('/', '.')} ${parts[3]}${parts[4]}"
+			)
+			else -> emptyList()
+		}
+	}
+}
+
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	override fun apply(project: Project) = with(project) {
 		val inferredLoader = project.buildFile.name.substringAfter('.').replace(".gradle.kts", "")
@@ -51,6 +96,10 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			"com.google.devtools.ksp",
 			"dev.kikugie.fletching-table"
 		).forEach { apply(plugin = it) }
+
+		if (!inferredLoaderIsFabric) {
+			registerAccessTransformerTask(prop("deps.minecraft"))
+		}
 
 		afterEvaluate {
 			configureProject(extension)
@@ -127,6 +176,11 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		tasks.named<ProcessResources>("processResources") {
 			dependsOn(tasks.named("stonecutterGenerate"))
 			dependsOn("kspKotlin")
+			if (!isFabric) {
+				from(tasks.named("generateAccessTransformer")) {
+					into("META-INF")
+				}
+			}
 
 			filesMatching("*.mixins.json") {
 				expand("java" to "JAVA_${requiredJava.majorVersion}")
@@ -177,6 +231,15 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 					exclude("META-INF/neoforge.mods.toml", "fabric.mod.json", ".cache")
 				}
 			}
+		}
+	}
+
+	private fun Project.registerAccessTransformerTask(minecraftVersion: String) {
+		tasks.register<GenerateAccessTransformerTask>("generateAccessTransformer") {
+			group = "build"
+			description = "Generates META-INF/accesstransformer.cfg from the current access widener"
+			inputFile.set(rootProject.layout.projectDirectory.file("src/main/resources/aw/$minecraftVersion.accesswidener"))
+			outputFile.set(layout.buildDirectory.file("generated/access-transformer/main/META-INF/accesstransformer.cfg"))
 		}
 	}
 
@@ -253,15 +316,6 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			}
 		}
 
-		if (!isFabric) {
-			extensions.configure<FletchingTableExtension> {
-				sourceSets?.let {
-					accessConverter.register(it["main"]) {
-						add("aw/${prop("deps.minecraft")}.accesswidener")
-					}
-				}
-			}
-		}
 	}
 
 	private fun Project.registerBuildAndCollectTask(extension: ModPlatformExtension, modVersion: String) {

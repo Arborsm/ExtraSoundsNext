@@ -53,3 +53,4 @@ bin/
 !.idea/icon.svg
 
 /docs/
+/.gradle-home/
