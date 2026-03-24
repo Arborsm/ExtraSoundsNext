@@ -1,6 +1,6 @@
 # ExtraSounds Next - Changelog
 
-## [1.5.0]
+## [1.5.0 - 1.5.2]
 
 **New Features**
 - Added sound support for popular mods:
@@ -15,12 +15,12 @@
 **Technical Changes**
 - Migrated to Stonecutter architecture for better multi-version support
 
-## [1.5.1]
-
 **Fixes**
 - Sound switches not working properly
-
-## [1.5.2]
-
 **Chores**
 - Correct mixin refmap configuration
+
+## [1.5.3]
+
+**Fixes**
+- Fixed Forge jar used development version instead of release version

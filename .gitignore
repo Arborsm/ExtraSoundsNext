@@ -54,3 +54,4 @@ bin/
 
 /docs/
 /.gradle-home/
+/.gradle-user-home/

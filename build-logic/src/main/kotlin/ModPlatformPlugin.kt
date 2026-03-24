@@ -87,7 +87,13 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		val extension = extensions.create("platform", ModPlatformExtension::class.java).apply {
 			loader.convention(inferredLoader)
-			jarTask.convention(if (inferredLoaderIsFabric) "remapJar" else "jar")
+			jarTask.convention(
+				when (inferredLoader) {
+					"fabric" -> "remapJar"
+					"forge" -> "reobfJar"
+					else -> "jar"
+				}
+			)
 			sourcesJarTask.convention(if (inferredLoaderIsFabric) "remapSourcesJar" else "sourcesJar")
 		}
 
