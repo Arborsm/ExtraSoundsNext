@@ -19,3 +19,8 @@
 
 **Fixes**
 - Sound switches not working properly
+
+## [1.5.2]
+
+**Chores**
+- Correct mixin refmap configuration

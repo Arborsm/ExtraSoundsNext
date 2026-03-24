@@ -1,5 +1,6 @@
 {
   "package": "dev.arbor.extrasoundsnext.mixin",
+  "refmap": "extrasounds.refmap.json",
   "required": true,
   "minVersion": "0.8",
   "compatibilityLevel": "${java}",
