@@ -98,7 +98,7 @@ public abstract class MEStorageScreenMixin<C extends MEStorageMenu> extends AEBa
 	 * <p>
 	 * 这个方法处理 Shift+滚轮调整物品数量
 	 */
-	@Inject(method = "mouseScrolled", at = @At("HEAD"), remap = false)
+	@Inject(method = "mouseScrolled", at = @At("HEAD"), remap = true)
 	//? if >=1.21.1 {
 	private void onMouseScrolled(double x, double y, double deltaX, double wheelDelta, CallbackInfoReturnable<Boolean> cir) {
 	//?} else {
