@@ -1,6 +1,6 @@
 # ExtraSounds Next - Changelog
 
-## [1.5.0 - 1.5.2]
+## [1.5.0 - 1.5.3]
 
 **New Features**
 - Added sound support for popular mods:
@@ -17,10 +17,10 @@
 
 **Fixes**
 - Sound switches not working properly
-**Chores**
 - Correct mixin refmap configuration
-
-## [1.5.3]
-
-**Fixes**
 - Fixed Forge jar used development version instead of release version
+
+## [1.5.4]
+**Fixes**
+- Make DEBUG flag via system property
+- Fixed ae2 compatibility

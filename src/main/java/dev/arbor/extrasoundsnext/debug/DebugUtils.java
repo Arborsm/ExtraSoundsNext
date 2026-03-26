@@ -22,7 +22,8 @@ public class DebugUtils {
     public static final String NO_CACHE_VAR = "extrasounds.nocache";
     private static final String JVM_ARG_SEARCH_UNDEF_SND = "extrasounds.searchundef";
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = System.getProperties().containsKey(DEBUG_VAR)
+            && System.getProperties().get(DEBUG_VAR).equals("true");
     public static final String DEBUG_PATH = System.getProperties().containsKey(DEBUG_PATH_VAR)
             ? System.getProperty(DEBUG_PATH_VAR) : "debug/";
     public static final boolean NO_CACHE = System.getProperties().containsKey(NO_CACHE_VAR)
