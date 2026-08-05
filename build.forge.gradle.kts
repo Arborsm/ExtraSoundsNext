@@ -13,6 +13,11 @@ platform {
 		required("forge") {
 			forgeVersionRange = "[1,)"
 		}
+		optional("jei") {
+			slug("jei", "jei")
+			forgeVersionRange = "[${prop("deps.jei")},)"
+			environment = "client"
+		}
 	}
 }
 

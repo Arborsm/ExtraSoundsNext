@@ -203,6 +203,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			}
 
 			val dependencies = buildDependenciesBlock(isFabric, modId, extension.dependencies)
+			inputs.property("modDependencies", dependencies)
 
 			val props = mapOf(
 				"version" to modVersion,
@@ -224,6 +225,11 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			when {
 				isFabric -> {
 					filesMatching("fabric.mod.json") { expand(props) }
+					doLast {
+						val fabricModJson = destinationDir.resolve("fabric.mod.json")
+						val text = fabricModJson.readText()
+						fabricModJson.writeText(text.replace(Regex("""\n}\s*$"""), ",$dependencies\n}"))
+					}
 					exclude("META-INF/mods.toml", "META-INF/neoforge.mods.toml", "aw/*.cfg", ".cache", "pack.mcmeta")
 				}
 

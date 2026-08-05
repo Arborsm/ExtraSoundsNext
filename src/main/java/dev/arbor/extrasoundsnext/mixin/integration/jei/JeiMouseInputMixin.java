@@ -1,0 +1,53 @@
+package dev.arbor.extrasoundsnext.mixin.integration.jei;
+
+import com.mojang.blaze3d.platform.Window;
+import dev.arbor.extrasoundsnext.integration.jei.JeiRuntimeSoundHandler;
+import dev.kikugie.fletching_table.annotation.MixinEnvironment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(MouseHandler.class)
+@MixinEnvironment
+public abstract class JeiMouseInputMixin {
+	@Shadow
+	@Final
+	private Minecraft minecraft;
+
+	@Inject(method = "onPress", at = @At("HEAD"))
+	private void extrasounds$jeiMouseReleased(long windowPointer, int button, int action, int modifiers, CallbackInfo ci) {
+		if (action != 0 || this.minecraft.screen == null) {
+			return;
+		}
+
+		double mouseX = scaledMouseX();
+		double mouseY = scaledMouseY();
+		JeiRuntimeSoundHandler.handleMouseReleased(mouseX, mouseY, button);
+	}
+
+	@Inject(method = "onScroll", at = @At("HEAD"))
+	private void extrasounds$jeiMouseScrolled(long windowPointer, double horizontal, double vertical, CallbackInfo ci) {
+		if (this.minecraft.screen == null) {
+			return;
+		}
+
+		double mouseX = scaledMouseX();
+		double mouseY = scaledMouseY();
+		JeiRuntimeSoundHandler.handleMouseScrolled(mouseX, mouseY, vertical);
+	}
+
+	private double scaledMouseX() {
+		Window window = this.minecraft.getWindow();
+		return this.minecraft.mouseHandler.xpos() * window.getGuiScaledWidth() / window.getScreenWidth();
+	}
+
+	private double scaledMouseY() {
+		Window window = this.minecraft.getWindow();
+		return this.minecraft.mouseHandler.ypos() * window.getGuiScaledHeight() / window.getScreenHeight();
+	}
+}

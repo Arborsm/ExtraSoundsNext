@@ -14,9 +14,18 @@ platform {
 			versionRange = ">=${prop("deps.fabric-api")}"
 		}
 		required("fabricloader") {
-			versionRange = ">=${libs.fabric.loader.get().version}"
+			versionRange = ">=${prop("deps.fabricloader")}"
 		}
 		optional("modmenu") {}
+		optional("jei") {
+			slug("jei", "jei")
+			versionRange = ">=${prop("deps.jei")}"
+			environment = "client"
+		}
+		incompatible("jei") {
+			versionRange = "<${prop("deps.jei")}"
+			environment = "client"
+		}
 	}
 }
 

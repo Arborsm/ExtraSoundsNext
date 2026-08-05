@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.Set;
 
 public class ESMixinPlugin implements IMixinConfigPlugin {
-    private static boolean isClassFound(String className) {
-        try {
-            Class.forName(className, false, Thread.currentThread().getContextClassLoader());
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+    private static boolean isModFound(String modId) {
+        //? if fabric {
+        /*return net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded(modId);
+        *///?} elif neoforge {
+        return net.neoforged.fml.loading.LoadingModList.get().getModFileById(modId) != null;
+        //?} elif forge {
+        /*return net.minecraftforge.fml.loading.LoadingModList.get().getModFileById(modId) != null;
+        *///?}
     }
 
     @Override
@@ -28,16 +29,21 @@ public class ESMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.ae2")) {
-            return isClassFound("appeng.api.AEApi");
-        } else if (mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.emi")) {
-            return isClassFound("dev.emi.emi.api.EmiPlugin");
-        } else if (mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.jei")) {
-            return isClassFound("mezz.jei.api.JeiPlugin");
-        } else if (mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.rei")) {
-            return isClassFound("me.shedaniel.rei.api.common.plugins.REIPlugin");
+        if (isIntegrationMixin(mixinClassName, "ae2")) {
+            return isModFound("ae2");
+        } else if (isIntegrationMixin(mixinClassName, "emi")) {
+            return isModFound("emi");
+        } else if (isIntegrationMixin(mixinClassName, "jei")) {
+            return isModFound("jei");
+        } else if (isIntegrationMixin(mixinClassName, "rei")) {
+            return isModFound("roughlyenoughitems");
         }
         return true;
+    }
+
+    private static boolean isIntegrationMixin(String mixinClassName, String integration) {
+        return mixinClassName.contains("dev.arbor.extrasoundsnext.mixin.integration." + integration) ||
+                mixinClassName.contains("dev.arbor.extrasoundsnext.mixin." + integration);
     }
 
     @Override

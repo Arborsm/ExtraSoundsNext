@@ -21,3 +21,4 @@ description = '''${description}'''
 
 [[mixins]]
 config = "extrasounds.mixins.json"
+${dependencies}
