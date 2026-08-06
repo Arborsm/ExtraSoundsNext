@@ -73,19 +73,23 @@ dependencies {
 	modCompileOnly("mezz.jei:jei-${prop("deps.minecraft")}-fabric-api:${prop("deps.jei")}")
 	modImplementation("mezz.jei:jei-${prop("deps.minecraft")}-fabric:${prop("deps.jei")}")
 	modCompileOnly("maven.modrinth:rei:${prop("deps.rei")}")
-	if (sc.current.parsed <= "1.18.2") {
-		modCompileOnly("dev.emi:emi:${prop("deps.emi")}")
-		modCompileOnly("dev.emi:emi:${prop("deps.emi")}:api")
+	if (prop("deps.emi").isNotEmpty()) {
+		if (sc.current.parsed <= "1.18.2") {
+			modCompileOnly("dev.emi:emi:${prop("deps.emi")}")
+			modCompileOnly("dev.emi:emi:${prop("deps.emi")}:api")
+		}
+		else {
+			modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}")
+			modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}:api")
+		}
 	}
-	else {
-		modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}")
-		modCompileOnly("dev.emi:emi-fabric:${prop("deps.emi")}:api")
-	}
-	if(sc.current.parsed <= "1.20.1") {
-		modCompileOnly("appeng:appliedenergistics2-fabric:${prop("deps.ae2")}") { isTransitive = false }
-	}
-	else {
-		modImplementation("org.appliedenergistics:appliedenergistics2:${prop("deps.ae2")}")
+	if (prop("deps.ae2").isNotEmpty()) {
+		if(sc.current.parsed <= "1.20.1") {
+			modCompileOnly("appeng:appliedenergistics2-fabric:${prop("deps.ae2")}") { isTransitive = false }
+		}
+		else {
+			modImplementation("org.appliedenergistics:appliedenergistics2:${prop("deps.ae2")}")
+		}
 	}
 }
 

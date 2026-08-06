@@ -1,5 +1,6 @@
 package dev.arbor.extrasoundsnext.mixin.integration.ae2;
 
+//? if < 26.1 {
 import appeng.api.stacks.AEItemKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.me.common.MEStorageScreen;
@@ -112,3 +113,4 @@ public abstract class MEStorageScreenMixin<C extends MEStorageMenu> extends AEBa
 		}
 	}
 }
+//?}

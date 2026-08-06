@@ -1,5 +1,6 @@
 package dev.arbor.extrasoundsnext.mixin.integration.emi;
 
+//? if < 26.1 {
 //? if > 1.18.2 {
 
 import dev.emi.emi.screen.RecipeScreen;
@@ -22,4 +23,5 @@ public class RecipeScreenMixin {
         extra_sounds$scrollSound.play();
     }
 }
+//?}
 //?}

@@ -1,5 +1,6 @@
 package dev.arbor.extrasoundsnext.mixin.integration.emi;
 
+//? if < 26.1 {
 //? if > 1.18.2 {
 import dev.emi.emi.api.EmiApi;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -31,4 +32,5 @@ public class EmiApiMixin {
 		SoundManager.playSound(itemStack, SoundType.PICKUP);
 	}
 }
+//?}
 //?}

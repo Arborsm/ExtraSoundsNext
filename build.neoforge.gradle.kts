@@ -64,9 +64,13 @@ dependencies {
 	compileOnly("mezz.jei:jei-${prop("deps.minecraft")}-neoforge-api:${prop("deps.jei")}")
 	implementation("mezz.jei:jei-${prop("deps.minecraft")}-neoforge:${prop("deps.jei")}")
 	compileOnly("maven.modrinth:rei:${prop("deps.rei")}")
-	compileOnly("dev.emi:emi-neoforge:${prop("deps.emi")}:api")
-	compileOnly("dev.emi:emi-neoforge:${prop("deps.emi")}")
-	implementation("org.appliedenergistics:appliedenergistics2:${prop("deps.ae2")}")
+	if (prop("deps.emi").isNotEmpty()) {
+		compileOnly("dev.emi:emi-neoforge:${prop("deps.emi")}:api")
+		compileOnly("dev.emi:emi-neoforge:${prop("deps.emi")}")
+	}
+	if (prop("deps.ae2").isNotEmpty()) {
+		implementation("org.appliedenergistics:appliedenergistics2:${prop("deps.ae2")}")
+	}
 }
 
 tasks.named("createMinecraftArtifacts") {

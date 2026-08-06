@@ -82,7 +82,7 @@ abstract class GenerateAccessTransformerTask : DefaultTask() {
 
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	override fun apply(project: Project) = with(project) {
-		val inferredLoader = project.buildFile.name.substringAfter('.').replace(".gradle.kts", "")
+		val inferredLoader = project.name.substringAfterLast('-')
 		val inferredLoaderIsFabric = inferredLoader == "fabric"
 
 		val extension = extensions.create("platform", ModPlatformExtension::class.java).apply {
@@ -135,6 +135,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		extension.requiredJava.set(
 			when {
+				stonecutter.eval(stonecutter.current.version, ">=26.1") -> JavaVersion.VERSION_25
 				stonecutter.eval(stonecutter.current.version, ">=1.20.6") -> JavaVersion.VERSION_21
 				stonecutter.eval(stonecutter.current.version, ">=1.18") -> JavaVersion.VERSION_17
 				stonecutter.eval(stonecutter.current.version, ">=1.17") -> JavaVersion.VERSION_16
@@ -144,6 +145,12 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		if (isFabric) {
 			extension.dependencies { required("java") { versionRange = ">=${extension.requiredJava.get().majorVersion}" } }
+		}
+
+		// 26.1+ 使用 no-remap Loom，没有 remapJar/remapSourcesJar 任务
+		if (isFabric && stonecutter.eval(stonecutter.current.version, ">=26.1")) {
+			extension.jarTask.set("jar")
+			extension.sourcesJarTask.set("sourcesJar")
 		}
 
 		configureFletchingTable(isFabric)
