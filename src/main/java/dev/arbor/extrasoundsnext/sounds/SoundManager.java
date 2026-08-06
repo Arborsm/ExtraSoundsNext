@@ -1,7 +1,11 @@
 package dev.arbor.extrasoundsnext.sounds;
 
 import com.google.common.collect.Maps;
+//? if >=26.1 {
+/*import net.minecraft.util.Util;
+*///?} else {
 import net.minecraft.Util;
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -279,9 +283,15 @@ public class SoundManager {
             }
         }
         //? if >=1.19 {
+        //? if >=26.1 {
+        /*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.location(), SoundSource.MASTER, volume, type.pitch, MC_RANDOM,
+                false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
+                true));
+        *///?} else {
         playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch, MC_RANDOM,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
+        //?}
         //?} else {
 		/*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, type.pitch,
 				false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
@@ -301,9 +311,15 @@ public class SoundManager {
             }
         }
         //? if >=1.19 {
+        //? if >=26.1 {
+        /*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.location(), SoundSource.MASTER, volume, pitch, MC_RANDOM,
+                false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
+                true));
+        *///?} else {
         playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch, MC_RANDOM,
                 false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
                 true));
+        //?}
         //?} else {
 		/*playSound(new SimpleSoundInstance(snd == null ? ExHelper.id("missing") : snd.getLocation(), SoundSource.MASTER, volume, pitch,
 				false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D,
@@ -366,14 +382,22 @@ public class SoundManager {
             long now = System.currentTimeMillis();
             if (now - lastPlayed > 5) {
                 final Minecraft client = Minecraft.getInstance();
+                //? if >=26.1 {
+                /*client.execute(() -> client.getSoundManager().play(instance));
+                *///?} else {
                 client.tell(() -> client.getSoundManager().play(instance));
+                //?}
                 lastPlayed = now;
                 if (DebugUtils.DEBUG) {
                     DebugUtils.soundLog(instance);
                 }
             } else {
                 if (DebugUtils.DEBUG) {
+                    //? if >=26.1 {
+                    /*LOGGER.warn("Sound suppressed due to the fast interval between method calls, was '{}'.", instance.getResourceLocation());
+                    *///?} else {
                     LOGGER.warn("Sound suppressed due to the fast interval between method calls, was '{}'.", instance.getLocation());
+                    //?}
                 }
             }
         } catch (Throwable e) {
@@ -396,7 +420,11 @@ public class SoundManager {
     }
 
     public static void stopSound(SoundEvent e, SoundType type) {
+        //? if >=26.1 {
+        /*Minecraft.getInstance().getSoundManager().stop(e.location(), SoundSource.MASTER);
+        *///?} else {
         Minecraft.getInstance().getSoundManager().stop(e.getLocation(), SoundSource.MASTER);
+        //?}
     }
 
     /**

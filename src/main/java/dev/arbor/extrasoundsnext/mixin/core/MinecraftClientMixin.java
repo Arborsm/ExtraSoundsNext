@@ -32,7 +32,11 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "handleKeybinds", at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, target = "Lnet/minecraft/world/entity/player/Inventory;selected:I"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void extrasounds$hotbarKeySound(CallbackInfo ci, int i) {
+        //? if >=26.1 {
+        /*if (this.player != null && this.player.getInventory().getSelectedSlot() != i) {
+        *///?} else {
         if (this.player != null && this.player.getInventory().selected != i) {
+        //?}
             SoundManager.hotbar(i);
         }
     }

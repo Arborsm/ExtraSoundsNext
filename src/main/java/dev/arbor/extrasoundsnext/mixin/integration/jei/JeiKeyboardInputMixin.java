@@ -14,6 +14,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KeyboardHandler.class)
 @MixinEnvironment
 public abstract class JeiKeyboardInputMixin {
+	//? if >=26.1 {
+	/*@Inject(method = "keyPress", at = @At("HEAD"))
+	private void extrasounds$jeiKeyPress(long windowPointer, int key, net.minecraft.client.input.KeyEvent keyEvent, CallbackInfo ci) {
+		Minecraft minecraft = Minecraft.getInstance();
+		//? if >=26.2 {
+		/^if (minecraft.gui.screen() == null) {
+		^///?} else {
+		if (minecraft.screen == null) {
+		//?}
+			return;
+		}
+
+		Window window = minecraft.getWindow();
+		double mouseX = minecraft.mouseHandler.xpos() * window.getGuiScaledWidth() / window.getScreenWidth();
+		double mouseY = minecraft.mouseHandler.ypos() * window.getGuiScaledHeight() / window.getScreenHeight();
+		JeiRuntimeSoundHandler.handleKeyPressed(mouseX, mouseY, InputConstants.getKey(keyEvent));
+	}
+	*///?} else {
 	@Inject(method = "keyPress", at = @At("HEAD"))
 	private void extrasounds$jeiKeyPress(long windowPointer, int key, int scanCode, int action, int modifiers, CallbackInfo ci) {
 		if (action != 1) {
@@ -30,4 +48,5 @@ public abstract class JeiKeyboardInputMixin {
 		double mouseY = minecraft.mouseHandler.ypos() * window.getGuiScaledHeight() / window.getScreenHeight();
 		JeiRuntimeSoundHandler.handleKeyPressed(mouseX, mouseY, InputConstants.getKey(key, scanCode));
 	}
+	//?}
 }

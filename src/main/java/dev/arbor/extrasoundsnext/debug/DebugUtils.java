@@ -82,7 +82,11 @@ public class DebugUtils {
 
     public static void soundLog(SoundInstance instance) {
         if (!DEBUG) return;
+        //? if >=26.1 {
+        /*LOGGER.info("Playing sound: {}", instance.getResourceLocation());
+        *///?} else {
         LOGGER.info("Playing sound: {}", instance.getLocation());
+        //?}
     }
 
     public static void effectLog(MobEffect effect, SoundManager.EffectType type) {

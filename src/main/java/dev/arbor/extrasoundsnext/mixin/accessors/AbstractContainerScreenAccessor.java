@@ -9,6 +9,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(AbstractContainerScreen.class)
 @MixinEnvironment()
 public abstract class AbstractContainerScreenAccessor {
+	//? if >=26.2 {
+	/*@Accessor("lastQuickMoved")
+	*///?} else {
 	@Accessor("draggingItem")
+	//?}
 	public abstract ItemStack getDraggingItem();
 }

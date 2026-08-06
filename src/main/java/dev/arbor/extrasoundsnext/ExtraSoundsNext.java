@@ -76,7 +76,11 @@ public final class ExtraSoundsNext {
 		//? if fabric {
         /*return net.fabricmc.loader.api.FabricLoader.getInstance().getEnvironmentType() == net.fabricmc.api.EnvType.CLIENT;
 		*///?} elif neoforge {
+        //? if >=26.1 {
+        /*return net.neoforged.fml.loading.FMLLoader.getCurrent().getDist().isClient();
+        *///?} else {
         return net.neoforged.fml.loading.FMLLoader.getDist().isClient();
+        //?}
 		//?} elif forge {
         /*return net.minecraftforge.fml.loading.FMLLoader.getDist().isClient();
 		*///?}

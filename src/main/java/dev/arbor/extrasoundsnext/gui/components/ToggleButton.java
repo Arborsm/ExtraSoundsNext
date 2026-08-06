@@ -1,10 +1,14 @@
 package dev.arbor.extrasoundsnext.gui.components;
 
+//? if >=26.1 {
+/*import net.minecraft.client.gui.GuiGraphicsExtractor;
+*///?} else {
 //? if >=1.20 {
 import net.minecraft.client.gui.GuiGraphics;
 //?} else {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 *///?}
+//?}
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -40,6 +44,15 @@ public class ToggleButton extends AbstractWidget {
         this.toggled = toggled;
     }
 
+    //? if >=26.1 {
+    /*@Override
+    public void onClick(net.minecraft.client.input.MouseButtonEvent event, boolean bl) {
+        this.toggled = !this.toggled;
+        if (this.onToggle != null) {
+            this.onToggle.accept(this.toggled);
+        }
+    }
+    *///?} else {
     @Override
     public void onClick(double mouseX, double mouseY) {
         this.toggled = !this.toggled;
@@ -47,44 +60,43 @@ public class ToggleButton extends AbstractWidget {
             this.onToggle.accept(this.toggled);
         }
     }
+    //?}
 
-	//? if 1.19.4 {
-	/*@Override
-	public void renderWidget(@NotNull PoseStack context, int mouseX, int mouseY, float delta) {
-		// Update animation (fixed speed)
-		if (this.toggled && this.animationProgress < 1f) {
-			this.animationProgress = Math.min(1f, this.animationProgress + 0.15f);
-		} else if (!this.toggled && this.animationProgress > 0f) {
-			this.animationProgress = Math.max(0f, this.animationProgress - 0.15f);
-		}
+	//? if >=26.1 {
+    /*@Override
+    protected void extractWidgetRenderState(@NotNull GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        // Update animation (fixed speed)
+        if (this.toggled && this.animationProgress < 1f) {
+            this.animationProgress = Math.min(1f, this.animationProgress + 0.15f);
+        } else if (!this.toggled && this.animationProgress > 0f) {
+            this.animationProgress = Math.max(0f, this.animationProgress - 0.15f);
+        }
 
-		// Background color (gray when off, green when on)
-		int bgColor = interpolateColor(0xFF3C3C3C, 0xFF4CAF50, this.animationProgress);
+        // Background color (gray when off, green when on)
+        int bgColor = interpolateColor(0xFF3C3C3C, 0xFF4CAF50, this.animationProgress);
 
-		// Draw rounded background with border
-		int x1 = getX();
-		int y1 = getY();
-		int x2 = x1 + this.width;
-		int y2 = y1 + this.height;
+        // Draw rounded background with border
+        int x1 = this.getX();
+        int y1 = this.getY();
+        int x2 = x1 + this.width;
+        int y2 = y1 + this.height;
 
-		// Draw background
-		fill(context, x1, y1, x2, y2, bgColor);
+        // Draw background
+        context.fill(x1, y1, x2, y2, bgColor);
 
-		// Draw border
-		fill(context, x1, y1, x2, y1 + 1, 0xFF000000); // Top
-		fill(context, x1, y2 - 1, x2, y2, 0xFF000000); // Bottom
-		fill(context, x1, y1, x1 + 1, y2, 0xFF000000); // Left
-		fill(context, x2 - 1, y1, x2, y2, 0xFF000000); // Right
+        // Draw border
+        context.fill(x1, y1, x2, y1 + 1, 0xFF000000); // Top
+        context.fill(x1, y2 - 1, x2, y2, 0xFF000000); // Bottom
+        context.fill(x1, y1, x1 + 1, y2, 0xFF000000); // Left
+        context.fill(x2 - 1, y1, x2, y2, 0xFF000000); // Right
 
-		// Draw sliding circle
-		int circleSize = this.height - 4;
-		int circleX = x1 + 2 + (int)((this.width - circleSize - 4) * this.animationProgress);
-		int circleY = y1 + 2;
-		fill(context, circleX, circleY, circleX + circleSize, circleY + circleSize, 0xFFFFFFFF);
-	}
-	*///?}
-
-	//? if >=1.20 {
+        // Draw sliding circle
+        int circleSize = this.height - 4;
+        int circleX = x1 + 2 + (int)((this.width - circleSize - 4) * this.animationProgress);
+        int circleY = y1 + 2;
+        context.fill(circleX, circleY, circleX + circleSize, circleY + circleSize, 0xFFFFFFFF);
+    }
+    *///?} elif >=1.20 {
     @Override
     public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
         // Update animation (fixed speed)
@@ -118,7 +130,41 @@ public class ToggleButton extends AbstractWidget {
         int circleY = y1 + 2;
         context.fill(circleX, circleY, circleX + circleSize, circleY + circleSize, 0xFFFFFFFF);
     }
-    //?} elif < 1.19.4 {
+    //?} elif =1.19.4 {
+    /*@Override
+    public void renderWidget(@NotNull PoseStack context, int mouseX, int mouseY, float delta) {
+        // Update animation (fixed speed)
+        if (this.toggled && this.animationProgress < 1f) {
+            this.animationProgress = Math.min(1f, this.animationProgress + 0.15f);
+        } else if (!this.toggled && this.animationProgress > 0f) {
+            this.animationProgress = Math.max(0f, this.animationProgress - 0.15f);
+        }
+
+        // Background color (gray when off, green when on)
+        int bgColor = interpolateColor(0xFF3C3C3C, 0xFF4CAF50, this.animationProgress);
+
+        // Draw rounded background with border
+        int x1 = getX();
+        int y1 = getY();
+        int x2 = x1 + this.width;
+        int y2 = y1 + this.height;
+
+        // Draw background
+        fill(context, x1, y1, x2, y2, bgColor);
+
+        // Draw border
+        fill(context, x1, y1, x2, y1 + 1, 0xFF000000); // Top
+        fill(context, x1, y2 - 1, x2, y2, 0xFF000000); // Bottom
+        fill(context, x1, y1, x1 + 1, y2, 0xFF000000); // Left
+        fill(context, x2 - 1, y1, x2, y2, 0xFF000000); // Right
+
+        // Draw sliding circle
+        int circleSize = this.height - 4;
+        int circleX = x1 + 2 + (int)((this.width - circleSize - 4) * this.animationProgress);
+        int circleY = y1 + 2;
+        fill(context, circleX, circleY, circleX + circleSize, circleY + circleSize, 0xFFFFFFFF);
+    }
+    *///?} else {
     /*@Override
     public void renderButton(@NotNull PoseStack context, int mouseX, int mouseY, float delta) {
         // Update animation (fixed speed)

@@ -47,7 +47,11 @@ public class Sounds {
     }
 
     public static SoundEventRegistration aliased(SoundEvent e, float volume) {
+        //? if >=26.1 {
+        /*return single(e.location(), volume, 1f, Sound.Type.SOUND_EVENT);
+        *///?} else {
         return single(e.getLocation(), volume, 1f, Sound.Type.SOUND_EVENT);
+        //?}
     }
 
     public static SoundEventRegistration event(ResourceLocation id) {

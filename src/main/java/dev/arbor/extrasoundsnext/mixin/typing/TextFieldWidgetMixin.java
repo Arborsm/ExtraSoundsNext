@@ -62,6 +62,23 @@ public abstract class TextFieldWidgetMixin {
         this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
     }
 
+    //? if >=26.1 {
+    /*@Inject(
+            method = "keyPressed",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/components/EditBox;getHighlighted()Ljava/lang/String;",
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void extrasounds$cutAction(net.minecraft.client.input.KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+        if (!event.isCut() || this.getHighlighted().isEmpty()) {
+            return;
+        }
+        SoundManager.keyboard(SoundManager.KeyType.CUT);
+        this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
+    }
+    *///?} else {
     @Inject(
             method = "keyPressed",
             at = @At(
@@ -77,9 +94,14 @@ public abstract class TextFieldWidgetMixin {
         SoundManager.keyboard(SoundManager.KeyType.CUT);
         this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
     }
+    //?}
 
     @Inject(method = "charTyped", at = @At("RETURN"))
+    //? if >=26.1 {
+    /*private void extrasounds$appendChar(net.minecraft.client.input.CharacterEvent event, CallbackInfoReturnable<Boolean> cir) {
+    *///?} else {
     private void extrasounds$appendChar(char chr, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    //?}
         if (!cir.getReturnValue() || this.getValue().length() >= this.maxLength) {
             return;
         }
@@ -87,6 +109,23 @@ public abstract class TextFieldWidgetMixin {
         this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
     }
 
+    //? if >=26.1 {
+    /*@Inject(
+            method = "keyPressed",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/KeyboardHandler;getClipboard()Ljava/lang/String;",
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void extrasounds$pasteAction(net.minecraft.client.input.KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+        if (!event.isPaste() || this.getValue().length() >= this.maxLength) {
+            return;
+        }
+        SoundManager.keyboard(SoundManager.KeyType.PASTE);
+        this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
+    }
+    *///?} else {
     @Inject(
             method = "keyPressed",
             at = @At(
@@ -102,6 +141,7 @@ public abstract class TextFieldWidgetMixin {
         SoundManager.keyboard(SoundManager.KeyType.PASTE);
         this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
     }
+    //?}
 
 	@Unique
 	private static final String extrasounds$moveCursorArg =

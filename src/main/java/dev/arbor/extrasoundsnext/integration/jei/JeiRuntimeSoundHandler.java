@@ -120,7 +120,11 @@ public final class JeiRuntimeSoundHandler {
 
 		//? if >1.18.2 {
 		if (includeScreenHelper) {
+			//? if >=26.2 {
+			/*Screen screen = Minecraft.getInstance().gui.screen();
+			*///?} else {
 			Screen screen = Minecraft.getInstance().screen;
+			//?}
 			if (screen != null) {
 				return jeiRuntime.getScreenHelper()
 						.getClickableIngredientUnderMouse(screen, mouseX, mouseY)

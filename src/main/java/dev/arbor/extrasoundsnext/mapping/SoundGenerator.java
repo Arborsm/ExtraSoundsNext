@@ -51,7 +51,11 @@ public final class SoundGenerator {
         SoundEventRegistration soundEntry;
         try {
             final Fluid fluid = ((BucketFluidAccessor) bucketItem).getContent();
+            //? if >=26.1 {
+            /*soundEntry = fluid.getPickupSound().map(sound -> event(sound.location(), 0.4f)).orElse(aliased(METAL));
+            *///?} else {
             soundEntry = fluid.getPickupSound().map(sound -> event(sound.getLocation(), 0.4f)).orElse(aliased(METAL));
+            //?}
         } catch (Throwable ignored) {
             soundEntry = aliased(METAL);
         }

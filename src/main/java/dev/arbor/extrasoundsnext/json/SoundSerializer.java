@@ -30,10 +30,17 @@ public class SoundSerializer implements JsonSerializer<Sound>
         JsonObject o = new JsonObject();
         o.addProperty("name", src.getLocation().toString());
         //? if >=1.19.3 {
+        //? if >=26.1 {
+        /*if (src.getVolume() instanceof ConstantFloat volumeFloat && volumeFloat.value() != 1)
+            o.addProperty("volume", src.getVolume().sample(r));
+        if (src.getPitch() instanceof ConstantFloat pitchFloat && pitchFloat.value() != 1)
+            o.addProperty("pitch", src.getPitch().sample(r));
+        *///?} else {
         if (src.getVolume() instanceof ConstantFloat volumeFloat && volumeFloat.getValue() != 1)
             o.addProperty("volume", src.getVolume().sample(r));
         if (src.getPitch() instanceof ConstantFloat pitchFloat && pitchFloat.getValue() != 1)
             o.addProperty("pitch", src.getPitch().sample(r));
+        //?}
         //?} elif >=1.19 {
         /*float volume = src.getVolume().sample(r);
         if (volume != 1)

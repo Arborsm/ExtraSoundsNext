@@ -9,6 +9,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+//? if >=26.1 {
+/*import net.minecraft.client.gui.GuiGraphicsExtractor;
+import org.jetbrains.annotations.NotNull;
+*///?} else {
 //? if >=1.20 {
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 /*import com.mojang.blaze3d.vertex.PoseStack;
 import org.jetbrains.annotations.NotNull;
 *///?}
+//?}
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +113,11 @@ public class VolumeScreen extends Screen {
         //? if >=1.19.3 {
         this.resetButton = Button.builder(resetText, btn -> {
             VolumeConfig.resetToDefaults();
+            //? if >=26.2 {
+            /*this.minecraft.gui.setScreen(new VolumeScreen(this.parent));
+            *///?} else {
             this.minecraft.setScreen(new VolumeScreen(this.parent));
+            //?}
         }).bounds(this.width / 2 - 155, this.height - 28, 150, 20).build();
         //?} else {
  		/*this.resetButton = new Button(this.width / 2 - 155, this.height - 28, 150, 20, resetText, btn -> {
@@ -122,7 +131,11 @@ public class VolumeScreen extends Screen {
         //? if >=1.19.3 {
         this.doneButton = Button.builder(CommonComponents.GUI_DONE, btn -> {
             VolumeConfig.save();
+            //? if >=26.2 {
+            /*this.minecraft.gui.setScreen(this.parent);
+            *///?} else {
             this.minecraft.setScreen(this.parent);
+            //?}
         }).bounds(this.width / 2 + 5, this.height - 28, 150, 20).build();
         //?} else {
  		/*this.doneButton = new Button(this.width / 2 + 5, this.height - 28, 150, 20, CommonComponents.GUI_DONE, btn -> {
@@ -189,6 +202,41 @@ public class VolumeScreen extends Screen {
         contentHeight = panelY - 50 - (int)scrollOffset;
     }
 
+    //? if >=26.1 {
+    /*@Override
+    public void extractRenderState(@NotNull GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        this.extractBackground(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
+
+        // Draw title
+        context.centeredText(this.font, this.title, this.width / 2, 6, 0xFFFFFFFF);
+
+        // Define scrollable area
+        int scrollAreaTop = 50;
+        int scrollAreaBottom = this.height - 30;
+        int scrollAreaHeight = scrollAreaBottom - scrollAreaTop;
+
+        // Enable scissor test for scrollable content
+        context.enableScissor(0, scrollAreaTop, this.width, scrollAreaBottom);
+
+        // Render category panels
+        for (CategoryPanel panel : categoryPanels) {
+            panel.render(context, mouseX, mouseY, delta);
+        }
+
+        // Disable scissor test
+        context.disableScissor();
+
+        // Draw scrollbar if content is larger than viewport
+        int maxScroll = Math.max(0, contentHeight - scrollAreaHeight);
+        if (maxScroll > 0) {
+            drawScrollbar(context, mouseX, mouseY, scrollAreaTop, scrollAreaBottom, maxScroll);
+        }
+
+        // Render search box and buttons on top
+        this.searchBox.extractRenderState(context, mouseX, mouseY, delta);
+    }
+    *///?} else {
     //? if >=1.20 {
     @Override
     public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
@@ -270,9 +318,18 @@ public class VolumeScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
     }
     *///?}
+    //?}
 
+    //? if >=26.1 {
+    /*@Override
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean bl) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
+    *///?} else {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    //?}
         // Check scrollbar first
         int scrollAreaTop = 50;
         int scrollAreaBottom = this.height - 30;
@@ -300,12 +357,20 @@ public class VolumeScreen extends Screen {
         }
 
         // Check buttons first (Done, Reset, Clear)
+        //? if >=26.1 {
+        /*if (super.mouseClicked(event, bl)) {
+        *///?} else {
         if (super.mouseClicked(mouseX, mouseY, button)) {
+        //?}
             return true;
         }
 
         // Check search box
+        //? if >=26.1 {
+        /*if (this.searchBox.mouseClicked(event, bl)) {
+        *///?} else {
         if (this.searchBox.mouseClicked(mouseX, mouseY, button)) {
+        //?}
             return true;
         }
 
@@ -319,8 +384,16 @@ public class VolumeScreen extends Screen {
         return false;
     }
 
+    //? if >=26.1 {
+    /*@Override
+    public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent event, double dragX, double dragY) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
+    *///?} else {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    //?}
         // Handle scrollbar dragging
         if (isDraggingScrollbar) {
             int scrollAreaTop = 50;
@@ -341,7 +414,11 @@ public class VolumeScreen extends Screen {
         }
 
         // Check buttons first
+        //? if >=26.1 {
+        /*if (super.mouseDragged(event, dragX, dragY)) {
+        *///?} else {
         if (super.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
+        //?}
             return true;
         }
 
@@ -354,8 +431,16 @@ public class VolumeScreen extends Screen {
         return false;
     }
 
+    //? if >=26.1 {
+    /*@Override
+    public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent event) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
+    *///?} else {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    //?}
         // Release scrollbar drag
         if (isDraggingScrollbar) {
             isDraggingScrollbar = false;
@@ -363,7 +448,11 @@ public class VolumeScreen extends Screen {
         }
 
         // Check buttons first
+        //? if >=26.1 {
+        /*if (super.mouseReleased(event)) {
+        *///?} else {
         if (super.mouseReleased(mouseX, mouseY, button)) {
+        //?}
             return true;
         }
 
@@ -406,7 +495,8 @@ public class VolumeScreen extends Screen {
     }
     *///?}
 
-    private void enableScissorTest(int x, int y, int width, int height) {
+    //? if <1.20 {
+    /*private void enableScissorTest(int x, int y, int width, int height) {
         double scale = this.minecraft.getWindow().getGuiScale();
         int scaledY = (int)(this.minecraft.getWindow().getHeight() - (y + height) * scale);
         RenderSystem.enableScissor(
@@ -420,7 +510,33 @@ public class VolumeScreen extends Screen {
     private void disableScissorTest() {
         RenderSystem.disableScissor();
     }
+    *///?} else {
+    private void enableScissorTest(int x, int y, int width, int height) {}
+    private void disableScissorTest() {}
+    //?}
 
+    //? if >=26.1 {
+    /*private void drawScrollbar(GuiGraphicsExtractor context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
+        int scrollbarX = this.width - 10;
+        int scrollbarWidth = 6;
+        int scrollbarHeight = bottom - top;
+
+        // Calculate scrollbar thumb size and position
+        float contentRatio = (float)scrollbarHeight / (float)(contentHeight);
+        int thumbHeight = Math.max(20, (int)(scrollbarHeight * contentRatio));
+        float scrollRatio = (float)(-scrollOffset) / (float)maxScroll;
+        int thumbY = top + (int)((scrollbarHeight - thumbHeight) * scrollRatio);
+
+        // Draw scrollbar track
+        context.fill(scrollbarX, top, scrollbarX + scrollbarWidth, bottom, 0x80000000);
+
+        // Draw scrollbar thumb
+        boolean isHovered = mouseX >= scrollbarX && mouseX <= scrollbarX + scrollbarWidth &&
+                           mouseY >= thumbY && mouseY <= thumbY + thumbHeight;
+        int thumbColor = isHovered || isDraggingScrollbar ? 0xFFAAAAAA : 0xFF888888;
+        context.fill(scrollbarX, thumbY, scrollbarX + scrollbarWidth, thumbY + thumbHeight, thumbColor);
+    }
+    *///?} else {
     //? if >=1.20 {
     private void drawScrollbar(GuiGraphics context, int mouseX, int mouseY, int top, int bottom, int maxScroll) {
         int scrollbarX = this.width - 10;
@@ -464,6 +580,7 @@ public class VolumeScreen extends Screen {
         Screen.fill(context, scrollbarX, thumbY, scrollbarX + scrollbarWidth, thumbY + thumbHeight, thumbColor);
     }
     *///?}
+    //?}
 
     @Override
     public void removed() {

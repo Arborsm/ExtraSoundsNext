@@ -2,7 +2,9 @@ package dev.arbor.extrasoundsnext.mixin.inventory;
 
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+//? if <26.1 {
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+//?}
 //? if >=1.20 {
 import net.minecraft.core.registries.BuiltInRegistries;
 //?} else {
@@ -34,9 +36,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(CreativeModeInventoryScreen.class)
 @MixinEnvironment()
+//? if <26.1 {
 public abstract class CreativeInventoryScreenMixin extends EffectRenderingInventoryScreen<CreativeModeInventoryScreen.ItemPickerMenu> {
+//?} else {
+/*public abstract class CreativeInventoryScreenMixin extends net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<CreativeModeInventoryScreen.ItemPickerMenu> {
+*///?}
     @Unique
-    //? if >=1.20 {
+    //? if >=26.1 {
+    /*private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.getValueOrThrow(dev.arbor.extrasoundsnext.mixin.accessors.CreativeModeTabsAccessor.getInventoryKey());
+    *///?} elif >=1.20 {
     private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
     //?} elif >=1.19.4 {
     /*private static final CreativeModeTab GROUP_INVENTORY = CreativeModeTabs.INVENTORY;
@@ -124,8 +132,16 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
         SoundManager.handleInventorySlot(this.minecraft.player, slot, slotId, cursorStack, actionType, button);
     }
 
+    //? if >=26.1 {
+    /*@Inject(method = "mouseReleased", at = @At("HEAD"))
+    private void extrasounds$tabChange(net.minecraft.client.input.MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
+        int button = event.button();
+        double mouseX = event.x();
+        double mouseY = event.y();
+    *///?} else {
     @Inject(method = "mouseReleased", at = @At("HEAD"))
     private void extrasounds$tabChange(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+    //?}
         if (button != 0) {
             return;
         }

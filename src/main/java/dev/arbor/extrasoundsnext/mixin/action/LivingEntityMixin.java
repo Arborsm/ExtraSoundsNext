@@ -44,7 +44,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "makePoofParticles", at = @At("HEAD"))
     private void extrasounds$poofSound(CallbackInfo ci) {
-        //? if >=1.20 {
+        //? if >=26.1 {
+        /*if (!this.level().isClientSide()) {
+        *///?} else if >=1.20 {
         if (!this.level().isClientSide) {
         //?} else {
         /*if (!this.getCommandSenderWorld().isClientSide) {

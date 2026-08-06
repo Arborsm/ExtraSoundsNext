@@ -21,7 +21,11 @@ public abstract class JeiMouseInputMixin {
 
 	@Inject(method = "onPress", at = @At("HEAD"))
 	private void extrasounds$jeiMouseReleased(long windowPointer, int button, int action, int modifiers, CallbackInfo ci) {
+		//? if >=26.2 {
+		/*if (action != 0 || this.minecraft.gui.screen() == null) {
+		*///?} else {
 		if (action != 0 || this.minecraft.screen == null) {
+		//?}
 			return;
 		}
 
@@ -32,7 +36,11 @@ public abstract class JeiMouseInputMixin {
 
 	@Inject(method = "onScroll", at = @At("HEAD"))
 	private void extrasounds$jeiMouseScrolled(long windowPointer, double horizontal, double vertical, CallbackInfo ci) {
+		//? if >=26.2 {
+		/*if (this.minecraft.gui.screen() == null) {
+		*///?} else {
 		if (this.minecraft.screen == null) {
+		//?}
 			return;
 		}
 

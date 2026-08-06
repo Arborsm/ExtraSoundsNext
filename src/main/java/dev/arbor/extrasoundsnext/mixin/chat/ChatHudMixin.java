@@ -20,7 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 //? if >=1.19 {
+//? if >=26.1 {
+/*import net.minecraft.client.multiplayer.chat.GuiMessageTag;
+*///?} else {
 import net.minecraft.client.GuiMessageTag;
+//?}
 import net.minecraft.network.chat.MessageSignature;
 //?}
 
@@ -35,7 +39,10 @@ public abstract class ChatHudMixin {
     @Unique
     private int extra_sounds$currentLines;
 
-	//? if >=1.21 {
+	//? if >=26.1 {
+    /*@Inject(method = "addPlayerMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/multiplayer/chat/GuiMessageTag;)V", at = @At("RETURN"))
+    private void extrasounds$receiveMessage(Component component, MessageSignature signature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
+    *///?} elif >=1.21 {
     @Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("RETURN"))
     private void extrasounds$receiveMessage(Component component, MessageSignature signature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
     //?} elif >=1.20 && fabric {

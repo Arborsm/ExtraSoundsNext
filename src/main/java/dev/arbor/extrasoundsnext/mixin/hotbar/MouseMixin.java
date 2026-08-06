@@ -35,6 +35,10 @@ public abstract class MouseMixin {
             return;
         }
 
+        //? if >=26.1 {
+        /*SoundManager.hotbar(player.getInventory().getSelectedSlot());
+        *///?} else {
         SoundManager.hotbar(player.getInventory().selected);
+        //?}
     }
 }

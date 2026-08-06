@@ -36,8 +36,13 @@ public abstract class ClientPlayerInteractionManagerMixin {
     private @Final Minecraft minecraft;
 
     @SuppressWarnings("ConstantConditions")
+    //? if >=26.1 {
+    /*@Inject(method = "handleClickType", at = @At("HEAD"))
+    private void extrasounds$inventoryClickEvent(int syncId, int slotIndex, int button, net.minecraft.world.inventory.ClickType actionType, Player player, CallbackInfo ci) {
+    *///?} else {
     @Inject(method = "handleInventoryMouseClick", at = @At("HEAD"))
     private void extrasounds$inventoryClickEvent(int syncId, int slotIndex, int button, ClickType actionType, Player player, CallbackInfo ci) {
+    //?}
         if (player == null) {
             return;
         }

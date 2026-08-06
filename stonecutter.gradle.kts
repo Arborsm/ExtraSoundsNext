@@ -11,7 +11,12 @@ plugins {
 	alias(libs.plugins.legacyforge.moddev).apply(false)
 }
 
-stonecutter active file(".sc_active_version")
+// 默认使用文件指定的 active 版本；CI 全量构建时传 -Pstonecutter.detached=true 走 detached 模式
+if (providers.gradleProperty("stonecutter.detached").orNull == "true") {
+	stonecutter active null
+} else {
+	stonecutter active file(".sc_active_version")
+}
 
 for (version in stonecutter.versions.map { it.version }.distinct()) tasks.register("publish$version") {
 	group = "publishing"
@@ -34,7 +39,6 @@ stonecutter tasks {
 
 stonecutter parameters {
 	constants.match(node.metadata.project.substringAfterLast('-'), "fabric", "neoforge", "forge")
-	filters.include("**/*.fsh", "**/*.vsh")
 	swaps["mod_version"] = "\"" + property("mod.version") + "\";"
 	swaps["mod_id"] = "\"" + property("mod.id") + "\";"
 	swaps["mod_name"] = "\"" + property("mod.name") + "\";"

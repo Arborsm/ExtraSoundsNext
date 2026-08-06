@@ -30,6 +30,16 @@ public class SearchBox extends EditBox {
         }
     }
 
+    //? if >=26.1 {
+    /*@Override
+    public boolean charTyped(net.minecraft.client.input.CharacterEvent event) {
+        boolean result = super.charTyped(event);
+        if (result && this.onTextChanged != null) {
+            this.onTextChanged.accept(this.getValue());
+        }
+        return result;
+    }
+    *///?} else {
     @Override
     public boolean charTyped(char chr, int modifiers) {
         boolean result = super.charTyped(chr, modifiers);
@@ -38,7 +48,18 @@ public class SearchBox extends EditBox {
         }
         return result;
     }
+    //?}
 
+    //? if >=26.1 {
+    /*@Override
+    public boolean keyPressed(net.minecraft.client.input.KeyEvent event) {
+        boolean result = super.keyPressed(event);
+        if (this.onTextChanged != null) {
+            this.onTextChanged.accept(this.getValue());
+        }
+        return result;
+    }
+    *///?} else {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         boolean result = super.keyPressed(keyCode, scanCode, modifiers);
@@ -47,4 +68,5 @@ public class SearchBox extends EditBox {
         }
         return result;
     }
+    //?}
 }

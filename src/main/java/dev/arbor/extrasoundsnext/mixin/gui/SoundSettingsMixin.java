@@ -69,7 +69,11 @@ public abstract class SoundSettingsMixin extends OptionsSubScreen {
 	@Unique
 	private void extrasounds$showVolumeScreen(Button button) {
 		if (this.minecraft != null) {
+			//? if >=26.2 {
+			/*this.minecraft.gui.setScreen(new VolumeScreen(this));
+			*///?} else {
 			this.minecraft.setScreen(new VolumeScreen(this));
+			//?}
 		}
 	}
 }

@@ -121,7 +121,11 @@ public class AddonFinder {
                         }
                     } catch (ClassNotFoundException e) {
                         ExtraSoundsNext.LOGGER.error("Failed to load class: {}", a.clazz().getClassName(), e);
+                        //? if >=26.1 {
+                        /*if (!net.neoforged.fml.loading.FMLLoader.getCurrent().isProduction()) throw new RuntimeException(e);
+                        *///?} else {
                         if (!FMLLoader.isProduction()) throw new RuntimeException(e);
+                        //?}
                     }
                 }
             }
@@ -144,7 +148,11 @@ public class AddonFinder {
                 }
             } catch (IllegalAccessException e) {
                 ExtraSoundsNext.LOGGER.error("Failed to load field: {}", field.getName(), e);
+                //? if >=26.1 {
+                /*if (!net.neoforged.fml.loading.FMLLoader.getCurrent().isProduction()) throw new RuntimeException(e);
+                *///?} else {
                 if (!FMLLoader.isProduction()) throw new RuntimeException(e);
+                //?}
             }
         });
         ModList.get().getMods().forEach(iModInfo -> namespaces.add(iModInfo.getModId()));

@@ -65,8 +65,11 @@ dependencies {
 }
 
 stonecutter {
-	replacements.string(current.parsed >= "1.21.11") {
+	// 26.1+ 无混淆，ResourceLocation 已改名 Identifier
+	replacements.string(true) {
 		replace("ResourceLocation", "Identifier")
-		replace("location()", "identifier()")
+	}
+	replacements.string(true) {
+		replace("ClickType", "ContainerInput")
 	}
 }
