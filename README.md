@@ -13,7 +13,7 @@ inventory management, and more.
 
 * **Rich Sound System**: Custom sounds for clicks, scrolls, typing, inventory interactions, and more
 * **Multi-Platform Support**: Fabric, NeoForge, and Legacy Forge from a single codebase
-* **Multi-Version Support**: Minecraft 1.18.2 through 1.21.1
+* **Multi-Version Support**: Minecraft 1.18.2 through 26.2
 * **Volume Control**: Custom sound settings screens with per-category volume control
 * **Add-on Framework**: Third-party mods can provide custom sounds via the `@SoundsGenerator` annotation
 * **Auto-Generation**: Automatically generates sounds for vanilla items and blocks based on material types
@@ -23,6 +23,8 @@ inventory management, and more.
 
 | Minecraft Version | Fabric | NeoForge | Legacy Forge |
 |-------------------|--------|----------|--------------|
+| 26.2              | ✅     | ✅       | ❌           |
+| 26.1.2            | ✅     | ✅       | ❌           |
 | 1.21.1            | ✅     | ✅       | ❌           |
 | 1.20.1            | ✅     | ❌       | ✅           |
 | 1.19.4            | ✅     | ❌       | ✅           |
@@ -36,7 +38,7 @@ in `settings.gradle.kts`.
 
 ### Prerequisites
 
-* **Java 21** or higher
+* **Java 25** or higher (JDK 25 is required to build the 26.x targets; older versions still compile with it)
 * Suitable IDE (IntelliJ IDEA recommended)
 * Git
 * Basic knowledge of Minecraft modding (Fabric/NeoForge)
@@ -69,6 +71,8 @@ for:
 ./gradlew buildAndCollect --no-daemon
 
 # Build specific version+platform
+./gradlew :26.2-fabric:build
+./gradlew :26.2-neoforge:build
 ./gradlew :1.21.1-fabric:build
 ./gradlew :1.21.1-neoforge:build
 ./gradlew :1.20.1-forge:build
@@ -78,10 +82,10 @@ for:
 
 ```bash
 # Run Fabric client
-./gradlew :1.21.1-fabric:runClient
+./gradlew :26.2-fabric:runClient
 
 # Run NeoForge client
-./gradlew :1.21.1-neoforge:runClient
+./gradlew :26.2-neoforge:runClient
 ```
 
 #### 4. **Mod Configuration**
@@ -93,7 +97,7 @@ ExtraSounds Next is configured in `gradle.properties` with the following metadat
 | `mod.id`           | `extrasounds`                                |
 | `mod.name`         | `ExtraSounds Next`                           |
 | `mod.group`        | `dev.arbor`                                  |
-| `mod.version`      | `1.4`                                        |
+| `mod.version`      | `1.5.6`                                        |
 | `mod.authors`      | `Arborsm, stashymane`                        |
 | `mod.license`      | `MIT`                                        |
 | `mod.description`  | `Improve your clicks, scrolls and more with Extra Sounds.` |
@@ -152,7 +156,7 @@ LOGGER.info("hello 1.21.1!");
  *///?}
 ```
 
-**String replacements** handle API differences between versions (e.g., `ResourceLocation` vs `Identifier` for 1.21.1+).
+**String replacements** handle API differences between versions (e.g., `ResourceLocation` vs `Identifier` for the 26.x targets).
 
 For more details, read the [Stonecutter documentation](https://stonecutter.kikugie.dev/wiki/).
 
@@ -266,5 +270,6 @@ For help and support:
 - Uses [Fletching Table](https://github.com/LlamaLad7/MixinExtras) for annotation-driven mixin registration
 
 **Version History**:
+- **v1.5.6** - Minecraft 26.1/26.2 support (Fabric & NeoForge), Trial Chambers content sounds (mace/spears/copper), world item drop sounds, bow sound fix, JEI integration fix, NeoForge startup fixes
 - **1.4-test version** - Major refactor: Migrated to Fletching Table, implemented multi-platform addon loader, flattened package structure, removed platform abstraction layer
 - **v1.5.0** - Current release with full multi-version/multi-loader support
