@@ -56,3 +56,5 @@ bin/
 /.gradle-home/
 /.gradle-user-home/
 .bitfun/
+
+/META-INF

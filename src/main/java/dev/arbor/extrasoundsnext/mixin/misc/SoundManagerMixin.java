@@ -41,6 +41,17 @@ public class SoundManagerMixin {
 		*///?}
 	}
 
+	//? if >=26.1 {
+	/*@Mixin(SoundManager.class)
+	public interface SoundManagerInvoker {
+		@Invoker("prepare")
+		SoundManager.Preparations extrasounds$prepare(ResourceManager resourceManager, ProfilerFiller profilerFiller);
+
+		@Invoker("apply")
+		void extrasounds$apply(SoundManager.Preparations preparations, ResourceManager resourceManager, ProfilerFiller profilerFiller);
+	}
+	*///?}
+
 	@Accessor("GSON")
 	public static Gson getGSON() {
 		throw new AssertionError();
@@ -51,7 +62,12 @@ public class SoundManagerMixin {
 		throw new AssertionError();
 	}
 
-	//? if >=1.19.3 {
+	//? if >=26.1 {
+	/*@Inject(
+			method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
+			at = @At("RETURN"))
+	private void injected(ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfoReturnable<SoundManager.Preparations> cir, @Local SoundManager.Preparations preparations) {
+	*///?} elif >=1.19.3 {
 	@Inject(
 			method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Lnet/minecraft/client/sounds/SoundManager$Preparations;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V", shift = At.Shift.AFTER),

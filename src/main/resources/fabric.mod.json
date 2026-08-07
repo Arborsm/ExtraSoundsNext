@@ -31,6 +31,9 @@
     "modmenu": [
       "dev.arbor.extrasoundsnext.platform.fabric.ModMenuIntegration"
     ],
+    "jei_mod_plugin": [
+      "dev.arbor.extrasoundsnext.integration.jei.ExtraSoundsJeiPlugin"
+    ],
     "sounds_generator": [
       "dev.arbor.extrasoundsnext.mapping.DefaultAutoGenerator"
     ]

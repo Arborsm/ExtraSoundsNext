@@ -97,22 +97,38 @@ public final class ExtraSoundsNext {
     }
 
     public static String getMinecraftVersion() {
-		//? if fabric {
-        /*return net.fabricmc.loader.api.FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().getFriendlyString();
-		*///?} neoforge {
-        return net.neoforged.fml.ModList.get().getModContainerById("minecraft").get().getModInfo().getVersion().toString();
-		//?} forge {
-         /*return net.minecraftforge.fml.ModList.get().getModContainerById("minecraft").get().getModInfo().getVersion().toString();
-		*///?}
+        try {
+            //? if fabric {
+            /*return net.fabricmc.loader.api.FabricLoader.getInstance().getModContainer("minecraft")
+                    .map(container -> container.getMetadata().getVersion().getFriendlyString()).orElse("unknown");
+            *///?} neoforge {
+            return net.neoforged.fml.ModList.get().getModContainerById("minecraft")
+                    .map(container -> container.getModInfo().getVersion().toString()).orElse("unknown");
+            //?} forge {
+            /*return net.minecraftforge.fml.ModList.get().getModContainerById("minecraft")
+                    .map(container -> container.getModInfo().getVersion().toString()).orElse("unknown");
+            *///?}
+        } catch (Throwable t) {
+            LOGGER.warn("[{}] Failed to resolve Minecraft version, using 'unknown'.", MODID, t);
+            return "unknown";
+        }
     }
 
     public static String getModVersion() {
-		//? if fabric {
-        /*return net.fabricmc.loader.api.FabricLoader.getInstance().getModContainer("extrasounds").get().getMetadata().getVersion().getFriendlyString();
-		*///?} neoforge {
-         return net.neoforged.fml.ModList.get().getModContainerById("extrasounds").get().getModInfo().getVersion().toString();
-		//?} forge {
-         /*return net.minecraftforge.fml.ModList.get().getModContainerById("extrasounds").get().getModInfo().getVersion().toString();
-		*///?}
+        try {
+            //? if fabric {
+            /*return net.fabricmc.loader.api.FabricLoader.getInstance().getModContainer("extrasounds")
+                    .map(container -> container.getMetadata().getVersion().getFriendlyString()).orElse("unknown");
+            *///?} neoforge {
+            return net.neoforged.fml.ModList.get().getModContainerById("extrasounds")
+                    .map(container -> container.getModInfo().getVersion().toString()).orElse("unknown");
+            //?} forge {
+            /*return net.minecraftforge.fml.ModList.get().getModContainerById("extrasounds")
+                    .map(container -> container.getModInfo().getVersion().toString()).orElse("unknown");
+            *///?}
+        } catch (Throwable t) {
+            LOGGER.warn("[{}] Failed to resolve mod version, using 'unknown'.", MODID, t);
+            return "unknown";
+        }
     }
 }

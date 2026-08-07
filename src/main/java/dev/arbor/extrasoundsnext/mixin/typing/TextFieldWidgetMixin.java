@@ -49,7 +49,11 @@ public abstract class TextFieldWidgetMixin {
     }
 
     @Inject(method = "deleteText", at = @At("HEAD"))
+    //? if >=26.1 {
+    /*private void extrasounds$eraseStrHead(int offset, boolean bl, CallbackInfo ci) {
+    *///?} else {
     private void extrasounds$eraseStrHead(int offset, CallbackInfo ci) {
+    //?}
         final boolean bHeadBackspace = offset < 0 && this.cursorPos <= 0;
         final boolean bTailDelete = offset > 0 && this.highlightPos >= this.getValue().length();
         if ((bHeadBackspace || bTailDelete) && this.cursorPos == this.highlightPos) {
@@ -58,7 +62,11 @@ public abstract class TextFieldWidgetMixin {
         SoundManager.keyboard(SoundManager.KeyType.ERASE);
     }
     @Inject(method = "deleteText", at = @At("RETURN"))
+    //? if >=26.1 {
+    /*private void extrasounds$eraseStrReturn(int offset, boolean bl, CallbackInfo ci) {
+    *///?} else {
     private void extrasounds$eraseStrReturn(int offset, CallbackInfo ci) {
+    //?}
         this.extra_sounds$cursorStart = this.extra_sounds$cursorEnd = this.highlightPos;
     }
 
@@ -159,13 +167,25 @@ public abstract class TextFieldWidgetMixin {
                     @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorToEnd(" + extrasounds$moveCursorArg + ")V", shift = At.Shift.AFTER)
             }
     )
-    private void extrasounds$cursorMoveKeyTyped(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    private void extrasounds$cursorMoveKeyTyped(
+            //? if >=26.1 {
+            /*net.minecraft.client.input.KeyEvent event,
+            *///?} else {
+            int keyCode, int scanCode, int modifiers,
+            //?}
+            CallbackInfoReturnable<Boolean> cir) {
         this.extrasounds$cursorChanged();
     }
 
 	//? if >=1.20.1 {
     @Inject(method = "onClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;moveCursorTo(I" + extrasounds$moveCursorArg + ")V", shift = At.Shift.AFTER))
-    private void extrasounds$clickEvent(double mouseX, double mouseY, CallbackInfo ci) {
+    private void extrasounds$clickEvent(
+            //? if >=26.1 {
+            /*net.minecraft.client.input.MouseButtonEvent event, boolean bl,
+            *///?} else {
+            double mouseX, double mouseY,
+            //?}
+            CallbackInfo ci) {
         this.extrasounds$cursorChanged();
     }
     //?}

@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //? if fabric {
 /*import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-*///?} elif neoforge {
+*///?} elif neoforge && <26.1 {
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 //?} elif forge {
@@ -30,9 +30,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 //? if fabric {
 /*@Environment(EnvType.CLIENT)
-*///?} elif neoforge {
+*///?} elif neoforge && <26.1 {
 @OnlyIn(Dist.CLIENT)
-//?} elif forge {
+//?} elif neoforge {
+/*// 26.x neoforge: @OnlyIn no longer strips members at runtime; the mixin is client-only anyway.
+*///?} elif forge {
 /*@OnlyIn(Dist.CLIENT)
 *///?}
 @Mixin(LivingEntity.class)

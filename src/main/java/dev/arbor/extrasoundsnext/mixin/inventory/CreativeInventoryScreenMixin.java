@@ -43,7 +43,7 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
 *///?}
     @Unique
     //? if >=26.1 {
-    /*private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.getValueOrThrow(dev.arbor.extrasoundsnext.mixin.accessors.CreativeModeTabsAccessor.getInventoryKey());
+    /*private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.getValueOrThrow(CreativeModeTabs.INVENTORY);
     *///?} elif >=1.20 {
     private static final CreativeModeTab GROUP_INVENTORY = BuiltInRegistries.CREATIVE_MODE_TAB.get(CreativeModeTabs.INVENTORY);
     //?} elif >=1.19.4 {

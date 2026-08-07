@@ -51,6 +51,8 @@ public class SoundPackLoader {
 
     public static final Map<ResourceLocation, SoundEvent> CUSTOM_SOUND_EVENT = new HashMap<>();
 
+    private static boolean soundPackReady = false;
+
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(SoundEventRegistration.class, new SoundEntrySerializer())
             .registerTypeAdapter(Sound.class, new SoundSerializer())
@@ -130,6 +132,66 @@ public class SoundPackLoader {
         }
         LOGGER.info("[{}] sound pack successfully loaded; {} entries.", ExtraSoundsNext.class.getSimpleName(), CUSTOM_SOUND_EVENT.size());
     }
+
+    /**
+     * Client-startup entry. On 26.x the item components are bound only after the initial async resource
+     * reload completes (later than the reload listeners and the first {@code SoundManager} prepare).
+     * When the cache already exists, initialization is done eagerly at startup so the first prepare picks
+     * the generated sounds up; otherwise it is deferred until the components are actually bound, and the
+     * sound manager is re-prepared afterwards so the generated sounds get registered.
+     */
+    public static void initWhenReady() {
+        //? if fabric && >=26.1 {
+        /*try {
+            init();
+        } catch (Throwable t) {
+            final boolean[] soundPackLoaded = {false};
+            net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.END_CLIENT_TICK.register(client -> {
+                if (soundPackLoaded[0]) {
+                    return;
+                }
+                if (!net.minecraft.world.item.Items.STICK.builtInRegistryHolder().areComponentsBound()) {
+                    return;
+                }
+                try {
+                    init();
+                    reapplyToSoundManager();
+                    soundPackLoaded[0] = true;
+                } catch (Throwable t2) {
+                    LOGGER.warn("[extrasounds] sound pack generation failed; will retry", t2);
+                }
+            });
+        }
+        *///?} elif neoforge && >=26.1 {
+        /*if (soundPackReady) {
+            return;
+        }
+        if (!net.minecraft.world.item.Items.STICK.builtInRegistryHolder().areComponentsBound()) {
+            return;
+        }
+        try {
+            init();
+            reapplyToSoundManager();
+            soundPackReady = true;
+        } catch (Throwable t) {
+            LOGGER.warn("[extrasounds] sound pack generation failed; will retry", t);
+        }
+        *///?} else {
+        init();
+        //?}
+    }
+
+    //? if (fabric || neoforge) && >=26.1 {
+    /*private static void reapplyToSoundManager() {
+        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+        net.minecraft.client.sounds.SoundManager soundManager = mc.getSoundManager();
+        net.minecraft.server.packs.resources.ResourceManager resourceManager = mc.getResourceManager();
+        net.minecraft.util.profiling.ProfilerFiller profiler = net.minecraft.util.profiling.InactiveProfiler.INSTANCE;
+        dev.arbor.extrasoundsnext.mixin.misc.SoundManagerMixin.SoundManagerInvoker invoker =
+                (dev.arbor.extrasoundsnext.mixin.misc.SoundManagerMixin.SoundManagerInvoker) (Object) soundManager;
+        invoker.extrasounds$apply(invoker.extrasounds$prepare(resourceManager, profiler), resourceManager, profiler);
+    }
+    *///?}
 
     /**
      * Processes for the all items.<br>

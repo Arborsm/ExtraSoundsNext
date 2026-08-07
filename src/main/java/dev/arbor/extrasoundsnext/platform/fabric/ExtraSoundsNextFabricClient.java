@@ -9,7 +9,7 @@ public final class ExtraSoundsNextFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 		ExtraSoundsNext.init();
-        SoundPackLoader.init();
+        SoundPackLoader.initWhenReady();
     }
 }
 *///?}

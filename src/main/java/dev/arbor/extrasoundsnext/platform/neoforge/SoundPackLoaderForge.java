@@ -36,7 +36,15 @@ public class SoundPackLoaderForge {
 		/*if (!event.getRegistryKey().equals(Registry.LOOT_ITEM_REGISTRY))
 			return;
         *///?}
+        //? if neoforge && >=26.1 {
+        /*// 26.x binds item components only after the initial async resource reload, which happens
+        // after this RegisterEvent; defer the cache generation to the client tick on the game bus.
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+                (net.neoforged.neoforge.client.event.ClientTickEvent.Post tickEvent) ->
+                        SoundPackLoader.initWhenReady());
+        *///?} else {
         SoundPackLoader.init();
+        //?}
     }
 }
 //?}

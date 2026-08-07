@@ -193,6 +193,16 @@
       }
     ]
   },
+  "item.category.gear.heavy": {
+    "sounds": [
+      {
+        "name": "minecraft:item.armor.equip_netherite",
+        "volume": 0.45,
+        "pitch": 0.8,
+        "type": "event"
+      }
+    ]
+  },
   "item.category.gear.iron": {
     "sounds": [
       {

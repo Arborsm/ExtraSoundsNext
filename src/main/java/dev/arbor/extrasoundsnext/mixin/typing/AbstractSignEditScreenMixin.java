@@ -28,7 +28,11 @@ public abstract class AbstractSignEditScreenMixin {
     private int line;
 
     @Inject(method = "keyPressed", at = @At("RETURN"))
+    //? if >=26.1 {
+    /*private void extrasounds$moveRow(net.minecraft.client.input.KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+    *///?} else {
     private void extrasounds$moveRow(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    //?}
         if (this.line != this.extra_sounds$previousRow) {
             SoundManager.keyboard(SoundManager.KeyType.CURSOR);
             this.extra_sounds$previousRow = this.line;

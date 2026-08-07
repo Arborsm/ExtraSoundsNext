@@ -33,6 +33,7 @@ public class Categories {
         public static final SoundEvent DIAMOND = ExtraSoundsNext.createEvent("item.category.gear.diamond");
         public static final SoundEvent GENERIC = ExtraSoundsNext.createEvent("item.category.gear.generic");
         public static final SoundEvent GOLDEN = ExtraSoundsNext.createEvent("item.category.gear.golden");
+        public static final SoundEvent HEAVY = ExtraSoundsNext.createEvent("item.category.gear.heavy");
         public static final SoundEvent IRON = ExtraSoundsNext.createEvent("item.category.gear.iron");
         public static final SoundEvent LEATHER = ExtraSoundsNext.createEvent("item.category.gear.leather");
         public static final SoundEvent NETHERITE = ExtraSoundsNext.createEvent("item.category.gear.netherite");

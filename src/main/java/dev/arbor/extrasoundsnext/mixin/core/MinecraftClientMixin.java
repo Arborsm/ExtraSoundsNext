@@ -26,11 +26,18 @@ public abstract class MinecraftClientMixin {
     @Nullable
     public LocalPlayer player;
 
+    //? if <26.2 {
     @Shadow
     @Nullable
     public Screen screen;
+    //?}
 
-    @Inject(method = "handleKeybinds", at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, target = "Lnet/minecraft/world/entity/player/Inventory;selected:I"), locals = LocalCapture.CAPTURE_FAILSOFT)
+    @Inject(
+        //? if >=26.1 {
+        /*method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
+        *///?} else {
+        method = "handleKeybinds", at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, target = "Lnet/minecraft/world/entity/player/Inventory;selected:I"), locals = LocalCapture.CAPTURE_FAILSOFT)
+        //?}
     private void extrasounds$hotbarKeySound(CallbackInfo ci, int i) {
         //? if >=26.1 {
         /*if (this.player != null && this.player.getInventory().getSelectedSlot() != i) {
@@ -46,6 +53,7 @@ public abstract class MinecraftClientMixin {
         SoundManager.playSound(Sounds.HOTBAR_SCROLL, SoundType.HOTBAR);
     }
 
+    //? if <26.2 {
     @Inject(at = @At("HEAD"), method = "setScreen")
     private void extrasounds$screenChange(@Nullable Screen screen1, CallbackInfo ci) {
         if (screen != screen1 && screen1 instanceof AbstractContainerScreen && !(screen1 instanceof CreativeModeInventoryScreen)) {
@@ -54,4 +62,5 @@ public abstract class MinecraftClientMixin {
             SoundManager.playSound(Sounds.INVENTORY_CLOSE, 1f);
         }
     }
+    //?}
 }

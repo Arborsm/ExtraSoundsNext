@@ -5,6 +5,9 @@ import dev.arbor.extrasoundsnext.integration.jei.JeiRuntimeSoundHandler;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
+//? if >=26.1 {
+/*import net.minecraft.client.input.MouseButtonInfo;
+*///?}
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,8 +22,13 @@ public abstract class JeiMouseInputMixin {
 	@Final
 	private Minecraft minecraft;
 
+	//? if >=26.1 {
+	/*@Inject(method = "onButton", at = @At("HEAD"))
+	private void extrasounds$jeiMouseReleased(long windowPointer, MouseButtonInfo mouseButtonInfo, int action, CallbackInfo ci) {
+	*///?} else {
 	@Inject(method = "onPress", at = @At("HEAD"))
 	private void extrasounds$jeiMouseReleased(long windowPointer, int button, int action, int modifiers, CallbackInfo ci) {
+	//?}
 		//? if >=26.2 {
 		/*if (action != 0 || this.minecraft.gui.screen() == null) {
 		*///?} else {
@@ -31,7 +39,11 @@ public abstract class JeiMouseInputMixin {
 
 		double mouseX = scaledMouseX();
 		double mouseY = scaledMouseY();
+		//? if >=26.1 {
+		/*JeiRuntimeSoundHandler.handleMouseReleased(mouseX, mouseY, mouseButtonInfo.button());
+		*///?} else {
 		JeiRuntimeSoundHandler.handleMouseReleased(mouseX, mouseY, button);
+		//?}
 	}
 
 	@Inject(method = "onScroll", at = @At("HEAD"))

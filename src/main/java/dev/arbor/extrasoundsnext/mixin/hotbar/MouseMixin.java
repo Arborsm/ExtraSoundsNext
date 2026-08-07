@@ -22,13 +22,11 @@ public abstract class MouseMixin {
     private @Final Minecraft minecraft;
 
     @Inject(
-            method = "onScroll",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/player/Inventory;swapPaint(D)V",
-                    shift = At.Shift.AFTER
-            )
-    )
+        //? if >=26.1 {
+        /*method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;setSelectedSlot(I)V", shift = At.Shift.AFTER))
+        *///?} else {
+        method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;swapPaint(D)V", shift = At.Shift.AFTER))
+        //?}
     private void extrasounds$hotbarScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
         final LocalPlayer player = this.minecraft.player;
         if (player == null) {

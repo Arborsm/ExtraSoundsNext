@@ -43,6 +43,9 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
             return SoundDefinition.of(aliased(MUSIC_DISC));
         } else if (item instanceof BoatItem) {
             return SoundDefinition.of(aliased(BOAT));
+        } else if (item.components().has(DataComponents.REPAIRABLE)) {
+            // Covers tools, armor and 26.x weapons without a TOOL component (spears, mace).
+            return getMaterialSound26(item);
         } else if (item.components().has(DataComponents.TOOL)) {
             return getToolItemSound26(item);
         } else if (isArmor26(item)) {
@@ -63,7 +66,7 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
             return SoundDefinition.of(aliased(DUST));
         } else if (item instanceof SpawnEggItem) {
             return SoundDefinition.of(aliased(WET_SLIPPERY));
-        } else if (item instanceof BowItem || item.components().has(DataComponents.SUSPICIOUS_STEW_EFFECTS)) {
+        } else if (item.components().has(DataComponents.SUSPICIOUS_STEW_EFFECTS)) {
             return SoundDefinition.of(aliased(BOWL));
         } else if (item instanceof InstrumentItem) {
             return SoundDefinition.of(single(LOOSE_METAL.location(), 0.6f, 0.9f, Sound.Type.SOUND_EVENT));
@@ -150,7 +153,7 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
         } else if (item instanceof SpawnEggItem) {
             return SoundDefinition.of(aliased(WET_SLIPPERY));
         //? if >=1.21 {
-        } else if (item instanceof BowItem || item instanceof SuspiciousStewItem) {
+        } else if (item instanceof SuspiciousStewItem) {
         //?} else {
         /*} else if (item instanceof BowlFoodItem || item instanceof SuspiciousStewItem) {
         *///?}
@@ -237,10 +240,14 @@ public final class DefaultAutoGenerator implements ISoundsGenerator {
                 return SoundDefinition.of(aliased(Gear.GOLDEN));
             if (items.contains(Items.IRON_INGOT.builtInRegistryHolder()))
                 return SoundDefinition.of(aliased(Gear.IRON));
+            if (items.contains(Items.COPPER_INGOT.builtInRegistryHolder()))
+                return SoundDefinition.of(aliased(Gear.IRON));
             if (items.contains(Items.STONE.builtInRegistryHolder()) || items.contains(Items.COBBLESTONE.builtInRegistryHolder()))
                 return SoundDefinition.of(aliased(Gear.STONE));
             if (items.contains(Items.OAK_PLANKS.builtInRegistryHolder()) || items.contains(Items.STICK.builtInRegistryHolder()))
                 return SoundDefinition.of(aliased(Gear.WOOD));
+            if (items.contains(Items.BREEZE_ROD.builtInRegistryHolder()))
+                return SoundDefinition.of(aliased(Gear.HEAVY));
         }
         return SoundDefinition.of(aliased(Gear.GENERIC));
     }

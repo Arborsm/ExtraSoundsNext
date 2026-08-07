@@ -205,7 +205,7 @@ public class VolumeScreen extends Screen {
     //? if >=26.1 {
     /*@Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        this.extractBackground(context, mouseX, mouseY, delta);
+        // Background is already extracted by Screen.extractRenderStateWithTooltipAndSubtitles.
         super.extractRenderState(context, mouseX, mouseY, delta);
 
         // Draw title

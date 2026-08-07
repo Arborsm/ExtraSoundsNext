@@ -8,6 +8,9 @@ import net.minecraft.client.player.LocalPlayer;
 //? if >=1.21 {
 import net.minecraft.core.Holder;
 //?}
+//? if >=26.1 {
+/*import java.util.Collection;
+*///?}
 //? if =1.19.3 {
 /*import net.minecraft.client.multiplayer.ProfileKeyPair;
 *///?}
@@ -72,6 +75,14 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
         SoundManager.stopSound(Sounds.Actions.BOW_PULL, SoundType.ACTION);
     }
 
+    @Inject(method = "drop", at = @At("HEAD"))
+    private void extrasounds$itemDropSound(boolean fullStack, CallbackInfoReturnable<Boolean> cir) {
+        if (this.isSpectator()) {
+            return;
+        }
+        SoundManager.playThrow(this.getMainHandItem());
+    }
+
     @Override
     protected void onEffectAdded(@NotNull MobEffectInstance effect, @Nullable Entity source) {
         super.onEffectAdded(effect, source);
@@ -86,8 +97,18 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
         }
     }
 
+    //? if >=26.1 {
+    /*@Override
+    protected void onEffectsRemoved(@NotNull Collection<MobEffectInstance> effects) {
+        super.onEffectsRemoved(effects);
+        long currentTime = System.currentTimeMillis();
+        if (!effects.isEmpty() && currentTime - extraSoundsNext$lastPlayedTime > extraSoundsNext$COOLDOWN) {
+            SoundManager.effectChanged(effects.iterator().next().getEffect().value(), SoundManager.EffectType.REMOVE);
+            extraSoundsNext$lastPlayedTime = currentTime;
+        }
+    }
+    *///?} else if >=1.21 {
     @Inject(method = "removeEffectNoUpdate", at = @At("HEAD"))
-    //? if >=1.21 {
     private void extrasounds$effectRemoved(Holder<MobEffect> pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
         long currentTime = System.currentTimeMillis();
         if (this.hasEffect(pEffect) && currentTime - extraSoundsNext$lastPlayedTime > extraSoundsNext$COOLDOWN) {
@@ -96,7 +117,8 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
         }
     }
     //?} else {
-    /*private void extrasounds$effectRemoved(MobEffect pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
+    /*@Inject(method = "removeEffectNoUpdate", at = @At("HEAD"))
+    private void extrasounds$effectRemoved(MobEffect pEffect, CallbackInfoReturnable<MobEffectInstance> cir) {
         long currentTime = System.currentTimeMillis();
         if (this.hasEffect(pEffect) && currentTime - extraSoundsNext$lastPlayedTime > extraSoundsNext$COOLDOWN) {
             SoundManager.effectChanged(pEffect, SoundManager.EffectType.REMOVE);
