@@ -40,7 +40,11 @@ public abstract class SuggestionWindowMixin {
 
     //? if >=1.19 {
     @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;hide()V"))
+    //? if >=26.1 {
+    /*private void extrasounds$closeWindow(net.minecraft.client.input.KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+    *///?} else {
     private void extrasounds$closeWindow(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    //?}
         SoundManager.keyboard(SoundManager.KeyType.CURSOR);
     }
     //?}

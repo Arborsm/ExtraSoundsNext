@@ -97,7 +97,7 @@ ExtraSounds Next is configured in `gradle.properties` with the following metadat
 | `mod.id`           | `extrasounds`                                |
 | `mod.name`         | `ExtraSounds Next`                           |
 | `mod.group`        | `dev.arbor`                                  |
-| `mod.version`      | `1.5.6`                                        |
+| `mod.version`      | `1.5.7`                                        |
 | `mod.authors`      | `Arborsm, stashymane`                        |
 | `mod.license`      | `MIT`                                        |
 | `mod.description`  | `Improve your clicks, scrolls and more with Extra Sounds.` |
@@ -270,6 +270,7 @@ For help and support:
 - Uses [Fletching Table](https://github.com/LlamaLad7/MixinExtras) for annotation-driven mixin registration
 
 **Version History**:
+- **v1.5.7** - Fixed Tab command autocompletion and the FPS drop from holding Tab in chat on Minecraft 26.1/26.2
 - **v1.5.6** - Minecraft 26.1/26.2 support (Fabric & NeoForge), Trial Chambers content sounds (mace/spears/copper), world item drop sounds, bow sound fix, JEI integration fix, NeoForge startup fixes
 - **1.4-test version** - Major refactor: Migrated to Fletching Table, implemented multi-platform addon loader, flattened package structure, removed platform abstraction layer
 - **v1.5.0** - Current release with full multi-version/multi-loader support

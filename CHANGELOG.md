@@ -1,5 +1,9 @@
 # ExtraSounds Next - Changelog
 
+## [1.5.7]
+**Fixes**
+- Fixed Tab key command autocompletion on Minecraft 26.1/26.2: the suggestion-window mixin still targeted the removed `keyPressed(int, int, int)` signature (26.1+ input uses `KeyEvent`), which broke suggestion display; holding Tab in chat repeatedly re-triggered the failure and caused a noticeable FPS drop
+
 ## [1.5.6]
 **New**
 - Minecraft 26.1/26.2 support (Fabric & NeoForge): mixins adapted for the new input/effect/screen systems, sound-pack generation deferred until item components are bound (sound manager is re-prepared afterwards), JEI integration entrypoint, NeoForge startup timing
